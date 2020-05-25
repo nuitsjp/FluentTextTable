@@ -18,7 +18,7 @@ namespace FluentTextTable.Test
                     .AlignHorizontalTo(HorizontalAlignment.Right);
                 config.AddColumn(x => x.Name);
                 config.AddColumn(x => x.Birthday)
-                    .FormatTo("yyyy/MM/dd");
+                    .FormatTo("{0:yyyy/MM/dd}");
             });
             table.DataSource = new[]
             {
@@ -56,7 +56,8 @@ namespace FluentTextTable.Test
                     .FormatTo("yyyy/MM/dd")
                     .AlignVerticalTo(VerticalAlignment.Bottom);
                 config.AddColumn(x => x.Parents)
-                    .AlignVerticalTo(VerticalAlignment.Center);
+                    .AlignVerticalTo(VerticalAlignment.Center)
+                    .FormatTo("- {0}");
                 config.AddColumn(x => x.Occupations);
             });
             table.DataSource = new[]
@@ -78,14 +79,14 @@ Philanthropist"
 
             Assert.Equal(
                 @"
-+----+-------------+------------+--------------------+--------------------+
-| ID | Name        | Birthday   | Parents            | Occupations        |
-+----+-------------+------------+--------------------+--------------------+
-|  1 |             |            |                    | Software developer |
-|    | Bill Gates  |            | Bill Gates Sr.     | Investor           |
-|    |             |            | Mary Maxwell Gates | Entrepreneur       |
-|    |             | 1955/10/28 |                    | Philanthropist     |
-+----+-------------+------------+--------------------+--------------------+
++----+-------------+------------+----------------------+--------------------+
+| ID | Name        | Birthday   | Parents              | Occupations        |
++----+-------------+------------+----------------------+--------------------+
+|  1 |             |            |                      | Software developer |
+|    | Bill Gates  |            | - Bill Gates Sr.     | Investor           |
+|    |             |            | - Mary Maxwell Gates | Entrepreneur       |
+|    |             | 1955/10/28 |                      | Philanthropist     |
++----+-------------+------------+----------------------+--------------------+
 ", Environment.NewLine + text);
         }
 

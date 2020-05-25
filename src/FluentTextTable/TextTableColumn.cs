@@ -50,7 +50,7 @@ namespace FluentTextTable
 
         public ITextTableColumn FormatTo(string format)
         {
-            Format = "{0:" + format + "}";
+            Format = format;
             return this;
         }
 
