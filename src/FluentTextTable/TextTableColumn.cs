@@ -21,9 +21,9 @@ namespace FluentTextTable
         internal int HeaderWidth { get; private set; }
 
         internal HorizontalAlignment HorizontalAlignment { get; private set; } = HorizontalAlignment.Left;
-        public VerticalAlignment VerticalAlignment { get; private set; } = VerticalAlignment.Top;
+        internal VerticalAlignment VerticalAlignment { get; private set; } = VerticalAlignment.Top;
 
-        public string Format { get; private set; }
+        internal string Format { get; private set; }
 
         private Func<TItem, object> GetValue { get; }
 
@@ -54,16 +54,16 @@ namespace FluentTextTable
             return this;
         }
 
-        internal TextTableCell ToCell(TItem item)
+        internal TextTableCell<TItem> ToCell(TItem item)
         {
-            return new TextTableCell(
+            return new TextTableCell<TItem>(
                 this, 
                 Format is null 
                     ? GetValue(item).ToString()
                     : string.Format(Format, GetValue(item)));
         }
 
-        internal void UpdateWidth(IEnumerable<TextTableRow> rows)
+        internal void UpdateWidth(IEnumerable<TextTableRow<TItem>> rows)
         {
             Width = Math.Max(HeaderWidth, rows.Select(x => x.Cells[this].Width).Max());
         }

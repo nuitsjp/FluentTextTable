@@ -25,10 +25,10 @@ namespace FluentTextTable
 
         public void WritePlanText(TextWriter writer)
         {
-            var rows = new List<TextTableRow>();
+            var rows = new List<TextTableRow<TItem>>();
             foreach (var item in DataSource)
             {
-                var row = new TextTableRow();
+                var row = new TextTableRow<TItem>();
                 rows.Add(row);
                 foreach (var column in Columns)
                 {
@@ -98,7 +98,7 @@ namespace FluentTextTable
                     }
 
                     writer.Write(new string(' ', leftPadding));
-                    writer.Write(cell.Value);
+                    writer.Write(cell.Values.First());
                     writer.Write(new string(' ', rightPadding));
 
                     writer.Write(" |");
