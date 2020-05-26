@@ -25,7 +25,7 @@ namespace FluentTextTable
 
         public void WritePlanText(TextWriter writer)
         {
-            var rows = DataSource.Select(x => new Row<TItem>(x, Columns)).ToList();
+            var rows = DataSource.Select(x => Row.Create(x, Columns)).ToList();
 
             foreach (var column in Columns)
             {
@@ -64,19 +64,7 @@ namespace FluentTextTable
             // Write table.
             foreach (var row in rows)
             {
-                // Write row.
-                var rowHeight = row.Height;
-
-                // Write line in row.
-                for (var lineNumber = 0; lineNumber < rowHeight; lineNumber++)
-                {
-                    writer.Write("|");
-                    foreach (var column in Columns)
-                    {
-                        row.Cells[column].Write(writer, column, lineNumber);
-                    }
-                    writer.WriteLine();
-                }
+                row.Write(writer, Columns.Select(x => (Column)x).ToList());
 
                 writer.WriteLine(rowSeparator);
             }

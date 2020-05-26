@@ -5,7 +5,7 @@ using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
-    internal class Cell<TItem>
+    internal class Cell
     {
         private const int Margin = 2;
         public Cell(object value, string format)
@@ -29,7 +29,7 @@ namespace FluentTextTable
 
         internal void Write(
             TextWriter writer,
-            Column<TItem> column,
+            Column column,
             int lineNumber)
         {
             writer.Write(" ");

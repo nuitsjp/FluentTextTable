@@ -7,26 +7,13 @@ using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
-    public class Column<TItem> : IColumn
+    public abstract class Column : IColumn
     {
-        
-        internal Column(Expression<Func<TItem, object>> getValue)
-        {
-            GetValue = getValue.Compile();
-            HeaderIs(GetMemberInfo(getValue).Name);
-        }
-
         internal string Header { get; private set; }
-
         internal int HeaderWidth { get; private set; }
-
         internal HorizontalAlignment HorizontalAlignment { get; private set; } = HorizontalAlignment.Left;
         internal VerticalAlignment VerticalAlignment { get; private set; } = VerticalAlignment.Top;
-
         internal string Format { get; private set; }
-
-        private Func<TItem, object> GetValue { get; }
-
         internal int Width { get; private set; }
 
         public IColumn HeaderIs(string header)
@@ -53,15 +40,27 @@ namespace FluentTextTable
             Format = format;
             return this;
         }
-
-        internal Cell<TItem> ToCell(TItem item)
+        internal void UpdateWidth(IEnumerable<Row> rows)
         {
-            return new Cell<TItem>(GetValue(item), Format);
+            Width = Math.Max(HeaderWidth, rows.Select(x => x.GetCell(this).Width).Max());
+        }
+    }
+
+    public class Column<TItem> : Column
+    {
+        
+        internal Column(Expression<Func<TItem, object>> getValue)
+        {
+            GetValue = getValue.Compile();
+            HeaderIs(GetMemberInfo(getValue).Name);
         }
 
-        internal void UpdateWidth(IEnumerable<Row<TItem>> rows)
+        private Func<TItem, object> GetValue { get; }
+
+
+        internal Cell ToCell(TItem item)
         {
-            Width = Math.Max(HeaderWidth, rows.Select(x => x.Cells[this].Width).Max());
+            return new Cell(GetValue(item), Format);
         }
 
         private static MemberInfo GetMemberInfo(LambdaExpression lambda)
