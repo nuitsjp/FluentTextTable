@@ -5,6 +5,6 @@ namespace FluentTextTable
 {
     public interface ITextTableConfig<TItem>
     {
-        TextTableColumn<TItem> AddColumn(Expression<Func<TItem, object>> expression);
+        Column<TItem> AddColumn(Expression<Func<TItem, object>> expression);
     }
 }

@@ -9,12 +9,12 @@ namespace FluentTextTable
 {
     public class TextTable<TItem> : ITextTable<TItem>
     {
-        internal TextTable(IEnumerable<TextTableColumn<TItem>> columns)
+        internal TextTable(IEnumerable<Column<TItem>> columns)
         {
             Columns = columns.ToList();
         }
 
-        private IEnumerable<TextTableColumn<TItem>> Columns { get; }
+        private List<Column<TItem>> Columns { get; }
         public IEnumerable<TItem> DataSource { get; set; }
         public string ToPlanText()
         {
@@ -25,16 +25,7 @@ namespace FluentTextTable
 
         public void WritePlanText(TextWriter writer)
         {
-            var rows = new List<TextTableRow<TItem>>();
-            foreach (var item in DataSource)
-            {
-                var row = new TextTableRow<TItem>();
-                rows.Add(row);
-                foreach (var column in Columns)
-                {
-                    row.AddCell(column.ToCell(item));
-                }
-            }
+            var rows = DataSource.Select(x => new Row<TItem>(x, Columns)).ToList();
 
             foreach (var column in Columns)
             {
@@ -65,45 +56,28 @@ namespace FluentTextTable
 
                 writer.Write(" |");
             }
+
+            // Write Header and table separator.
             writer.WriteLine();
             writer.WriteLine(rowSeparator);
 
+            // Write table.
             foreach (var row in rows)
             {
-                writer.Write("|");
-                foreach (var column in Columns)
+                // Write row.
+                var rowHeight = row.Height;
+
+                // Write line in row.
+                for (var lineNumber = 0; lineNumber < rowHeight; lineNumber++)
                 {
-                    writer.Write(" ");
-
-                    var cell = row.Cells[column];
-
-                    int leftPadding;
-                    int rightPadding;
-                    switch (column.HorizontalAlignment)
+                    writer.Write("|");
+                    foreach (var column in Columns)
                     {
-                        case HorizontalAlignment.Left:
-                            leftPadding = 0;
-                            rightPadding = column.Width - cell.Width;
-                            break;
-                        case HorizontalAlignment.Center:
-                            leftPadding = 0;
-                            rightPadding = column.Width - cell.Width;
-                            break;
-                        case HorizontalAlignment.Right:
-                            leftPadding = column.Width - cell.Width;
-                            rightPadding = 0;
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        row.Cells[column].Write(writer, column, lineNumber);
                     }
-
-                    writer.Write(new string(' ', leftPadding));
-                    writer.Write(cell.Values.First());
-                    writer.Write(new string(' ', rightPadding));
-
-                    writer.Write(" |");
+                    writer.WriteLine();
                 }
-                writer.WriteLine();
+
                 writer.WriteLine(rowSeparator);
             }
         }

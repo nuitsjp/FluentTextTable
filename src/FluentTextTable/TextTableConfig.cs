@@ -8,13 +8,13 @@ namespace FluentTextTable
 {
     public class TextTableConfig<TItem> : ITextTableConfig<TItem>
     {
-        private readonly List<TextTableColumn<TItem>> _columns = new List<TextTableColumn<TItem>>();
+        private readonly List<Column<TItem>> _columns = new List<Column<TItem>>();
 
-        internal IReadOnlyList<TextTableColumn<TItem>> Columns => _columns;
+        internal IReadOnlyList<Column<TItem>> Columns => _columns;
 
-        public TextTableColumn<TItem> AddColumn(Expression<Func<TItem, object>> getMemberExpression)
+        public Column<TItem> AddColumn(Expression<Func<TItem, object>> getMemberExpression)
         {
-            var column = new TextTableColumn<TItem>(getMemberExpression);
+            var column = new Column<TItem>(getMemberExpression);
             _columns.Add(column);
             return column;
         }

@@ -7,10 +7,10 @@ using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
-    public class TextTableColumn<TItem> : ITextTableColumn
+    public class Column<TItem> : IColumn
     {
         
-        internal TextTableColumn(Expression<Func<TItem, object>> getValue)
+        internal Column(Expression<Func<TItem, object>> getValue)
         {
             GetValue = getValue.Compile();
             HeaderIs(GetMemberInfo(getValue).Name);
@@ -29,41 +29,37 @@ namespace FluentTextTable
 
         internal int Width { get; private set; }
 
-        public ITextTableColumn HeaderIs(string header)
+        public IColumn HeaderIs(string header)
         {
             Header = header;
             HeaderWidth = header.GetWidth() + 2;
             return this;
         }
 
-        public ITextTableColumn AlignHorizontalTo(HorizontalAlignment horizontalAlignment)
+        public IColumn AlignHorizontalTo(HorizontalAlignment horizontalAlignment)
         {
             HorizontalAlignment = horizontalAlignment;
             return this;
         }
 
-        public ITextTableColumn AlignVerticalTo(VerticalAlignment verticalAlignment)
+        public IColumn AlignVerticalTo(VerticalAlignment verticalAlignment)
         {
             VerticalAlignment = verticalAlignment;
             return this;
         }
 
-        public ITextTableColumn FormatTo(string format)
+        public IColumn FormatTo(string format)
         {
             Format = format;
             return this;
         }
 
-        internal TextTableCell<TItem> ToCell(TItem item)
+        internal Cell<TItem> ToCell(TItem item)
         {
-            return new TextTableCell<TItem>(
-                this, 
-                Format is null 
-                    ? GetValue(item).ToString()
-                    : string.Format(Format, GetValue(item)));
+            return new Cell<TItem>(GetValue(item), Format);
         }
 
-        internal void UpdateWidth(IEnumerable<TextTableRow<TItem>> rows)
+        internal void UpdateWidth(IEnumerable<Row<TItem>> rows)
         {
             Width = Math.Max(HeaderWidth, rows.Select(x => x.Cells[this].Width).Max());
         }
