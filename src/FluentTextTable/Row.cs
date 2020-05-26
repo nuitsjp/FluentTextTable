@@ -16,12 +16,12 @@ namespace FluentTextTable
             _height = height;
         }
 
-        internal static Row Create<TItem>(TItem item, IEnumerable<Column<TItem>> columns)
+        internal static Row Create<TItem>(TItem item, IReadOnlyDictionary<Column, MemberAccessor<TItem>> memberAccessors)
         {
             var cells = new Dictionary<IColumn, Cell>();
-            foreach (var column in columns)
+            foreach (var keyValue in memberAccessors)
             {
-                cells[column] = column.ToCell(item);
+                cells[keyValue.Key] = new Cell(keyValue.Value.GetValue(item), keyValue.Key.Format);
             }
 
             var height = cells.Values.Max(x => x.Height);

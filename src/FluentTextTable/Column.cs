@@ -7,7 +7,7 @@ using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
-    public abstract class Column : IColumn
+    public class Column : IColumn
     {
         internal string Header { get; private set; }
         internal int HeaderWidth { get; private set; }
@@ -15,6 +15,11 @@ namespace FluentTextTable
         internal VerticalAlignment VerticalAlignment { get; private set; } = VerticalAlignment.Top;
         internal string Format { get; private set; }
         internal int Width { get; private set; }
+
+        internal Column(string header)
+        {
+            HeaderIs(header);
+        }
 
         public IColumn HeaderIs(string header)
         {
@@ -43,84 +48,6 @@ namespace FluentTextTable
         internal void UpdateWidth(IEnumerable<Row> rows)
         {
             Width = Math.Max(HeaderWidth, rows.Select(x => x.GetCell(this).Width).Max());
-        }
-    }
-
-    public class Column<TItem> : Column
-    {
-        
-        internal Column(Expression<Func<TItem, object>> getValue)
-        {
-            GetValue = getValue.Compile();
-            HeaderIs(GetMemberInfo(getValue).Name);
-        }
-
-        private Func<TItem, object> GetValue { get; }
-
-
-        internal Cell ToCell(TItem item)
-        {
-            return new Cell(GetValue(item), Format);
-        }
-
-        private static MemberInfo GetMemberInfo(LambdaExpression lambda)
-        {
-            Expression expr = lambda;
-            while (true)
-            {
-                switch (expr.NodeType)
-                {
-                    case ExpressionType.Lambda:
-                        expr = ((LambdaExpression)expr).Body;
-                        break;
-
-                    case ExpressionType.Convert:
-                        expr = ((UnaryExpression)expr).Operand;
-                        break;
-
-                    case ExpressionType.MemberAccess:
-                        var memberExpression = (MemberExpression)expr;
-                        var member = memberExpression.Member;
-                        Type paramType;
-
-                        while (memberExpression != null)
-                        {
-                            paramType = memberExpression.Type;
-
-                            // Find the member on the base type of the member type
-                            // E.g. EmailAddress.Value
-                            var baseMember = paramType.GetMembers().FirstOrDefault(m => m.Name == member.Name);
-                            if (baseMember != null)
-                            {
-                                // Don't use the base type if it's just the nullable type of the derived type
-                                // or when the same member exists on a different type
-                                // E.g. Nullable<decimal> -> decimal
-                                // or:  SomeType { string Length; } -> string.Length
-                                if (baseMember is PropertyInfo baseProperty && member is PropertyInfo property)
-                                {
-                                    if (baseProperty.DeclaringType == property.DeclaringType &&
-                                        baseProperty.PropertyType != Nullable.GetUnderlyingType(property.PropertyType))
-                                    {
-                                        return baseMember;
-                                    }
-                                }
-                                else
-                                {
-                                    return baseMember;
-                                }
-                            }
-
-                            memberExpression = memberExpression.Expression as MemberExpression;
-                        }
-
-                        // Make sure we get the property from the derived type.
-                        paramType = lambda.Parameters[0].Type;
-                        return paramType.GetMember(member.Name)[0];
-
-                    default:
-                        return null;
-                }
-            }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace FluentTextTable
         {
             var config = new TextTableConfig<TItem>();
             configure(config);
-            return new TextTable<TItem>(config.Columns);
+            return new TextTable<TItem>(config);
         }
 
     }

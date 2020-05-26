@@ -9,12 +9,15 @@ namespace FluentTextTable
 {
     public class TextTable<TItem> : ITextTable<TItem>
     {
-        internal TextTable(IEnumerable<Column<TItem>> columns)
+        private readonly List<Column> _columns;
+        private readonly Dictionary<Column, MemberAccessor<TItem>> _memberAccessors;
+
+        internal TextTable(TextTableConfig<TItem> config)
         {
-            Columns = columns.ToList();
+            _columns = config.Columns;
+            _memberAccessors = config.MemberAccessors;
         }
 
-        private List<Column<TItem>> Columns { get; }
         public IEnumerable<TItem> DataSource { get; set; }
         public string ToPlanText()
         {
@@ -25,16 +28,16 @@ namespace FluentTextTable
 
         public void WritePlanText(TextWriter writer)
         {
-            var rows = DataSource.Select(x => Row.Create(x, Columns)).ToList();
+            var rows = DataSource.Select(x => Row.Create(x, _memberAccessors)).ToList();
 
-            foreach (var column in Columns)
+            foreach (var column in _columns)
             {
                 column.UpdateWidth(rows);
             }
 
 
             var rowSeparatorBuilder = new StringBuilder();
-            foreach (var column in Columns)
+            foreach (var column in _columns)
             {
                 rowSeparatorBuilder.Append('+');
                 rowSeparatorBuilder.Append(new string('-', column.Width));
@@ -48,7 +51,7 @@ namespace FluentTextTable
 
             // Write header.
             writer.Write("|");
-            foreach (var column in Columns)
+            foreach (var column in _columns)
             {
                 writer.Write(" ");
                 writer.Write(column.Header);
@@ -64,7 +67,7 @@ namespace FluentTextTable
             // Write table.
             foreach (var row in rows)
             {
-                row.Write(writer, Columns.Select(x => (Column)x).ToList());
+                row.Write(writer, _columns.Select(x => (Column)x).ToList());
 
                 writer.WriteLine(rowSeparator);
             }
