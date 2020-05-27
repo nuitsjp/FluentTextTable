@@ -53,7 +53,7 @@ namespace FluentTextTable.Test
                     .AlignVerticalTo(VerticalAlignment.Center);
                 config.AddColumn(x => x.Birthday)
                     .AlignVerticalTo(VerticalAlignment.Center)
-                    .FormatTo("yyyy/MM/dd")
+                    .FormatTo("{0:yyyy/MM/dd}")
                     .AlignVerticalTo(VerticalAlignment.Bottom);
                 config.AddColumn(x => x.Parents)
                     .AlignVerticalTo(VerticalAlignment.Center)
@@ -79,16 +79,50 @@ Philanthropist"
 
             Assert.Equal(
                 @"
-+----+-------------+------------+----------------------+--------------------+
-| ID | Name        | Birthday   | Parents              | Occupations        |
-+----+-------------+------------+----------------------+--------------------+
-|  1 |             |            |                      | Software developer |
-|    | Bill Gates  |            | - Bill Gates Sr.     | Investor           |
-|    |             |            | - Mary Maxwell Gates | Entrepreneur       |
-|    |             | 1955/10/28 |                      | Philanthropist     |
-+----+-------------+------------+----------------------+--------------------+
++----+------------+------------+----------------------+--------------------+
+| ID | Name       | Birthday   | Parents              | Occupations        |
++----+------------+------------+----------------------+--------------------+
+|  1 |            |            |                      | Software developer |
+|    | Bill Gates |            | - Bill Gates Sr.     | Investor           |
+|    |            |            | - Mary Maxwell Gates | Entrepreneur       |
+|    |            | 1955/10/28 |                      | Philanthropist     |
++----+------------+------------+----------------------+--------------------+
 ", Environment.NewLine + text);
         }
+
+        [Fact]
+        public void ToPlanTextWhenWideCharactersAreMixed()
+        {
+
+            var table = TextTableBuilder.Build<User>(config =>
+            {
+                config.AddColumn(x => x.Id)
+                    .HeaderIs("ID")
+                    .AlignHorizontalTo(HorizontalAlignment.Right);
+                config.AddColumn(x => x.Name);
+                config.AddColumn(x => x.Birthday)
+                    .FormatTo("{0:yyyy/MM/dd}");
+            });
+            table.DataSource = new[]
+            {
+                new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+            };
+
+            var text = table.ToPlanText();
+
+            Assert.Equal(
+                @"
++----+-------------+------------+
+| ID | Name        | Birthday   |
++----+-------------+------------+
+|  1 | ビル ゲイツ | 1955/10/28 |
++----+-------------+------------+
+|  2 | Steven Jobs | 1955/02/24 |
++----+-------------+------------+
+", Environment.NewLine + text);
+        }
+
 
         class User
         {
