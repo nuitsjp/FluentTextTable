@@ -8,12 +8,12 @@ namespace FluentTextTable
     internal class Row
     {
         private readonly Dictionary<IColumn, Cell> _cells;
-        private readonly int _height;
+        internal int Height { get; }
 
         public Row(Dictionary<IColumn, Cell> cells, int height)
         {
             _cells = cells;
-            _height = height;
+            Height = height;
         }
 
         internal static Row Create<TItem>(TItem item, IReadOnlyDictionary<Column, MemberAccessor<TItem>> memberAccessors)
@@ -34,12 +34,12 @@ namespace FluentTextTable
         internal void Write(TextWriter writer, IList<Column> columns)
         {
             // Write line in row.
-            for (var lineNumber = 0; lineNumber < _height; lineNumber++)
+            for (var lineNumber = 0; lineNumber < Height; lineNumber++)
             {
                 writer.Write("|");
                 foreach (var column in columns)
                 {
-                    _cells[column].Write(writer, column, lineNumber);
+                    _cells[column].Write(writer, this, column, lineNumber);
                 }
                 writer.WriteLine();
             }

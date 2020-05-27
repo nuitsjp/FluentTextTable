@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using EastAsianWidthDotNet;
@@ -7,75 +8,93 @@ namespace FluentTextTable
 {
     internal class Cell
     {
-        private const int Margin = 2;
+
+        private readonly CellLine[] _cellLines;
         public Cell(object value, string format)
         {
             var values =
                 value is string stringValue
-                    ? stringValue.Split(Environment.NewLine.ToCharArray())
+                    ? Split(stringValue)
                     : new [] {value};
 
-            Values =
-                format is null
-                    ? values.Select(x => x?.ToString() ?? string.Empty).ToArray()
-                    : values.Select(x => string.Format(format, x)).ToArray();
-            Width = Values.Max(x =>x.GetWidth()) + Margin;
+            _cellLines = values.Select(x => new CellLine(x, format)).ToArray();
+
+            Width = _cellLines.Max(x =>x.Width);
         }
 
-        private string[] Values { get; }
-
         internal int Width { get; }
-        internal int Height => Values.Length;
+        internal int Height => _cellLines.Length;
+
+        private IEnumerable<object> Split(string value)
+        {
+            using (var reader = new StringReader(value))
+            {
+                for (var line = reader.ReadLine(); line != null; line = reader.ReadLine())
+                {
+                    yield return line;
+                }
+            }
+        }
 
         internal void Write(
             TextWriter writer,
+            Row row,
             Column column,
             int lineNumber)
         {
-            writer.Write(" ");
-
-            int leftPadding;
-            int rightPadding;
-            switch (column.HorizontalAlignment)
+            CellLine GetTopCellLine()
             {
-                case HorizontalAlignment.Left:
-                    leftPadding = 0;
-                    rightPadding = column.Width - Width;
-                    break;
-                case HorizontalAlignment.Center:
-                    leftPadding = 0;
-                    rightPadding = column.Width - Width;
-                    break;
-                case HorizontalAlignment.Right:
-                    leftPadding = column.Width - Width;
-                    rightPadding = 0;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                return lineNumber < Height
+                    ? _cellLines[lineNumber]
+                    : CellLine.Empty;
             }
 
-            string value;
+            CellLine GetCenterCellLine()
+            {
+                var indent = (row.Height - Height) / 2;
+                var localLineNumber = lineNumber - indent;
+                if (localLineNumber < 0)
+                {
+                    return CellLine.Empty;
+                }
+
+                if (Height <= localLineNumber)
+                {
+                    return CellLine.Empty;
+                }
+
+                return _cellLines[localLineNumber];
+            }
+
+            CellLine GetBottomCellLine()
+            {
+                var indent = row.Height - Height;
+                var localLineNumber = lineNumber - indent;
+                if (localLineNumber < 0)
+                {
+                    return CellLine.Empty;
+                }
+
+                return _cellLines[localLineNumber];
+            }
+
+            CellLine value;
             switch (column.VerticalAlignment)
             {
                 case VerticalAlignment.Top:
-                    value = lineNumber < Height
-                        ? Values[lineNumber]
-                        : string.Empty;
+                    value = GetTopCellLine();
                     break;
                 case VerticalAlignment.Center:
+                    value = GetCenterCellLine();
                     break;
                 case VerticalAlignment.Bottom:
+                    value = GetBottomCellLine();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            writer.Write(new string(' ', leftPadding));
-            writer.Write(Values[lineNumber]);
-            writer.Write(new string(' ', rightPadding));
-
-            writer.Write(" |");
-
+            value.Write(writer, row, column);
         }
     }
 }
