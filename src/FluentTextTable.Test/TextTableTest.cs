@@ -97,7 +97,8 @@ namespace FluentTextTable.Test
                 config.AddColumn(x => x.Id)
                     .HeaderIs("ID")
                     .AlignHorizontalTo(HorizontalAlignment.Right);
-                config.AddColumn(x => x.Name);
+                config.AddColumn(x => x.Name)
+                    .HeaderIs("氏名");
                 config.AddColumn(x => x.Birthday)
                     .FormatTo("{0:yyyy/MM/dd}");
             });
@@ -112,7 +113,7 @@ namespace FluentTextTable.Test
             Assert.Equal(
                 @"
 +----+-------------+------------+
-| ID | Name        | Birthday   |
+| ID | 氏名        | Birthday   |
 +----+-------------+------------+
 |  1 | ビル ゲイツ | 1955/10/28 |
 +----+-------------+------------+
