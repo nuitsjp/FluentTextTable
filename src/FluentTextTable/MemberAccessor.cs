@@ -16,6 +16,21 @@ namespace FluentTextTable
             Name = GetMemberInfo(getValue).Name;
         }
 
+        internal MemberAccessor(PropertyInfo propertyInfo)
+        {
+            var target = Expression.Parameter(typeof(TItem), "target");
+
+            var lambda = Expression.Lambda<Func<TItem, object>>(
+                Expression.Convert(
+                    Expression.Property(
+                        target, 
+                        propertyInfo)
+                    , typeof(object))
+                , target);
+            _getValue = lambda.Compile();
+            Name = propertyInfo.Name;
+        }
+
         internal object GetValue(TItem item) => _getValue(item);
 
         private static MemberInfo GetMemberInfo(LambdaExpression lambda)

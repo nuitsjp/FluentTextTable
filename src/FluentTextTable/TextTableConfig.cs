@@ -20,5 +20,15 @@ namespace FluentTextTable
 
             return column;
         }
+
+        public IColumn AddColumn(PropertyInfo propertyInfo)
+        {
+            var memberAccessor = new MemberAccessor<TItem>(propertyInfo);
+            var column = new Column(memberAccessor.Name);
+            Columns.Add(column);
+            MemberAccessors[column] = memberAccessor;
+
+            return column;
+        }
     }
 }

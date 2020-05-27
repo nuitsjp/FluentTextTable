@@ -17,7 +17,7 @@ namespace FluentTextTable
         public CellLine(object value, string format)
         {
             _value = format is null
-                ? value.ToString()
+                ? value?.ToString() ?? string.Empty
                 : string.Format(format, value);
             Width = _value.GetWidth() + Margin;
         }

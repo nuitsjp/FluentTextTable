@@ -42,6 +42,32 @@ namespace FluentTextTable.Test
         }
 
         [Fact]
+        public void ToPlanTextWhenAutoFormat()
+        {
+
+            var table = TextTableBuilder.Build<User>();
+            table.DataSource = new[]
+            {
+                new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+            };
+
+            var text = table.ToPlanText();
+
+            Assert.Equal(
+                @"
++----+-------------+---------+-------------+
+| Id | Name        | Parents | Occupations |
++----+-------------+---------+-------------+
+| 1  | ビル ゲイツ |         |             |
++----+-------------+---------+-------------+
+| 2  | Steven Jobs |         |             |
++----+-------------+---------+-------------+
+", Environment.NewLine + text);
+        }
+
+
+        [Fact]
         public void ToPlanTextWhenMultipleLines()
         {
 
@@ -89,7 +115,7 @@ namespace FluentTextTable.Test
 ", Environment.NewLine + text);
         }
 
-        class User
+        public class User
         {
             public int Id { get; set; }
             public string Name { get; set; }
