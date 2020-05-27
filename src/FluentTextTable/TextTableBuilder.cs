@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace FluentTextTable
@@ -8,10 +9,12 @@ namespace FluentTextTable
         public static ITextTable<TItem> Build<TItem>()
         {
             var config = new TextTableConfig<TItem>();
-            var propertyInfos = typeof(TItem).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (var propertyInfo in propertyInfos)
+            var memberInfos = 
+                typeof(TItem).GetMembers(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(x => x.MemberType == MemberTypes.Field || x.MemberType == MemberTypes.Property);
+            foreach (var memberInfo in memberInfos)
             {
-                config.AddColumn(propertyInfo);
+                config.AddColumn(memberInfo);
             }
             return new TextTable<TItem>(config);
         }

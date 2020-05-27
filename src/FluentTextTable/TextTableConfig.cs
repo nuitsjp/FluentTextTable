@@ -21,9 +21,9 @@ namespace FluentTextTable
             return column;
         }
 
-        public IColumn AddColumn(PropertyInfo propertyInfo)
+        public IColumn AddColumn(MemberInfo memberInfo)
         {
-            var memberAccessor = new MemberAccessor<TItem>(propertyInfo);
+            var memberAccessor = new MemberAccessor<TItem>(memberInfo);
             var column = new Column(memberAccessor.Name);
             Columns.Add(column);
             MemberAccessors[column] = memberAccessor;
