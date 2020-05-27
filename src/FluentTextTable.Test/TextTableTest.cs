@@ -58,7 +58,8 @@ namespace FluentTextTable.Test
                 config.AddColumn(x => x.Parents)
                     .AlignVerticalTo(VerticalAlignment.Center)
                     .FormatTo("- {0}");
-                config.AddColumn(x => x.Occupations);
+                config.AddColumn(x => x.Occupations)
+                    .AlignHorizontalTo(HorizontalAlignment.Center);
             });
             table.DataSource = new[]
             {
@@ -68,10 +69,7 @@ namespace FluentTextTable.Test
                     Name = "Bill Gates", 
                     Birthday = DateTime.Parse("1955/10/28"),
                     Parents = $"Bill Gates Sr.{Environment.NewLine}Mary Maxwell Gates",
-                    Occupations = @"Software developer
-Investor
-Entrepreneur
-Philanthropist"
+                    Occupations = new []{"Software developer", "Investor", "Entrepreneur", "Philanthropist"}
                 },
             };
 
@@ -83,9 +81,9 @@ Philanthropist"
 | ID | Name       | Birthday   | Parents              | Occupations        |
 +----+------------+------------+----------------------+--------------------+
 |  1 |            |            |                      | Software developer |
-|    | Bill Gates |            | - Bill Gates Sr.     | Investor           |
-|    |            |            | - Mary Maxwell Gates | Entrepreneur       |
-|    |            | 1955/10/28 |                      | Philanthropist     |
+|    | Bill Gates |            | - Bill Gates Sr.     |      Investor      |
+|    |            |            | - Mary Maxwell Gates |    Entrepreneur    |
+|    |            | 1955/10/28 |                      |   Philanthropist   |
 +----+------------+------------+----------------------+--------------------+
 ", Environment.NewLine + text);
         }
@@ -130,7 +128,7 @@ Philanthropist"
             public string Name { get; set; }
             public DateTime Birthday;
             public string Parents { get; set; }
-            public string Occupations { get; set; }
+            public string[] Occupations { get; set; }
 
         }
     }

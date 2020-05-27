@@ -12,10 +12,19 @@ namespace FluentTextTable
         private readonly CellLine[] _cellLines;
         public Cell(object value, string format)
         {
-            var values =
-                value is string stringValue
-                    ? Split(stringValue)
-                    : new [] {value};
+            IEnumerable<object> values;
+            if (value is string stringValue)
+            {
+                values = Split(stringValue);
+            }
+            else if(value is IEnumerable<object> enumerable)
+            {
+                values = enumerable;
+            }
+            else
+            {
+                values = new[] {value};
+            }
 
             _cellLines = values.Select(x => new CellLine(x, format)).ToArray();
 
@@ -42,6 +51,24 @@ namespace FluentTextTable
             Column column,
             int lineNumber)
         {
+            CellLine value;
+            switch (column.VerticalAlignment)
+            {
+                case VerticalAlignment.Top:
+                    value = GetTopCellLine();
+                    break;
+                case VerticalAlignment.Center:
+                    value = GetCenterCellLine();
+                    break;
+                case VerticalAlignment.Bottom:
+                    value = GetBottomCellLine();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            value.Write(writer, row, column);
+
             CellLine GetTopCellLine()
             {
                 return lineNumber < Height
@@ -77,24 +104,6 @@ namespace FluentTextTable
 
                 return _cellLines[localLineNumber];
             }
-
-            CellLine value;
-            switch (column.VerticalAlignment)
-            {
-                case VerticalAlignment.Top:
-                    value = GetTopCellLine();
-                    break;
-                case VerticalAlignment.Center:
-                    value = GetCenterCellLine();
-                    break;
-                case VerticalAlignment.Bottom:
-                    value = GetBottomCellLine();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            value.Write(writer, row, column);
         }
     }
 }

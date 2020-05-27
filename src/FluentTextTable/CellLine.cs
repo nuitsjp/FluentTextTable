@@ -7,6 +7,7 @@ namespace FluentTextTable
     internal class CellLine
     {
         internal static readonly CellLine Empty = new CellLine(string.Empty, null);
+
         private const int Margin = 2;
 
         private readonly string _value;
@@ -37,8 +38,8 @@ namespace FluentTextTable
                     rightPadding = column.Width - Width;
                     break;
                 case HorizontalAlignment.Center:
-                    leftPadding = 0;
-                    rightPadding = column.Width - Width;
+                    leftPadding = (column.Width - Width) / 2;
+                    rightPadding = column.Width - Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
                     leftPadding = column.Width - Width;
