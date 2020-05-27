@@ -124,5 +124,56 @@ namespace FluentTextTable.Test
             public string[] Occupations { get; set; }
 
         }
+
+        [Fact]
+        public void ToPlanTextWithAttribute()
+        {
+
+            var table = TextTableBuilder.Build<UserWithAttribute>();
+            table.DataSource = new[]
+            {
+                new UserWithAttribute
+                {
+                    Id = 1,
+                    Name = "Bill Gates",
+                    Birthday = DateTime.Parse("1955/10/28"),
+                    Parents = $"Bill Gates Sr.{Environment.NewLine}Mary Maxwell Gates",
+                    Occupations = new []{"Software developer", "Investor", "Entrepreneur", "Philanthropist"}
+                },
+            };
+
+            var text = table.ToPlanText();
+
+            Assert.Equal(
+                @"
++----+------------+------------+----------------------+--------------------+
+| ID | Name       | Birthday   | Parents              | Occupations        |
++----+------------+------------+----------------------+--------------------+
+|  1 |            |            |                      | Software developer |
+|    | Bill Gates |            | - Bill Gates Sr.     |      Investor      |
+|    |            |            | - Mary Maxwell Gates |    Entrepreneur    |
+|    |            | 1955/10/28 |                      |   Philanthropist   |
++----+------------+------------+----------------------+--------------------+
+", Environment.NewLine + text);
+        }
+
+        public class UserWithAttribute
+        {
+            [ColumnFormat(Index = 1, Header = "ID", HorizontalAlignment = HorizontalAlignment.Right)]
+            public int Id { get; set; }
+
+            [ColumnFormat(Index = 2, VerticalAlignment = VerticalAlignment.Center)]
+            public string Name { get; set; }
+
+            [ColumnFormat(Index = 3, VerticalAlignment = VerticalAlignment.Bottom, Format = "{0:yyyy/MM/dd}")]
+            public DateTime Birthday;
+
+            [ColumnFormat(Index = 4, VerticalAlignment = VerticalAlignment.Center, Format = "- {0}")]
+            public string Parents { get; set; }
+
+            [ColumnFormat(Index = 5, HorizontalAlignment = HorizontalAlignment.Center)]
+            public string[] Occupations { get; set; }
+
+        }
     }
 }
