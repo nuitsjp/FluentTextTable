@@ -2,7 +2,7 @@
 
 namespace FluentTextTable
 {
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public sealed class ColumnFormatAttribute : Attribute
     {
         public int Index { get; set; }

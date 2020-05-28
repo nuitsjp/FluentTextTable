@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
 using Xunit;
 
 namespace FluentTextTable.Test
@@ -115,7 +113,7 @@ namespace FluentTextTable.Test
 ", Environment.NewLine + text);
         }
 
-        public class User
+        private class User
         {
             public int Id { get; set; }
             public string Name { get; set; }
@@ -139,7 +137,7 @@ namespace FluentTextTable.Test
                     Birthday = DateTime.Parse("1955/10/28"),
                     Parents = $"Bill Gates Sr.{Environment.NewLine}Mary Maxwell Gates",
                     Occupations = new []{"Software developer", "Investor", "Entrepreneur", "Philanthropist"}
-                },
+                }
             };
 
             var text = table.ToPlanText();
@@ -157,7 +155,7 @@ namespace FluentTextTable.Test
 ", Environment.NewLine + text);
         }
 
-        public class UserWithAttribute
+        private class UserWithAttribute
         {
             [ColumnFormat(Index = 1, Header = "ID", HorizontalAlignment = HorizontalAlignment.Right)]
             public int Id { get; set; }

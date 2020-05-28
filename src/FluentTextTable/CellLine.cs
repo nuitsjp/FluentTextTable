@@ -25,7 +25,6 @@ namespace FluentTextTable
 
         internal void WritePlanText(
             TextWriter writer,
-            Row row,
             Column column)
         {
             writer.Write(" ");
@@ -59,7 +58,6 @@ namespace FluentTextTable
         
         internal void WriteMarkdown(
             TextWriter writer,
-            Row row,
             Column column)
         {
             int leftPadding;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
@@ -67,7 +66,7 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            value.WritePlanText(writer, row, column);
+            value.WritePlanText(writer, column);
 
             CellLine GetTopCellLine()
             {
@@ -108,18 +107,20 @@ namespace FluentTextTable
         
         internal void WriteMarkdown(
             TextWriter writer,
-            Row row,
             Column column)
         {
             writer.Write(' ');
             if (_cellLines.Length == 1)
             {
+                // In the case of 1line, padding should match the width of the column.
                 _cellLines
                     .Single()
-                    .WriteMarkdown(writer, row, column);
+                    .WriteMarkdown(writer, column);
             }
             else
             {
+                // If you're multi-line in Markdown, you can't match the widths, so it doesn't padding.
+                // Simply combine them with <br> to describe them.
                 writer.Write(string.Join("<br>", _cellLines.Select(x => x.Value)));
             }
             writer.Write(" |");

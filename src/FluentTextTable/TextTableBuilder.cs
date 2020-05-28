@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace FluentTextTable
 {
-    public class TextTableBuilder
+    public static class TextTableBuilder
     {
         public static ITextTable<TItem> Build<TItem>()
         {

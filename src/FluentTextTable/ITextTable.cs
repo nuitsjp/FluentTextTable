@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace FluentTextTable
 {
-    public interface ITextTable<TItem>
+    public interface ITextTable<in TItem>
     {
-        IEnumerable<TItem> DataSource { get; set; }
+        IEnumerable<TItem> DataSource { set; }
 
         string ToPlanText();
+        void WritePlanText(TextWriter writer);
+
         string ToMarkdown();
+        void WriteMarkdown(TextWriter writer);
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
 using Xunit;
 
 namespace FluentTextTable.Test
@@ -104,7 +102,7 @@ namespace FluentTextTable.Test
 ", Environment.NewLine + text);
         }
 
-        public class User
+        private class User
         {
             public int Id { get; set; }
             public string Name { get; set; }
@@ -141,7 +139,7 @@ namespace FluentTextTable.Test
 ", Environment.NewLine + text);
         }
 
-        public class UserWithAttribute
+        private class UserWithAttribute
         {
             [ColumnFormat(Index = 1, Header = "ID", HorizontalAlignment = HorizontalAlignment.Right)]
             public int Id { get; set; }

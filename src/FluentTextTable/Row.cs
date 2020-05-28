@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace FluentTextTable
 {
@@ -10,7 +9,7 @@ namespace FluentTextTable
         private readonly Dictionary<IColumn, Cell> _cells;
         internal int Height { get; }
 
-        public Row(Dictionary<IColumn, Cell> cells, int height)
+        private Row(Dictionary<IColumn, Cell> cells, int height)
         {
             _cells = cells;
             Height = height;
@@ -50,7 +49,7 @@ namespace FluentTextTable
             writer.Write("|");
             foreach (var column in columns)
             {
-                _cells[column].WriteMarkdown(writer, this, column);
+                _cells[column].WriteMarkdown(writer, column);
             }
             writer.WriteLine();
         }
