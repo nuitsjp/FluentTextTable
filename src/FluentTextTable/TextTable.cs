@@ -19,6 +19,8 @@ namespace FluentTextTable
         }
 
         public IEnumerable<TItem> DataSource { get; set; }
+
+
         public string ToPlanText()
         {
             var writer = new StringWriter();
@@ -67,7 +69,7 @@ namespace FluentTextTable
             // Write table.
             foreach (var row in rows)
             {
-                row.Write(writer, _columns.Select(x => (Column)x).ToList());
+                row.WritePlanText(writer, _columns);
 
                 writer.WriteLine(rowSeparator);
             }
@@ -75,7 +77,65 @@ namespace FluentTextTable
 
         public string ToMarkdown()
         {
-            throw new NotImplementedException();
+            var writer = new StringWriter();
+            WriteMarkdown(writer);
+            return writer.ToString();
+        }
+
+        public void WriteMarkdown(TextWriter writer)
+        {
+            var rows = DataSource.Select(x => Row.Create(x, _memberAccessors)).ToList();
+
+            foreach (var column in _columns)
+            {
+                column.UpdateWidth(rows);
+            }
+
+
+            // Write header and separator.
+            var headerSeparator = new StringBuilder();
+            writer.Write("|");
+            headerSeparator.Append("|");
+            foreach (var column in _columns)
+            {
+                writer.Write(" ");
+
+                writer.Write(column.Header);
+                writer.Write(new string(' ', column.Width - column.HeaderWidth));
+
+                switch (column.HorizontalAlignment)
+                {
+                    case HorizontalAlignment.Default:
+                        headerSeparator.Append(new string('-', column.Width));
+                        break;
+                    case HorizontalAlignment.Left:
+                        headerSeparator.Append(':');
+                        headerSeparator.Append(new string('-', column.Width - 1));
+                        break;
+                    case HorizontalAlignment.Center:
+                        headerSeparator.Append(':');
+                        headerSeparator.Append(new string('-', column.Width - 2));
+                        headerSeparator.Append(':');
+                        break;
+                    case HorizontalAlignment.Right:
+                        headerSeparator.Append(new string('-', column.Width - 1));
+                        headerSeparator.Append(':');
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                writer.Write(" |");
+                headerSeparator.Append("|");
+            }
+            writer.WriteLine();
+            writer.WriteLine(headerSeparator.ToString());
+
+            // Write table.
+            foreach (var row in rows)
+            {
+                row.WriteMarkdown(writer, _columns);
+            }
         }
     }
 }

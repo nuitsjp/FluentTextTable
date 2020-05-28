@@ -12,6 +12,7 @@ namespace FluentTextTable
 
         private readonly string _value;
 
+        internal string Value => _value;
         internal int Width { get; }
 
         public CellLine(object value, string format)
@@ -22,7 +23,7 @@ namespace FluentTextTable
             Width = _value.GetWidth() + Margin;
         }
 
-        internal void Write(
+        internal void WritePlanText(
             TextWriter writer,
             Row row,
             Column column)
@@ -33,6 +34,7 @@ namespace FluentTextTable
             int rightPadding;
             switch (column.HorizontalAlignment)
             {
+                case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
                     leftPadding = 0;
                     rightPadding = column.Width - Width;
@@ -53,6 +55,37 @@ namespace FluentTextTable
             writer.Write(_value);
             writer.Write(new string(' ', rightPadding));
             writer.Write(" |");
+        }
+        
+        internal void WriteMarkdown(
+            TextWriter writer,
+            Row row,
+            Column column)
+        {
+            int leftPadding;
+            int rightPadding;
+            switch (column.HorizontalAlignment)
+            {
+                case HorizontalAlignment.Default:
+                case HorizontalAlignment.Left:
+                    leftPadding = 0;
+                    rightPadding = column.Width - Width;
+                    break;
+                case HorizontalAlignment.Center:
+                    leftPadding = (column.Width - Width) / 2;
+                    rightPadding = column.Width - Width - leftPadding;
+                    break;
+                case HorizontalAlignment.Right:
+                    leftPadding = column.Width - Width;
+                    rightPadding = 0;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            writer.Write(new string(' ', leftPadding));
+            writer.Write(_value);
+            writer.Write(new string(' ', rightPadding));
         }
     }
 }

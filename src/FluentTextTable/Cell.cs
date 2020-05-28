@@ -45,7 +45,7 @@ namespace FluentTextTable
             }
         }
 
-        internal void Write(
+        internal void WritePlanText(
             TextWriter writer,
             Row row,
             Column column,
@@ -67,7 +67,7 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            value.Write(writer, row, column);
+            value.WritePlanText(writer, row, column);
 
             CellLine GetTopCellLine()
             {
@@ -104,6 +104,25 @@ namespace FluentTextTable
 
                 return _cellLines[localLineNumber];
             }
+        }
+        
+        internal void WriteMarkdown(
+            TextWriter writer,
+            Row row,
+            Column column)
+        {
+            writer.Write(' ');
+            if (_cellLines.Length == 1)
+            {
+                _cellLines
+                    .Single()
+                    .WriteMarkdown(writer, row, column);
+            }
+            else
+            {
+                writer.Write(string.Join("<br>", _cellLines.Select(x => x.Value)));
+            }
+            writer.Write(" |");
         }
     }
 }

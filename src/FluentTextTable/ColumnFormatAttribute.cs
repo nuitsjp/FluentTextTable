@@ -7,7 +7,7 @@ namespace FluentTextTable
     {
         public int Index { get; set; }
         public string Header { get; set; }
-        public HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Left;
+        public HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Default;
         public VerticalAlignment VerticalAlignment { get; set; } = VerticalAlignment.Top;
         public string Format { get; set; }
     }

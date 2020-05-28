@@ -31,7 +31,7 @@ namespace FluentTextTable
 
         internal Cell GetCell(Column column) => _cells[column];
 
-        internal void Write(TextWriter writer, IList<Column> columns)
+        internal void WritePlanText(TextWriter writer, IList<Column> columns)
         {
             // Write line in row.
             for (var lineNumber = 0; lineNumber < Height; lineNumber++)
@@ -39,11 +39,20 @@ namespace FluentTextTable
                 writer.Write("|");
                 foreach (var column in columns)
                 {
-                    _cells[column].Write(writer, this, column, lineNumber);
+                    _cells[column].WritePlanText(writer, this, column, lineNumber);
                 }
                 writer.WriteLine();
             }
-
+        }
+        
+        internal void WriteMarkdown(TextWriter writer, IList<Column> columns)
+        {
+            writer.Write("|");
+            foreach (var column in columns)
+            {
+                _cells[column].WriteMarkdown(writer, this, column);
+            }
+            writer.WriteLine();
         }
     }
 }

@@ -5,10 +5,10 @@ using Xunit;
 
 namespace FluentTextTable.Test
 {
-    public class TextTableTest
+    public class PlanTextTest
     {
         [Fact]
-        public void ToPlanTextWhenBasic()
+        public void WhenBasic()
         {
 
             var table = TextTableBuilder.Build<User>(config =>
@@ -42,7 +42,7 @@ namespace FluentTextTable.Test
         }
 
         [Fact]
-        public void ToPlanTextWhenAutoFormat()
+        public void WhenAutoFormat()
         {
 
             var table = TextTableBuilder.Build<User>();
@@ -68,7 +68,7 @@ namespace FluentTextTable.Test
 
 
         [Fact]
-        public void ToPlanTextWhenMultipleLines()
+        public void WhenMultipleLines()
         {
 
             var table = TextTableBuilder.Build<User>(config =>
@@ -126,7 +126,7 @@ namespace FluentTextTable.Test
         }
 
         [Fact]
-        public void ToPlanTextWithAttribute()
+        public void WithAttribute()
         {
 
             var table = TextTableBuilder.Build<UserWithAttribute>();

@@ -11,7 +11,7 @@ namespace FluentTextTable
     {
         internal string Header { get; private set; }
         internal int HeaderWidth { get; private set; }
-        internal HorizontalAlignment HorizontalAlignment { get; private set; } = HorizontalAlignment.Left;
+        internal HorizontalAlignment HorizontalAlignment { get; private set; } = HorizontalAlignment.Default;
         internal VerticalAlignment VerticalAlignment { get; private set; } = VerticalAlignment.Top;
         internal string Format { get; private set; }
         internal int Width { get; private set; }
