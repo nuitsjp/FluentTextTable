@@ -10,7 +10,24 @@ namespace FluentTextTable
         public static ITextTable<TItem> Build<TItem>()
         {
             var config = new TextTableConfig<TItem>();
-            var memberInfos = 
+            AddColumns(config);
+            return new TextTable<TItem>(config);
+        }
+
+        public static ITextTable<TItem> Build<TItem>(Action<ITextTableConfig<TItem>> configure)
+        {
+            var config = new TextTableConfig<TItem>();
+            configure(config);
+            if (config.AutoGenerateColumns)
+            {
+                AddColumns(config);
+            }
+            return new TextTable<TItem>(config);
+        }
+        
+        private static void AddColumns<TItem>(TextTableConfig<TItem> config)
+        {
+            var memberInfos =
                 typeof(TItem).GetMembers(BindingFlags.Public | BindingFlags.Instance)
                     .Where(x => x.MemberType == MemberTypes.Field || x.MemberType == MemberTypes.Property);
             var members = new List<(int index, MemberInfo memberInfo, ColumnFormatAttribute columnFormat)>();
@@ -21,6 +38,7 @@ namespace FluentTextTable
                 {
                     members.Add((0, memberInfo, null));
                 }
+
                 if (columnFormat != null)
                 {
                     members.Add((columnFormat.Index, memberInfo, columnFormat));
@@ -39,14 +57,6 @@ namespace FluentTextTable
                         .FormatTo(member.columnFormat.Format);
                 }
             }
-            return new TextTable<TItem>(config);
-        }
-
-        public static ITextTable<TItem> Build<TItem>(Action<ITextTableConfig<TItem>> configure)
-        {
-            var config = new TextTableConfig<TItem>();
-            configure(config);
-            return new TextTable<TItem>(config);
         }
     }
 }
