@@ -15,7 +15,7 @@ namespace FluentTextTable.Test
                 {
                     config.AddColumn(x => x.Id)
                         .HeaderIs("ID")
-                        .AlignHorizontalTo(HorizontalAlignment.Right);
+                        .AlignHorizontalTo(HorizontalAlignment.Center);
                     config.AddColumn(x => x.Name)
                         .HeaderIs("氏名")
                         .AlignHorizontalTo(HorizontalAlignment.Left);
@@ -25,17 +25,17 @@ namespace FluentTextTable.Test
                 table.DataSource = new[]
                 {
                     new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
-                    new User {Id = 2, Name = "Steven Paul Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    new User {Id = 123, Name = "Steven Paul Jobs", Birthday = DateTime.Parse("1955/2/24")},
                 };
 
                 var text = table.ToMarkdown();
 
                 Assert.Equal(
                     @"
-| ID | 氏名             | Birthday   |
-|---:|:-----------------|------------|
-|  1 | ビル ゲイツ      | 1955/10/28 |
-|  2 | Steven Paul Jobs | 1955/02/24 |
+| ID  | 氏名             | Birthday   |
+|:---:|:-----------------|------------|
+|  1  | ビル ゲイツ      | 1955/10/28 |
+| 123 | Steven Paul Jobs | 1955/02/24 |
 ", Environment.NewLine + text);
             }
 
