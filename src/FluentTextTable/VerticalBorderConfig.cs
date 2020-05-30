@@ -12,7 +12,7 @@
 
         internal VerticalBorder Build()
         {
-            return new VerticalBorder(IsEnable);
+            return new VerticalBorder(IsEnable, Line);
         }
     }
 }

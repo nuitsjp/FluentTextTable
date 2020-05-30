@@ -6,15 +6,13 @@ namespace FluentTextTable
 {
     public class HorizontalBorder : BorderBase
     {
-        internal HorizontalBorder(bool isEnable, char lineStyle, char leftStyle, char intersectionStyle, char rightStyle) : base(isEnable)
+        internal HorizontalBorder(bool isEnable, char lineStyle, char leftStyle, char intersectionStyle, char rightStyle) : base(isEnable, lineStyle)
         {
-            _lineStyle = lineStyle;
             _leftStyle = leftStyle;
             _intersectionStyle = intersectionStyle;
             _rightStyle = rightStyle;
         }
 
-        private readonly char _lineStyle;
         private readonly char _leftStyle;
         private readonly char _intersectionStyle;
         private readonly char _rightStyle;

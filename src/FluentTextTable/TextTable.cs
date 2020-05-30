@@ -8,7 +8,6 @@ namespace FluentTextTable
 {
     public class TextTable<TItem> : ITextTable<TItem>
     {
-        private readonly List<Column> _columns;
         private readonly HorizontalBorderConfig _topBorder;
         private readonly HorizontalBorderConfig _headerHorizontalBorder;
         private readonly HorizontalBorderConfig _insideHorizontalBorder;
@@ -17,6 +16,9 @@ namespace FluentTextTable
         private readonly VerticalBorderConfig _insideVerticalBorder;
         private readonly VerticalBorderConfig _rightBorder;
 
+        
+        private readonly List<Column> _columns;
+        private readonly Header _header;
         private readonly Borders _borders;
         private readonly Dictionary<Column, MemberAccessor<TItem>> _memberAccessors;
 
@@ -32,6 +34,7 @@ namespace FluentTextTable
             _rightBorder = (VerticalBorderConfig) config.Borders.Right;
 
             _borders = config.BuildBorders();
+            _header = new Header(_columns);
             _memberAccessors = config.MemberAccessors;
         }
 
@@ -56,26 +59,13 @@ namespace FluentTextTable
 
 
             // Write top border.
-            _borders.WriteTop(writer, _columns);
+            _borders.Top.Write(writer, _columns, _borders);
 
             // Write header.
-            if (_leftBorder.IsEnable) writer.Write(_leftBorder.Line);
+            _header.Write(writer, _borders);
             
-            _columns.First().WriteHeader(writer);
-            writer.Write(" ");
-            
-            foreach (var column in _columns.Skip(1))
-            {
-                if(_insideVerticalBorder.IsEnable) writer.Write(_insideVerticalBorder.Line);
-
-                column.WriteHeader(writer);
-                writer.Write(" ");
-            }
-            if(_rightBorder.IsEnable) writer.Write(_rightBorder.Line);
-            writer.WriteLine();
-
             // Write Header and table separator.
-            _borders.WriteHeaderHorizontal(writer, _columns);
+            _borders.HeaderHorizontal.Write(writer, _columns, _borders);
 
             // Write table.
             if (rows.Any())
@@ -83,13 +73,13 @@ namespace FluentTextTable
                 rows.First().WritePlanText(writer, _columns, _leftBorder, _insideVerticalBorder, _rightBorder);
                 foreach (var row in rows.Skip(1))
                 {
-                    _borders.WriteInsideHorizontal(writer, _columns);
+                    _borders.InsideHorizontal.Write(writer, _columns, _borders);
                     row.WritePlanText(writer, _columns, _leftBorder, _insideVerticalBorder, _rightBorder);
                 }
             }
 
             // Write bottom border.
-            _borders.WriteBottom(writer, _columns);
+            _borders.Bottom.Write(writer, _columns, _borders);
         }
 
         private string TopHorizontalBorder(HorizontalBorderConfig borderConfig, IEnumerable<IColumn> columns)
