@@ -30,5 +30,15 @@
             RightEnd = c;
             return this;
         }
+
+        internal HorizontalBorder Build()
+        {
+            return new HorizontalBorder(
+                IsEnable,
+                Line,
+                LeftEnd,
+                Intersection,
+                RightEnd);
+        }
     }
 }

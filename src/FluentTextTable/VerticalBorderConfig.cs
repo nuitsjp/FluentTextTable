@@ -9,5 +9,10 @@
             Line = c;
             return this;
         }
+
+        internal VerticalBorder Build()
+        {
+            return new VerticalBorder(IsEnable);
+        }
     }
 }

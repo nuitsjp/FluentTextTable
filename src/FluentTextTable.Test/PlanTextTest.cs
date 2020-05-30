@@ -205,7 +205,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.TopBorder.Disable();
+                        config.Borders.Top.Disable();
                     });
                     table.DataSource = new[]
                     {
@@ -233,7 +233,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.TopBorder
+                        config.Borders.Top
                             .LeftEndIs('#')
                             .LineIs('=')
                             .IntersectionIs('$')
@@ -269,7 +269,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.HeaderHorizontalBorder.Disable();
+                        config.Borders.HeaderHorizontal.Disable();
                     });
                     table.DataSource = new[]
                     {
@@ -297,7 +297,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.HeaderHorizontalBorder
+                        config.Borders.HeaderHorizontal
                             .LeftEndIs('#')
                             .LineIs('=')
                             .IntersectionIs('$')
@@ -333,7 +333,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.InsideHorizontalBorder.Disable();
+                        config.Borders.InsideHorizontal.Disable();
                     });
                     table.DataSource = new[]
                     {
@@ -361,7 +361,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.InsideHorizontalBorder
+                        config.Borders.InsideHorizontal
                             .LeftEndIs('#')
                             .LineIs('=')
                             .IntersectionIs('$')
@@ -397,7 +397,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.BottomBorder.Disable();
+                        config.Borders.Bottom.Disable();
                     });
                     table.DataSource = new[]
                     {
@@ -425,7 +425,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.BottomBorder
+                        config.Borders.Bottom
                             .LeftEndIs('#')
                             .LineIs('=')
                             .IntersectionIs('$')
@@ -461,7 +461,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.LeftBorder.Disable();
+                        config.Borders.Left.Disable();
                     });
                     table.DataSource = new[]
                     {
@@ -490,7 +490,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.LeftBorder.LineIs('\\');
+                        config.Borders.Left.LineIs('\\');
                     });
                     table.DataSource = new[]
                     {
@@ -522,7 +522,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.InsideVerticalBorder.Disable();
+                        config.Borders.InsideVertical.Disable();
                     });
                     table.DataSource = new[]
                     {
@@ -551,7 +551,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.InsideVerticalBorder.LineIs('\\');
+                        config.Borders.InsideVertical.LineIs('\\');
                     });
                     table.DataSource = new[]
                     {
@@ -583,7 +583,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.RightBorder.Disable();
+                        config.Borders.Right.Disable();
                     });
                     table.DataSource = new[]
                     {
@@ -612,7 +612,7 @@ namespace FluentTextTable.Test
                     var table = TextTableBuilder.Build<User>(config =>
                     {
                         config.AutoGenerateColumns = true;
-                        config.RightBorder.LineIs('\\');
+                        config.Borders.Right.LineIs('\\');
                     });
                     table.DataSource = new[]
                     {

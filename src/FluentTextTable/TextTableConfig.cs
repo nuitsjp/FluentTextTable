@@ -7,18 +7,13 @@ namespace FluentTextTable
 {
     public class TextTableConfig<TItem> : ITextTableConfig<TItem>
     {
+        private readonly BordersConfig _borders = new BordersConfig();
         internal List<Column> Columns { get; } = new List<Column>();
         internal Dictionary<Column, MemberAccessor<TItem>> MemberAccessors { get; } = new Dictionary<Column, MemberAccessor<TItem>>();
 
         public bool AutoGenerateColumns { get; set; } = false;
-        
-        public IHorizontalBorderConfig TopBorder { get; } = new HorizontalBorderConfig();
-        public IHorizontalBorderConfig HeaderHorizontalBorder { get; } = new HorizontalBorderConfig();
-        public IHorizontalBorderConfig InsideHorizontalBorder { get; } = new HorizontalBorderConfig();
-        public IHorizontalBorderConfig BottomBorder { get; } = new HorizontalBorderConfig();
-        public IVerticalBorderConfig LeftBorder { get; } = new VerticalBorderConfig();
-        public IVerticalBorderConfig InsideVerticalBorder { get; } = new VerticalBorderConfig();
-        public IVerticalBorderConfig RightBorder { get; } = new VerticalBorderConfig();
+
+        public IBordersConfig Borders => _borders;
 
         public IColumn AddColumn(Expression<Func<TItem, object>> getMemberExpression)
         {
@@ -39,5 +34,8 @@ namespace FluentTextTable
 
             return column;
         }
+
+        internal Borders BuildBorders() => _borders.Build();
+
     }
 }

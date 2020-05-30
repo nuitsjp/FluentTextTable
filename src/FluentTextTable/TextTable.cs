@@ -16,18 +16,22 @@ namespace FluentTextTable
         private readonly VerticalBorderConfig _leftBorder;
         private readonly VerticalBorderConfig _insideVerticalBorder;
         private readonly VerticalBorderConfig _rightBorder;
+
+        private readonly Borders _borders;
         private readonly Dictionary<Column, MemberAccessor<TItem>> _memberAccessors;
 
         internal TextTable(TextTableConfig<TItem> config)
         {
             _columns = config.Columns;
-            _topBorder = (HorizontalBorderConfig) config.TopBorder;
-            _headerHorizontalBorder = (HorizontalBorderConfig) config.HeaderHorizontalBorder;
-            _insideHorizontalBorder = (HorizontalBorderConfig) config.InsideHorizontalBorder;
-            _bottomBorder = (HorizontalBorderConfig) config.BottomBorder;
-            _leftBorder = (VerticalBorderConfig) config.LeftBorder;
-            _insideVerticalBorder = (VerticalBorderConfig) config.InsideVerticalBorder;
-            _rightBorder = (VerticalBorderConfig) config.RightBorder;
+            _topBorder = (HorizontalBorderConfig) config.Borders.Top;
+            _headerHorizontalBorder = (HorizontalBorderConfig) config.Borders.HeaderHorizontal;
+            _insideHorizontalBorder = (HorizontalBorderConfig) config.Borders.InsideHorizontal;
+            _bottomBorder = (HorizontalBorderConfig) config.Borders.Bottom;
+            _leftBorder = (VerticalBorderConfig) config.Borders.Left;
+            _insideVerticalBorder = (VerticalBorderConfig) config.Borders.InsideVertical;
+            _rightBorder = (VerticalBorderConfig) config.Borders.Right;
+
+            _borders = config.BuildBorders();
             _memberAccessors = config.MemberAccessors;
         }
 
@@ -51,21 +55,8 @@ namespace FluentTextTable
             }
 
 
-            var rowSeparatorBuilder = new StringBuilder();
-            foreach (var column in _columns)
-            {
-                rowSeparatorBuilder.Append('+');
-                rowSeparatorBuilder.Append(new string('-', column.Width));
-            }
-            rowSeparatorBuilder.Append("+");
-
-            var rowSeparator = rowSeparatorBuilder.ToString();
-
             // Write top border.
-            if (_topBorder.IsEnable)
-            {
-                writer.WriteLine(TopHorizontalBorder(_topBorder, _columns));
-            }
+            _borders.WriteTop(writer, _columns);
 
             // Write header.
             if (_leftBorder.IsEnable) writer.Write(_leftBorder.Line);
@@ -84,36 +75,21 @@ namespace FluentTextTable
             writer.WriteLine();
 
             // Write Header and table separator.
-            if (_headerHorizontalBorder.IsEnable)
-            {
-                writer.WriteLine(TopHorizontalBorder(_headerHorizontalBorder, _columns));
-            }
+            _borders.WriteHeaderHorizontal(writer, _columns);
 
             // Write table.
             if (rows.Any())
             {
                 rows.First().WritePlanText(writer, _columns, _leftBorder, _insideVerticalBorder, _rightBorder);
-                var insideHorizontalBorder = string.Empty;
-                if (_insideHorizontalBorder.IsEnable)
-                {
-                    insideHorizontalBorder = TopHorizontalBorder(_insideHorizontalBorder, _columns);
-                }
-                
                 foreach (var row in rows.Skip(1))
                 {
-                    if (_insideHorizontalBorder.IsEnable)
-                    {
-                        writer.WriteLine(insideHorizontalBorder);
-                    }
+                    _borders.WriteInsideHorizontal(writer, _columns);
                     row.WritePlanText(writer, _columns, _leftBorder, _insideVerticalBorder, _rightBorder);
                 }
             }
 
             // Write bottom border.
-            if (_bottomBorder.IsEnable)
-            {
-                writer.WriteLine(TopHorizontalBorder(_bottomBorder, _columns));
-            }
+            _borders.WriteBottom(writer, _columns);
         }
 
         private string TopHorizontalBorder(HorizontalBorderConfig borderConfig, IEnumerable<IColumn> columns)
