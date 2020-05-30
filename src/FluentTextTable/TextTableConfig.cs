@@ -12,7 +12,13 @@ namespace FluentTextTable
 
         public bool AutoGenerateColumns { get; set; } = false;
         
-        public IBorderConfig TopBorder { get; } = new BorderConfig();
+        public IHorizontalBorderConfig TopBorder { get; } = new HorizontalBorderConfig();
+        public IHorizontalBorderConfig HeaderHorizontalBorder { get; } = new HorizontalBorderConfig();
+        public IHorizontalBorderConfig InsideHorizontalBorder { get; } = new HorizontalBorderConfig();
+        public IHorizontalBorderConfig BottomBorder { get; } = new HorizontalBorderConfig();
+        public IVerticalBorderConfig LeftBorder { get; } = new VerticalBorderConfig();
+        public IVerticalBorderConfig InsideVerticalBorder { get; } = new VerticalBorderConfig();
+        public IVerticalBorderConfig RightBorder { get; } = new VerticalBorderConfig();
 
         public IColumn AddColumn(Expression<Func<TItem, object>> getMemberExpression)
         {

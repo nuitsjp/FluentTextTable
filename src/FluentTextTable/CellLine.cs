@@ -25,7 +25,8 @@ namespace FluentTextTable
 
         internal void WritePlanText(
             TextWriter writer,
-            Column column)
+            Column column,
+            VerticalBorderConfig insideVerticalBorder)
         {
             writer.Write(" ");
 
@@ -53,7 +54,7 @@ namespace FluentTextTable
             writer.Write(new string(' ', leftPadding));
             writer.Write(_value);
             writer.Write(new string(' ', rightPadding));
-            writer.Write(" |");
+            writer.Write(" ");
         }
         
         internal void WriteMarkdown(

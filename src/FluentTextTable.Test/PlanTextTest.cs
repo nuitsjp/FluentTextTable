@@ -204,7 +204,200 @@ namespace FluentTextTable.Test
 
                     var table = TextTableBuilder.Build<User>(config =>
                     {
-                    
+                        config.AutoGenerateColumns = true;
+                        config.TopBorder.Disable();
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
+| Id | Name        | Parents | Occupations | Birthday           |
++----+-------------+---------+-------------+--------------------+
+| 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+| 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+", Environment.NewLine + text);
+                }
+                
+                [Fact]
+                public void WhenChangeDecorations()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.TopBorder
+                            .LeftEndIs('#')
+                            .LineIs('=')
+                            .IntersectionIs('$')
+                            .RightEndIs('%');
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
+#====$=============$=========$=============$====================%
+| Id | Name        | Parents | Occupations | Birthday           |
++----+-------------+---------+-------------+--------------------+
+| 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+| 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+", Environment.NewLine + text);
+                }
+            }
+
+            public class HeaderHorizontal
+            {
+                [Fact]
+                public void WhenDisable()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.HeaderHorizontalBorder.Disable();
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
++----+-------------+---------+-------------+--------------------+
+| Id | Name        | Parents | Occupations | Birthday           |
+| 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+| 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+", Environment.NewLine + text);
+                }
+                
+                [Fact]
+                public void WhenChangeDecorations()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.HeaderHorizontalBorder
+                            .LeftEndIs('#')
+                            .LineIs('=')
+                            .IntersectionIs('$')
+                            .RightEndIs('%');
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
++----+-------------+---------+-------------+--------------------+
+| Id | Name        | Parents | Occupations | Birthday           |
+#====$=============$=========$=============$====================%
+| 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+| 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+", Environment.NewLine + text);
+                }
+            }
+            
+            public class InsideHorizontal
+            {
+                [Fact]
+                public void WhenDisable()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.InsideHorizontalBorder.Disable();
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
++----+-------------+---------+-------------+--------------------+
+| Id | Name        | Parents | Occupations | Birthday           |
++----+-------------+---------+-------------+--------------------+
+| 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
+| 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+", Environment.NewLine + text);
+                }
+                
+                [Fact]
+                public void WhenChangeDecorations()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.InsideHorizontalBorder
+                            .LeftEndIs('#')
+                            .LineIs('=')
+                            .IntersectionIs('$')
+                            .RightEndIs('%');
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
++----+-------------+---------+-------------+--------------------+
+| Id | Name        | Parents | Occupations | Birthday           |
++----+-------------+---------+-------------+--------------------+
+| 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
+#====$=============$=========$=============$====================%
+| 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+", Environment.NewLine + text);
+                }
+            }
+            
+            public class Bottom
+            {
+                [Fact]
+                public void WhenDisable()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.BottomBorder.Disable();
                     });
                     table.DataSource = new[]
                     {
@@ -222,10 +415,226 @@ namespace FluentTextTable.Test
 | 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
 +----+-------------+---------+-------------+--------------------+
 | 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
+", Environment.NewLine + text);
+                }
+                
+                [Fact]
+                public void WhenChangeDecorations()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.BottomBorder
+                            .LeftEndIs('#')
+                            .LineIs('=')
+                            .IntersectionIs('$')
+                            .RightEndIs('%');
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
++----+-------------+---------+-------------+--------------------+
+| Id | Name        | Parents | Occupations | Birthday           |
++----+-------------+---------+-------------+--------------------+
+| 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+| 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
+#====$=============$=========$=============$====================%
+", Environment.NewLine + text);
+                }
+            }
+            
+            public class Left
+            {
+                [Fact]
+                public void WhenDisable()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.LeftBorder.Disable();
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
+----+-------------+---------+-------------+--------------------+
+ Id | Name        | Parents | Occupations | Birthday           |
+----+-------------+---------+-------------+--------------------+
+ 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
+----+-------------+---------+-------------+--------------------+
+ 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
+----+-------------+---------+-------------+--------------------+
+", Environment.NewLine + text);
+                }
+                
+                [Fact]
+                public void WhenChangeDecorations()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.LeftBorder.LineIs('\\');
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
++----+-------------+---------+-------------+--------------------+
+\ Id | Name        | Parents | Occupations | Birthday           |
++----+-------------+---------+-------------+--------------------+
+\ 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+\ 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
 +----+-------------+---------+-------------+--------------------+
 ", Environment.NewLine + text);
                 }
             }
+            
+            public class InsideVertical
+            {
+                [Fact]
+                public void WhenDisable()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.InsideVerticalBorder.Disable();
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
++-----------------------------------------------------------+
+| Id  Name         Parents  Occupations  Birthday           |
++-----------------------------------------------------------+
+| 1   ビル ゲイツ                        1955/10/28 0:00:00 |
++-----------------------------------------------------------+
+| 2   Steven Jobs                        1955/02/24 0:00:00 |
++-----------------------------------------------------------+
+", Environment.NewLine + text);
+                }
+                
+                [Fact]
+                public void WhenChangeDecorations()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.InsideVerticalBorder.LineIs('\\');
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
++----+-------------+---------+-------------+--------------------+
+| Id \ Name        \ Parents \ Occupations \ Birthday           |
++----+-------------+---------+-------------+--------------------+
+| 1  \ ビル ゲイツ \         \             \ 1955/10/28 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+| 2  \ Steven Jobs \         \             \ 1955/02/24 0:00:00 |
++----+-------------+---------+-------------+--------------------+
+", Environment.NewLine + text);
+                }
+            }
+
+            public class Right
+            {
+                [Fact]
+                public void WhenDisable()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.RightBorder.Disable();
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
++----+-------------+---------+-------------+--------------------
+| Id | Name        | Parents | Occupations | Birthday           
++----+-------------+---------+-------------+--------------------
+| 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 
++----+-------------+---------+-------------+--------------------
+| 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 
++----+-------------+---------+-------------+--------------------
+", Environment.NewLine + text);
+                }
+                
+                [Fact]
+                public void WhenChangeDecorations()
+                {
+
+                    var table = TextTableBuilder.Build<User>(config =>
+                    {
+                        config.AutoGenerateColumns = true;
+                        config.RightBorder.LineIs('\\');
+                    });
+                    table.DataSource = new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    };
+
+                    var text = table.ToPlanText();
+
+                    Assert.Equal(
+                        @"
++----+-------------+---------+-------------+--------------------+
+| Id | Name        | Parents | Occupations | Birthday           \
++----+-------------+---------+-------------+--------------------+
+| 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 \
++----+-------------+---------+-------------+--------------------+
+| 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 \
++----+-------------+---------+-------------+--------------------+
+", Environment.NewLine + text);
+                }
+            }
+
         }
         
         public class User

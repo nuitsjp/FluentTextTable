@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml;
 using EastAsianWidthDotNet;
 
 namespace FluentTextTable
@@ -46,6 +48,13 @@ namespace FluentTextTable
         internal void UpdateWidth(IEnumerable<Row> rows)
         {
             Width = Math.Max(HeaderWidth, rows.Select(x => x.GetCell(this).Width).Max());
+        }
+
+        internal void WriteHeader(TextWriter writer)
+        {
+            writer.Write(" ");
+            writer.Write(Header);
+            writer.Write(new string(' ', Width - HeaderWidth));
         }
     }
 }
