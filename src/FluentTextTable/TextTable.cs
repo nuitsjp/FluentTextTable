@@ -8,10 +8,10 @@ namespace FluentTextTable
 {
     public class TextTable<TItem> : ITextTable<TItem>
     {
-        private readonly List<Column> _columns;
+        private readonly List<ColumnConfig> _columns;
         private readonly Header _header;
         private readonly Borders _borders;
-        private readonly Dictionary<Column, MemberAccessor<TItem>> _memberAccessors;
+        private readonly Dictionary<ColumnConfig, MemberAccessor<TItem>> _memberAccessors;
 
         internal TextTable(TextTableConfig<TItem> config)
         {

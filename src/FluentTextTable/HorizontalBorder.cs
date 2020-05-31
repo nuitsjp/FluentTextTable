@@ -17,7 +17,7 @@ namespace FluentTextTable
         private readonly char _intersectionStyle;
         private readonly char _rightStyle;
 
-        internal void Write(TextWriter writer, IEnumerable<Column> columns, Borders borders)
+        internal void Write(TextWriter writer, IEnumerable<ColumnConfig> columns, Borders borders)
         {
             if(!IsEnable) return;
             

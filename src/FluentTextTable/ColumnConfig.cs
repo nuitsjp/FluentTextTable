@@ -7,7 +7,7 @@ using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
-    public class Column : IColumn
+    public class ColumnConfig : IColumnConfig
     {
         internal string Header { get; private set; }
         internal int HeaderWidth { get; private set; }
@@ -16,31 +16,31 @@ namespace FluentTextTable
         internal string Format { get; private set; }
         internal int Width { get; private set; }
 
-        internal Column(string header)
+        internal ColumnConfig(string header)
         {
             HeaderIs(header);
         }
 
-        public IColumn HeaderIs(string header)
+        public IColumnConfig HeaderIs(string header)
         {
             Header = header;
             HeaderWidth = header.GetWidth() + 2;
             return this;
         }
 
-        public IColumn AlignHorizontalTo(HorizontalAlignment horizontalAlignment)
+        public IColumnConfig AlignHorizontalTo(HorizontalAlignment horizontalAlignment)
         {
             HorizontalAlignment = horizontalAlignment;
             return this;
         }
 
-        public IColumn AlignVerticalTo(VerticalAlignment verticalAlignment)
+        public IColumnConfig AlignVerticalTo(VerticalAlignment verticalAlignment)
         {
             VerticalAlignment = verticalAlignment;
             return this;
         }
 
-        public IColumn FormatTo(string format)
+        public IColumnConfig FormatTo(string format)
         {
             Format = format;
             return this;

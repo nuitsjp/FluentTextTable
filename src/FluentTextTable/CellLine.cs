@@ -25,25 +25,25 @@ namespace FluentTextTable
 
         internal void WritePlanText(
             TextWriter writer,
-            Column column)
+            ColumnConfig columnConfig)
         {
             writer.Write(" ");
 
             int leftPadding;
             int rightPadding;
-            switch (column.HorizontalAlignment)
+            switch (columnConfig.HorizontalAlignment)
             {
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
                     leftPadding = 0;
-                    rightPadding = column.Width - Width;
+                    rightPadding = columnConfig.Width - Width;
                     break;
                 case HorizontalAlignment.Center:
-                    leftPadding = (column.Width - Width) / 2;
-                    rightPadding = column.Width - Width - leftPadding;
+                    leftPadding = (columnConfig.Width - Width) / 2;
+                    rightPadding = columnConfig.Width - Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = column.Width - Width;
+                    leftPadding = columnConfig.Width - Width;
                     rightPadding = 0;
                     break;
                 default:
@@ -58,23 +58,23 @@ namespace FluentTextTable
         
         internal void WriteMarkdown(
             TextWriter writer,
-            Column column)
+            ColumnConfig columnConfig)
         {
             int leftPadding;
             int rightPadding;
-            switch (column.HorizontalAlignment)
+            switch (columnConfig.HorizontalAlignment)
             {
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
                     leftPadding = 0;
-                    rightPadding = column.Width - Width;
+                    rightPadding = columnConfig.Width - Width;
                     break;
                 case HorizontalAlignment.Center:
-                    leftPadding = (column.Width - Width) / 2;
-                    rightPadding = column.Width - Width - leftPadding;
+                    leftPadding = (columnConfig.Width - Width) / 2;
+                    rightPadding = columnConfig.Width - Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = column.Width - Width;
+                    leftPadding = columnConfig.Width - Width;
                     rightPadding = 0;
                     break;
                 default:

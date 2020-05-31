@@ -7,6 +7,6 @@ namespace FluentTextTable
     {
         bool AutoGenerateColumns { get; set; }
         IBordersConfig Borders { get; }
-        IColumn AddColumn(Expression<Func<TItem, object>> expression);
+        IColumnConfig AddColumn(Expression<Func<TItem, object>> expression);
     }
 }

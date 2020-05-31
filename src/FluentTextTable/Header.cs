@@ -6,9 +6,9 @@ namespace FluentTextTable
 {
     internal class Header
     {
-        private readonly List<Column> _columns;
+        private readonly List<ColumnConfig> _columns;
 
-        internal Header(List<Column> columns)
+        internal Header(List<ColumnConfig> columns)
         {
             _columns = columns;
         }

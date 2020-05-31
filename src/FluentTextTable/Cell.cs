@@ -47,11 +47,11 @@ namespace FluentTextTable
         internal void WritePlanText(
             TextWriter writer,
             Row row,
-            Column column,
+            ColumnConfig columnConfig,
             int lineNumber)
         {
             CellLine value;
-            switch (column.VerticalAlignment)
+            switch (columnConfig.VerticalAlignment)
             {
                 case VerticalAlignment.Top:
                     value = GetTopCellLine();
@@ -66,7 +66,7 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            value.WritePlanText(writer, column);
+            value.WritePlanText(writer, columnConfig);
 
             CellLine GetTopCellLine()
             {
@@ -107,7 +107,7 @@ namespace FluentTextTable
         
         internal void WriteMarkdown(
             TextWriter writer,
-            Column column)
+            ColumnConfig columnConfig)
         {
             writer.Write(' ');
             if (_cellLines.Length == 1)
@@ -115,7 +115,7 @@ namespace FluentTextTable
                 // In the case of 1line, padding should match the width of the column.
                 _cellLines
                     .Single()
-                    .WriteMarkdown(writer, column);
+                    .WriteMarkdown(writer, columnConfig);
             }
             else
             {
