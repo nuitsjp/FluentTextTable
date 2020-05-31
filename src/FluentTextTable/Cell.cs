@@ -48,8 +48,7 @@ namespace FluentTextTable
             TextWriter writer,
             Row row,
             Column column,
-            int lineNumber,
-            VerticalBorderConfig insideVerticalBorder)
+            int lineNumber)
         {
             CellLine value;
             switch (column.VerticalAlignment)
@@ -67,7 +66,7 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            value.WritePlanText(writer, column, insideVerticalBorder);
+            value.WritePlanText(writer, column);
 
             CellLine GetTopCellLine()
             {

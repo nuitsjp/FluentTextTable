@@ -30,20 +30,22 @@ namespace FluentTextTable
 
         internal Cell GetCell(Column column) => _cells[column];
 
-        internal void WritePlanText(TextWriter writer, IList<Column> columns, VerticalBorderConfig leftBorder, VerticalBorderConfig insideVerticalBorder, VerticalBorderConfig rightBorder)
+        internal void WritePlanText(TextWriter writer, IList<Column> columns, Borders borders)
         {
             // Write line in row.
             for (var lineNumber = 0; lineNumber < Height; lineNumber++)
             {
-                if (leftBorder.IsEnable) writer.Write(leftBorder.Line);
-                _cells[columns.First()].WritePlanText(writer, this, columns.First(), lineNumber, insideVerticalBorder);
+                borders.Left.Write(writer);
+
+                _cells[columns.First()].WritePlanText(writer, this, columns.First(), lineNumber);
                 
                 foreach (var column in columns.Skip(1))
                 {
-                    if(insideVerticalBorder.IsEnable) writer.Write(insideVerticalBorder.Line);
-                    _cells[column].WritePlanText(writer, this, column, lineNumber, insideVerticalBorder);
+                    borders.InsideVertical.Write(writer);
+                    _cells[column].WritePlanText(writer, this, column, lineNumber);
                 }
-                if(rightBorder.IsEnable) writer.Write(rightBorder.Line);
+
+                borders.Right.Write(writer);
                 
                 writer.WriteLine();
             }
