@@ -23,27 +23,27 @@ namespace FluentTextTable
             Width = _value.GetWidth() + Margin;
         }
 
-        internal void WritePlanText(
-            TextWriter writer,
-            ColumnConfig columnConfig)
+        internal void WritePlanText<TItem>(
+            TextTableWriter<TItem> writer,
+            Column<TItem> column)
         {
             writer.Write(" ");
 
             int leftPadding;
             int rightPadding;
-            switch (columnConfig.HorizontalAlignment)
+            switch (column.HorizontalAlignment)
             {
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
                     leftPadding = 0;
-                    rightPadding = columnConfig.Width - Width;
+                    rightPadding = writer.GetColumnWidth(column) - Width;
                     break;
                 case HorizontalAlignment.Center:
-                    leftPadding = (columnConfig.Width - Width) / 2;
-                    rightPadding = columnConfig.Width - Width - leftPadding;
+                    leftPadding = (writer.GetColumnWidth(column) - Width) / 2;
+                    rightPadding = writer.GetColumnWidth(column) - Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = columnConfig.Width - Width;
+                    leftPadding = writer.GetColumnWidth(column) - Width;
                     rightPadding = 0;
                     break;
                 default:
@@ -56,25 +56,25 @@ namespace FluentTextTable
             writer.Write(" ");
         }
         
-        internal void WriteMarkdown(
-            TextWriter writer,
-            ColumnConfig columnConfig)
+        internal void WriteMarkdown<TItem>(
+            TextTableWriter<TItem> writer,
+            Column<TItem> column)
         {
             int leftPadding;
             int rightPadding;
-            switch (columnConfig.HorizontalAlignment)
+            switch (column.HorizontalAlignment)
             {
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
                     leftPadding = 0;
-                    rightPadding = columnConfig.Width - Width;
+                    rightPadding = writer.GetColumnWidth(column) - Width;
                     break;
                 case HorizontalAlignment.Center:
-                    leftPadding = (columnConfig.Width - Width) / 2;
-                    rightPadding = columnConfig.Width - Width - leftPadding;
+                    leftPadding = (writer.GetColumnWidth(column) - Width) / 2;
+                    rightPadding = writer.GetColumnWidth(column) - Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = columnConfig.Width - Width;
+                    leftPadding = writer.GetColumnWidth(column) - Width;
                     rightPadding = 0;
                     break;
                 default:

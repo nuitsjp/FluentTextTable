@@ -5,10 +5,32 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    internal class Cell
+    internal class Cell<TItem>
     {
 
         private readonly CellLine[] _cellLines;
+
+        internal Cell(TItem item, Column<TItem> column)
+        {
+            var value = column.GetValue(item);
+            IEnumerable<object> values;
+            if (value is string stringValue)
+            {
+                values = Split(stringValue);
+            }
+            else if(value is IEnumerable<object> enumerable)
+            {
+                values = enumerable;
+            }
+            else
+            {
+                values = new[] {value};
+            }
+
+            _cellLines = values.Select(x => new CellLine(x, column.Format)).ToArray();
+
+            Width = _cellLines.Max(x =>x.Width);
+        }
         public Cell(object value, string format)
         {
             IEnumerable<object> values;
@@ -45,13 +67,13 @@ namespace FluentTextTable
         }
 
         internal void WritePlanText(
-            TextWriter writer,
-            Row row,
-            ColumnConfig columnConfig,
+            TextTableWriter<TItem> writer,
+            Row<TItem> row,
+            Column<TItem> column,
             int lineNumber)
         {
             CellLine value;
-            switch (columnConfig.VerticalAlignment)
+            switch (column.VerticalAlignment)
             {
                 case VerticalAlignment.Top:
                     value = GetTopCellLine();
@@ -66,7 +88,7 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            value.WritePlanText(writer, columnConfig);
+            value.WritePlanText(writer, column);
 
             CellLine GetTopCellLine()
             {
@@ -106,8 +128,8 @@ namespace FluentTextTable
         }
         
         internal void WriteMarkdown(
-            TextWriter writer,
-            ColumnConfig columnConfig)
+            TextTableWriter<TItem> writer,
+            Column<TItem> column)
         {
             writer.Write(' ');
             if (_cellLines.Length == 1)
@@ -115,7 +137,7 @@ namespace FluentTextTable
                 // In the case of 1line, padding should match the width of the column.
                 _cellLines
                     .Single()
-                    .WriteMarkdown(writer, columnConfig);
+                    .WriteMarkdown(writer, column);
             }
             else
             {

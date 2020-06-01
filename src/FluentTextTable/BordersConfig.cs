@@ -26,14 +26,17 @@
 
         internal Borders Build()
         {
+            var left = _left.Build();
+            var insideVertical = _insideVertical.Build();
+            var right = _right.Build();
             return new Borders(
-                _top.Build(),
-                _headerHorizontal.Build(),
-                _insideHorizontal.Build(),
-                _bottom.Build(),
-                _left.Build(),
-                _insideVertical.Build(),
-                _right.Build());
+                _top.Build(left, insideVertical, right),
+                _headerHorizontal.Build(left, insideVertical, right),
+                _insideHorizontal.Build(left, insideVertical, right),
+                _bottom.Build(left, insideVertical, right),
+                left,
+                insideVertical,
+                right);
         }
     }
 }

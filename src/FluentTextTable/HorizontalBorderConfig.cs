@@ -31,14 +31,20 @@
             return this;
         }
 
-        internal HorizontalBorder Build()
+        internal HorizontalBorder Build(
+            VerticalBorder leftVerticalBorder,
+            VerticalBorder insideVerticalBorder,
+            VerticalBorder rightVerticalBorder)
         {
             return new HorizontalBorder(
                 IsEnable,
                 Line,
                 LeftEnd,
                 Intersection,
-                RightEnd);
+                RightEnd,
+                leftVerticalBorder,
+                insideVerticalBorder,
+                rightVerticalBorder);
         }
     }
 }

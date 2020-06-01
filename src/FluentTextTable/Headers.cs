@@ -4,35 +4,35 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    internal class Header
+    internal class Headers<TItem>
     {
-        private readonly List<ColumnConfig> _columns;
+        private readonly List<Column<TItem>> _columns;
 
-        internal Header(List<ColumnConfig> columns)
+        internal Headers(List<Column<TItem>> columns)
         {
             _columns = columns;
         }
 
-        internal void Write(TextWriter writer, Borders borders)
+        internal void Write(ITextTableWriter writer, Borders borders, Body<TItem> body)
         {
             borders.Left.Write(writer);
             
-            _columns.First().WriteHeader(writer);
+            _columns[0].WriteHeader(writer, body);
             writer.Write(" ");
-            
-            foreach (var column in _columns.Skip(1))
+
+            for (var i = 1; i < _columns.Count; i++)
             {
                 borders.InsideVertical.Write(writer);
 
-                column.WriteHeader(writer);
+                _columns[i].WriteHeader(writer, body);
                 writer.Write(" ");
             }
             
             borders.Right.Write(writer);
 
             writer.WriteLine();
-
-
         }
+        
+        
     }
 }

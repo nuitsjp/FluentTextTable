@@ -11,7 +11,7 @@ namespace FluentTextTable
         {
             var config = new TextTableConfig<TItem>();
             AddColumns(config);
-            return new TextTable<TItem>(config);
+            return new TextTable<TItem>(config, config.FixColumnSpecs());
         }
 
         public static ITextTable<TItem> Build<TItem>(Action<ITextTableConfig<TItem>> configure)
@@ -22,7 +22,7 @@ namespace FluentTextTable
             {
                 AddColumns(config);
             }
-            return new TextTable<TItem>(config);
+            return new TextTable<TItem>(config, config.FixColumnSpecs());
         }
         
         private static void AddColumns<TItem>(TextTableConfig<TItem> config)

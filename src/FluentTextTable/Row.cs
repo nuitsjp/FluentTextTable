@@ -4,33 +4,34 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    internal class Row
+    internal class Row<TItem>
     {
-        private readonly Dictionary<IColumnConfig, Cell> _cells;
+        private readonly Dictionary<Column<TItem>, Cell<TItem>> _cells;
         internal int Height { get; }
 
-        private Row(Dictionary<IColumnConfig, Cell> cells, int height)
+        internal static Row<TItem> Create(TItem item, IList<Column<TItem>> columns)
+        {
+            var cells = new Dictionary<Column<TItem>, Cell<TItem>>();
+            foreach (var column in columns)
+            {
+                cells[column] = new Cell<TItem>(column.GetValue(item), column.Format);
+            }
+
+            var height = cells.Values.Max(x => x.Height);
+
+            return new Row<TItem>(cells, height);
+        }
+
+
+        private Row(Dictionary<Column<TItem>, Cell<TItem>> cells, int height)
         {
             _cells = cells;
             Height = height;
         }
 
-        internal static Row Create<TItem>(TItem item, IReadOnlyDictionary<ColumnConfig, MemberAccessor<TItem>> memberAccessors)
-        {
-            var cells = new Dictionary<IColumnConfig, Cell>();
-            foreach (var keyValue in memberAccessors)
-            {
-                cells[keyValue.Key] = new Cell(keyValue.Value.GetValue(item), keyValue.Key.Format);
-            }
+        internal int GetWidth(Column<TItem> column) => _cells[column].Width;
 
-            var height = cells.Values.Max(x => x.Height);
-
-            return new Row(cells, height);
-        }
-
-        internal Cell GetCell(ColumnConfig columnConfig) => _cells[columnConfig];
-
-        internal void WritePlanText(TextWriter writer, IList<ColumnConfig> columns, Borders borders)
+        internal void WritePlanText(TextTableWriter<TItem> writer, IList<Column<TItem>> columns, Borders borders)
         {
             // Write line in row.
             for (var lineNumber = 0; lineNumber < Height; lineNumber++)
@@ -51,7 +52,7 @@ namespace FluentTextTable
             }
         }
         
-        internal void WriteMarkdown(TextWriter writer, IList<ColumnConfig> columns)
+        internal void WriteMarkdown(TextTableWriter<TItem> writer, IList<Column<TItem>> columns)
         {
             writer.Write("|");
             foreach (var column in columns)
