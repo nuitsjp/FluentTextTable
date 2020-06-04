@@ -6,18 +6,15 @@ using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
-    internal class TextTableWriter<TItem> : ITextTableWriter
+    internal class TextTableWriter<TItem>
     {
-        private readonly TextWriter _textWriter;
-
         private readonly IList<Column<TItem>> _columns;
         private readonly Headers<TItem> _headers;
         private readonly Body<TItem> _body;
         private readonly Borders _borders;
 
-        internal TextTableWriter(TextWriter textWriter, IList<Column<TItem>> columns, Headers<TItem> headers, Body<TItem> body, Borders borders)
+        internal TextTableWriter(IList<Column<TItem>> columns, Headers<TItem> headers, Body<TItem> body, Borders borders)
         {
-            _textWriter = textWriter;
             _columns = columns;
             _headers = headers;
             _body = body;
@@ -26,42 +23,37 @@ namespace FluentTextTable
 
         internal int GetColumnWidth(Column<TItem> column) => column.GetWidth(_body);
 
-        public void Write(char c) => _textWriter.Write(c);
-        public void Write(string s) => _textWriter.Write(s);
-        public void WriteLine(string s) => _textWriter.Write(s);
-        public void WriteLine() => _textWriter.WriteLine();
-        
-        internal void WritePlanText()
+        internal void WritePlanText(TextWriter writer)
         {
 
             // Write top border.
-            _borders.Top.Write(this, _columns);
+            _borders.Top.Write(writer, this, _columns);
 
             // Write header.
-            _headers.Write(this, _borders, _body);
+            _headers.Write(writer, _borders, _body);
             
             // Write Header and table separator.
-            _borders.HeaderHorizontal.Write(this, _columns);
+            _borders.HeaderHorizontal.Write(writer, this, _columns);
 
             // Write table.
-            _body.WritePlaneText(this, _borders);
+            _body.WritePlaneText(writer, this, _borders);
 
             // Write bottom border.
-            _borders.Bottom.Write(this, _columns);
+            _borders.Bottom.Write(writer, this, _columns);
         }
 
-        internal void WriteMarkdown()
+        internal void WriteMarkdown(TextWriter textWriter)
         {
             // Write header and separator.
             var headerSeparator = new StringBuilder();
-            _textWriter.Write("|");
+            textWriter.Write("|");
             headerSeparator.Append("|");
             foreach (var column in _columns)
             {
-                _textWriter.Write(" ");
+                textWriter.Write(" ");
 
-                _textWriter.Write(column.Header);
-                _textWriter.Write(new string(' ', GetColumnWidth(column) - column.Header.GetWidth() - 2)); // TODO Fix -> column.Header.GetWidth() - 2
+                textWriter.Write(column.Header);
+                textWriter.Write(new string(' ', GetColumnWidth(column) - column.Header.GetWidth() - 2)); // TODO Fix -> column.Header.GetWidth() - 2
 
                 switch (column.HorizontalAlignment)
                 {
@@ -85,14 +77,14 @@ namespace FluentTextTable
                         throw new ArgumentOutOfRangeException();
                 }
 
-                _textWriter.Write(" |");
+                textWriter.Write(" |");
                 headerSeparator.Append("|");
             }
-            _textWriter.WriteLine();
-            _textWriter.WriteLine(headerSeparator.ToString());
+            textWriter.WriteLine();
+            textWriter.WriteLine(headerSeparator.ToString());
 
             // Write table.
-            _body.WriteMarkdown(this);
+            _body.WriteMarkdown(textWriter, this);
         }
 
     }

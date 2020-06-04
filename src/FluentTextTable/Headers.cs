@@ -13,7 +13,7 @@ namespace FluentTextTable
             _columns = columns;
         }
 
-        internal void Write(ITextTableWriter writer, Borders borders, Body<TItem> body)
+        internal void Write(TextWriter writer, Borders borders, Body<TItem> body)
         {
             borders.Left.Write(writer);
             

@@ -32,11 +32,11 @@ namespace FluentTextTable
             _rightVerticalBorder = rightVerticalBorder;
         }
 
-        internal void Write<TItem>(TextTableWriter<TItem> writer, IEnumerable<Column<TItem>> columns)
+        internal void Write<TItem>(TextWriter textWriter, TextTableWriter<TItem> writer, IEnumerable<Column<TItem>> columns)
         {
             if(!IsEnable) return;
             
-            if(_leftVerticalBorder.IsEnable) writer.Write(_leftStyle);
+            if(_leftVerticalBorder.IsEnable) textWriter.Write(_leftStyle);
             var items = new List<string>();
             foreach (var column in columns)
             {
@@ -45,16 +45,16 @@ namespace FluentTextTable
 
             if (_insideVerticalBorder.IsEnable)
             {
-                writer.Write(string.Join(_intersectionStyle.ToString(), items));
+                textWriter.Write(string.Join(_intersectionStyle.ToString(), items));
             }
             else
             {
-                writer.Write(string.Join(string.Empty, items));
+                textWriter.Write(string.Join(string.Empty, items));
             }
             
-            if(_rightVerticalBorder.IsEnable) writer.Write(_rightStyle);
+            if(_rightVerticalBorder.IsEnable) textWriter.Write(_rightStyle);
             
-            writer.WriteLine();
+            textWriter.WriteLine();
         }
 
     }

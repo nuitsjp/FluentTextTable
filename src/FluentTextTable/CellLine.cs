@@ -24,10 +24,11 @@ namespace FluentTextTable
         }
 
         internal void WritePlanText<TItem>(
+            TextWriter textWriter,
             TextTableWriter<TItem> writer,
             Column<TItem> column)
         {
-            writer.Write(" ");
+            textWriter.Write(" ");
 
             int leftPadding;
             int rightPadding;
@@ -50,13 +51,14 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            writer.Write(new string(' ', leftPadding));
-            writer.Write(_value);
-            writer.Write(new string(' ', rightPadding));
-            writer.Write(" ");
+            textWriter.Write(new string(' ', leftPadding));
+            textWriter.Write(_value);
+            textWriter.Write(new string(' ', rightPadding));
+            textWriter.Write(" ");
         }
         
         internal void WriteMarkdown<TItem>(
+            TextWriter textWriter,
             TextTableWriter<TItem> writer,
             Column<TItem> column)
         {
@@ -81,9 +83,9 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            writer.Write(new string(' ', leftPadding));
-            writer.Write(_value);
-            writer.Write(new string(' ', rightPadding));
+            textWriter.Write(new string(' ', leftPadding));
+            textWriter.Write(_value);
+            textWriter.Write(new string(' ', rightPadding));
         }
     }
 }

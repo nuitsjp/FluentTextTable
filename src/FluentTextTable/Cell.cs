@@ -67,6 +67,7 @@ namespace FluentTextTable
         }
 
         internal void WritePlanText(
+            TextWriter textWriter,
             TextTableWriter<TItem> writer,
             Row<TItem> row,
             Column<TItem> column,
@@ -88,7 +89,7 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            value.WritePlanText(writer, column);
+            value.WritePlanText(textWriter, writer, column);
 
             CellLine GetTopCellLine()
             {
@@ -128,24 +129,25 @@ namespace FluentTextTable
         }
         
         internal void WriteMarkdown(
+            TextWriter textWriter,
             TextTableWriter<TItem> writer,
             Column<TItem> column)
         {
-            writer.Write(' ');
+            textWriter.Write(' ');
             if (_cellLines.Length == 1)
             {
                 // In the case of 1line, padding should match the width of the column.
                 _cellLines
                     .Single()
-                    .WriteMarkdown(writer, column);
+                    .WriteMarkdown(textWriter, writer, column);
             }
             else
             {
                 // If you're multi-line in Markdown, you can't match the widths, so it doesn't padding.
                 // Simply combine them with <br> to describe them.
-                writer.Write(string.Join("<br>", _cellLines.Select(x => x.Value)));
+                textWriter.Write(string.Join("<br>", _cellLines.Select(x => x.Value)));
             }
-            writer.Write(" |");
+            textWriter.Write(" |");
         }
     }
 }

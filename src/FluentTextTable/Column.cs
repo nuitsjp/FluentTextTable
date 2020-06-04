@@ -28,7 +28,7 @@ namespace FluentTextTable
 
         internal int GetWidth(Body<TItem> body) => Math.Max(HeaderWidth, body.GetWidth(this));
         
-        internal void WriteHeader(ITextTableWriter writer, Body<TItem> body)
+        internal void WriteHeader(TextWriter writer, Body<TItem> body)
         {
             writer.Write(" ");
             writer.Write(Header);

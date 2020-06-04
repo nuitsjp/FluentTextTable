@@ -31,35 +31,36 @@ namespace FluentTextTable
 
         internal int GetWidth(Column<TItem> column) => _cells[column].Width;
 
-        internal void WritePlanText(TextTableWriter<TItem> writer, IList<Column<TItem>> columns, Borders borders)
+        internal void WritePlanText(TextWriter textWriter, 
+            TextTableWriter<TItem> writer, IList<Column<TItem>> columns, Borders borders)
         {
             // Write line in row.
             for (var lineNumber = 0; lineNumber < Height; lineNumber++)
             {
-                borders.Left.Write(writer);
+                borders.Left.Write(textWriter);
 
-                _cells[columns.First()].WritePlanText(writer, this, columns.First(), lineNumber);
+                _cells[columns.First()].WritePlanText(textWriter, writer, this, columns.First(), lineNumber);
                 
                 foreach (var column in columns.Skip(1))
                 {
-                    borders.InsideVertical.Write(writer);
-                    _cells[column].WritePlanText(writer, this, column, lineNumber);
+                    borders.InsideVertical.Write(textWriter);
+                    _cells[column].WritePlanText(textWriter, writer, this, column, lineNumber);
                 }
 
-                borders.Right.Write(writer);
+                borders.Right.Write(textWriter);
                 
-                writer.WriteLine();
+                textWriter.WriteLine();
             }
         }
         
-        internal void WriteMarkdown(TextTableWriter<TItem> writer, IList<Column<TItem>> columns)
+        internal void WriteMarkdown(TextWriter textWriter, TextTableWriter<TItem> writer, IList<Column<TItem>> columns)
         {
-            writer.Write("|");
+            textWriter.Write("|");
             foreach (var column in columns)
             {
-                _cells[column].WriteMarkdown(writer, column);
+                _cells[column].WriteMarkdown(textWriter, writer, column);
             }
-            writer.WriteLine();
+            textWriter.WriteLine();
         }
     }
 }

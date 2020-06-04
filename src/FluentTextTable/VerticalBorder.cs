@@ -8,7 +8,7 @@ namespace FluentTextTable
         {
         }
 
-        internal void Write(ITextTableWriter writer)
+        internal void Write(TextWriter writer)
         {
             if(IsEnable) writer.Write(_lineStyle);
         }

@@ -33,7 +33,7 @@ namespace FluentTextTable
         public void WritePlanText(TextWriter writer)
         {
             var body = new Body<TItem>(_columns, DataSource);
-            new TextTableWriter<TItem>(writer, _columns, _headers, body, _borders).WritePlanText();
+            new TextTableWriter<TItem>(_columns, _headers, body, _borders).WritePlanText(writer);
         }
 
         public string ToMarkdown()
@@ -46,7 +46,7 @@ namespace FluentTextTable
         public void WriteMarkdown(TextWriter writer)
         {
             var body = new Body<TItem>(_columns, DataSource);
-            new TextTableWriter<TItem>(writer, _columns, _headers, body, _borders).WriteMarkdown();
+            new TextTableWriter<TItem>(_columns, _headers, body, _borders).WriteMarkdown(writer);
         }
         
         public static ITextTable<TItem> Build()
