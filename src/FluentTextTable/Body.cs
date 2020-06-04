@@ -10,8 +10,6 @@ namespace FluentTextTable
 
         private readonly IList<Row<TItem>> _rows = new List<Row<TItem>>();
         
-        private readonly Dictionary<Column<TItem>, int> _widths = new Dictionary<Column<TItem>, int>();
-
         internal Body(IList<Column<TItem>> columns, IEnumerable<TItem> items)
         {
             _columns = columns;
@@ -20,14 +18,9 @@ namespace FluentTextTable
             {
                 _rows.Add(Row<TItem>.Create(item, columns));
             }
-
-            foreach (var column in columns)
-            {
-                _widths[column] = _rows.Max(x => x.GetWidth(column));
-            }
         }
-
-        internal int GetWidth(Column<TItem> column) => _widths[column];
+        
+        internal int GetColumnWidth(Column<TItem> column) => _rows.Max(x => x.GetColumnWidth(column));
 
         internal void WritePlaneText(TextWriter textWriter, TextTable<TItem> table, Borders borders)
         {
@@ -42,11 +35,11 @@ namespace FluentTextTable
             }
         }
 
-        internal void WriteMarkdown(TextWriter textWriter, TextTable<TItem> writeraaaa)
+        internal void WriteMarkdown(TextWriter textWriter, TextTable<TItem> table)
         {
             foreach (var row in _rows)
             {
-                row.WriteMarkdown(textWriter, writeraaaa, _columns);
+                row.WriteMarkdown(textWriter, table, _columns);
             }
         }
     }

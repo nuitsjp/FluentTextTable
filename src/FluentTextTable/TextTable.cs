@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml.Schema;
 using EastAsianWidthDotNet;
 
 namespace FluentTextTable
@@ -12,6 +13,7 @@ namespace FluentTextTable
         private readonly Headers<TItem> _headers;
         private readonly Body<TItem> _body;
         private readonly Borders _borders;
+        private readonly IDictionary<Column<TItem>, int> _columnWidths = new Dictionary<Column<TItem>, int>();
 
         internal TextTable(IList<Column<TItem>> columns, Headers<TItem> headers, Body<TItem> body, Borders borders)
         {
@@ -19,6 +21,11 @@ namespace FluentTextTable
             _headers = headers;
             _body = body;
             _borders = borders;
+
+            foreach (var column in _columns)
+            {
+                _columnWidths[column] = Math.Max(column.HeaderWidth, _body.GetColumnWidth(column));
+            }
         }
 
         internal void WritePlanText(TextWriter writer)
@@ -56,19 +63,19 @@ namespace FluentTextTable
                 switch (column.HorizontalAlignment)
                 {
                     case HorizontalAlignment.Default:
-                        headerSeparator.Append(new string('-', GetColumnWidth(column)));
+                        headerSeparator.Append(new string('-', _columnWidths[column]));
                         break;
                     case HorizontalAlignment.Left:
                         headerSeparator.Append(':');
-                        headerSeparator.Append(new string('-', GetColumnWidth(column) - 1));
+                        headerSeparator.Append(new string('-', _columnWidths[column] - 1));
                         break;
                     case HorizontalAlignment.Center:
                         headerSeparator.Append(':');
-                        headerSeparator.Append(new string('-', GetColumnWidth(column) - 2));
+                        headerSeparator.Append(new string('-', _columnWidths[column] - 2));
                         headerSeparator.Append(':');
                         break;
                     case HorizontalAlignment.Right:
-                        headerSeparator.Append(new string('-', GetColumnWidth(column) - 1));
+                        headerSeparator.Append(new string('-', _columnWidths[column] - 1));
                         headerSeparator.Append(':');
                         break;
                     default:
@@ -85,8 +92,6 @@ namespace FluentTextTable
             _body.WriteMarkdown(textWriter, this);
         }
 
-        int ITextTable<TItem>.GetColumnWidth(Column<TItem> column) => GetColumnWidth(column);
-
-        private int GetColumnWidth(Column<TItem> column) => Math.Max(column.HeaderWidth, _body.GetWidth(column));
+        int ITextTable<TItem>.GetColumnWidth(Column<TItem> column) => _columnWidths[column];
     }
 }

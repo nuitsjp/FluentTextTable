@@ -29,7 +29,7 @@ namespace FluentTextTable
             Height = height;
         }
 
-        internal int GetWidth(Column<TItem> column) => _cells[column].Width;
+        internal int GetColumnWidth(Column<TItem> column) => _cells[column].Width;
 
         internal void WritePlanText(TextWriter textWriter, 
             TextTable<TItem> table, IList<Column<TItem>> columns, Borders borders)
