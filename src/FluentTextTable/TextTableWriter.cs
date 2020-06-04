@@ -7,45 +7,42 @@ using System.Text;
 
 namespace FluentTextTable
 {
-    public class TextTableWriterWriter<TItem> : ITextTableWriter<TItem>
+    public class TextTableWriter<TItem> : ITextTableWriter<TItem>
     {
         private readonly List<Column<TItem>> _columns;
         private readonly Headers<TItem> _headers;
         private readonly Borders _borders;
 
-        private TextTableWriterWriter(TextTableConfig<TItem> config, List<Column<TItem>> columns)
+        private TextTableWriter(TextTableConfig<TItem> config, List<Column<TItem>> columns)
         {
             _columns = columns;
             _borders = config.BuildBorders();
             _headers = new Headers<TItem>(_columns);
         }
 
-        public IEnumerable<TItem> DataSource { get; set; }
-
-
-        public string ToPlanText()
+        public string ToPlanText(IEnumerable<TItem> items)
         {
             var writer = new StringWriter();
-            WritePlanText(writer);
+            WritePlanText(writer, items);
             return writer.ToString();
         }
 
-        public void WritePlanText(TextWriter writer)
+        public void WritePlanText(TextWriter writer, IEnumerable<TItem> items)
         {
-            var body = new Body<TItem>(_columns, DataSource);
+            var body = new Body<TItem>(_columns, items);
             new TextTable<TItem>(_columns, _headers, body, _borders).WritePlanText(writer);
         }
 
-        public string ToMarkdown()
+        public string ToMarkdown(IEnumerable<TItem> items)
         {
             var writer = new StringWriter();
-            WriteMarkdown(writer);
+            WriteMarkdown(writer, items);
             return writer.ToString();
         }
 
-        public void WriteMarkdown(TextWriter writer)
+        public void WriteMarkdown(TextWriter writer, IEnumerable<TItem> items)
         {
-            var body = new Body<TItem>(_columns, DataSource);
+            var body = new Body<TItem>(_columns, items);
             new TextTable<TItem>(_columns, _headers, body, _borders).WriteMarkdown(writer);
         }
         
@@ -53,7 +50,7 @@ namespace FluentTextTable
         {
             var config = new TextTableConfig<TItem>();
             AddColumns(config);
-            return new TextTableWriterWriter<TItem>(config, config.FixColumnSpecs());
+            return new TextTableWriter<TItem>(config, config.FixColumnSpecs());
         }
 
         public static ITextTableWriter<TItem> Build(Action<ITextTableConfig<TItem>> configure)
@@ -64,7 +61,7 @@ namespace FluentTextTable
             {
                 AddColumns(config);
             }
-            return new TextTableWriterWriter<TItem>(config, config.FixColumnSpecs());
+            return new TextTableWriter<TItem>(config, config.FixColumnSpecs());
         }
         
         private static void AddColumns(TextTableConfig<TItem> config)

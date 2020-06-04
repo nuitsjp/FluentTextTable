@@ -5,12 +5,10 @@ namespace FluentTextTable
 {
     public interface ITextTableWriter<in TItem>
     {
-        IEnumerable<TItem> DataSource { set; }
+        string ToPlanText(IEnumerable<TItem> items);
+        void WritePlanText(TextWriter writer, IEnumerable<TItem> items);
 
-        string ToPlanText();
-        void WritePlanText(TextWriter writer);
-
-        string ToMarkdown();
-        void WriteMarkdown(TextWriter writer);
+        string ToMarkdown(IEnumerable<TItem> items);
+        void WriteMarkdown(TextWriter writer, IEnumerable<TItem> items);
     }
 }

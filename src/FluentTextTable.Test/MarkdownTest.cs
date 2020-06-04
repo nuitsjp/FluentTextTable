@@ -11,7 +11,7 @@ namespace FluentTextTable.Test
             public void WhenBasic()
             {
 
-                var writer = TextTableWriterWriter<User>.Build(config =>
+                var writer = TextTableWriter<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .HeaderIs("ID")
@@ -22,13 +22,11 @@ namespace FluentTextTable.Test
                     config.AddColumn(x => x.Birthday)
                         .FormatTo("{0:yyyy/MM/dd}");
                 });
-                writer.DataSource = new[]
-                {
-                    new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
-                    new User {Id = 123, Name = "Steven Paul Jobs", Birthday = DateTime.Parse("1955/2/24")},
-                };
-
-                var text = writer.ToMarkdown();
+                var text = writer.ToMarkdown(new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 123, Name = "Steven Paul Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    });
 
                 Assert.Equal(
                     @"
@@ -43,14 +41,12 @@ namespace FluentTextTable.Test
             public void WhenAutoFormat()
             {
 
-                var writer = TextTableWriterWriter<User>.Build();
-                writer.DataSource = new[]
-                {
-                    new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
-                    new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
-                };
-
-                var text = writer.ToMarkdown();
+                var writer = TextTableWriter<User>.Build();
+                var text = writer.ToMarkdown(new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                    });
 
                 Assert.Equal(
                     @"
@@ -66,7 +62,7 @@ namespace FluentTextTable.Test
             public void WhenMultipleLines()
             {
 
-                var writer = TextTableWriterWriter<User>.Build(config =>
+                var writer = TextTableWriter<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .HeaderIs("ID")
@@ -83,19 +79,17 @@ namespace FluentTextTable.Test
                     config.AddColumn(x => x.Occupations)
                         .AlignHorizontalTo(HorizontalAlignment.Center);
                 });
-                writer.DataSource = new[]
+                var text = writer.ToMarkdown(new[]
                 {
                     new User
                     {
-                        Id = 1, 
-                        Name = "Bill Gates", 
+                        Id = 1,
+                        Name = "Bill Gates",
                         Birthday = DateTime.Parse("1955/10/28"),
                         Parents = $"Bill Gates Sr.{Environment.NewLine}Mary Maxwell Gates",
-                        Occupations = new []{"Software developer", "Investor", "Entrepreneur", "Philanthropist"}
+                        Occupations = new[] {"Software developer", "Investor", "Entrepreneur", "Philanthropist"}
                     },
-                };
-
-                var text = writer.ToMarkdown();
+                });
 
                 Assert.Equal(
                     @"
@@ -119,8 +113,8 @@ namespace FluentTextTable.Test
             public void WithAttribute()
             {
 
-                var writer = TextTableWriterWriter<UserWithAttribute>.Build();
-                writer.DataSource = new[]
+                var writer = TextTableWriter<UserWithAttribute>.Build();
+                var text = writer.ToMarkdown(new[]
                 {
                     new UserWithAttribute
                     {
@@ -130,9 +124,7 @@ namespace FluentTextTable.Test
                         Parents = $"Bill Gates Sr.{Environment.NewLine}Mary Maxwell Gates",
                         Occupations = new []{"Software developer", "Investor", "Entrepreneur", "Philanthropist"}
                     },
-                };
-
-                var text = writer.ToMarkdown();
+                });
 
                 Assert.Equal(
                     @"
