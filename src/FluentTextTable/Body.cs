@@ -29,24 +29,24 @@ namespace FluentTextTable
 
         internal int GetWidth(Column<TItem> column) => _widths[column];
 
-        internal void WritePlaneText(TextWriter textWriter, TextTableWriter<TItem> writer, Borders borders)
+        internal void WritePlaneText(TextWriter textWriter, TextTable<TItem> table, Borders borders)
         {
             if (_rows.Any())
             {
-                _rows[0].WritePlanText(textWriter, writer, _columns, borders);
+                _rows[0].WritePlanText(textWriter, table, _columns, borders);
                 for (var i = 1; i < _rows.Count; i++)
                 {
-                    borders.InsideHorizontal.Write(textWriter, writer, _columns);
-                    _rows[i].WritePlanText(textWriter, writer, _columns, borders);
+                    borders.InsideHorizontal.Write(textWriter, table, _columns);
+                    _rows[i].WritePlanText(textWriter, table, _columns, borders);
                 }
             }
         }
 
-        internal void WriteMarkdown(TextWriter textWriter, TextTableWriter<TItem> writer)
+        internal void WriteMarkdown(TextWriter textWriter, TextTable<TItem> writeraaaa)
         {
             foreach (var row in _rows)
             {
-                row.WriteMarkdown(textWriter, writer, _columns);
+                row.WriteMarkdown(textWriter, writeraaaa, _columns);
             }
         }
     }

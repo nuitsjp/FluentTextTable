@@ -68,7 +68,7 @@ namespace FluentTextTable
 
         internal void WritePlanText(
             TextWriter textWriter,
-            TextTableWriter<TItem> writer,
+            TextTable<TItem> writeraaaa,
             Row<TItem> row,
             Column<TItem> column,
             int lineNumber)
@@ -89,7 +89,7 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            value.WritePlanText(textWriter, writer, column);
+            value.WritePlanText(textWriter, writeraaaa, column);
 
             CellLine GetTopCellLine()
             {
@@ -130,7 +130,7 @@ namespace FluentTextTable
         
         internal void WriteMarkdown(
             TextWriter textWriter,
-            TextTableWriter<TItem> writer,
+            TextTable<TItem> table,
             Column<TItem> column)
         {
             textWriter.Write(' ');
@@ -139,7 +139,7 @@ namespace FluentTextTable
                 // In the case of 1line, padding should match the width of the column.
                 _cellLines
                     .Single()
-                    .WriteMarkdown(textWriter, writer, column);
+                    .WriteMarkdown(textWriter, table, column);
             }
             else
             {

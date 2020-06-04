@@ -32,19 +32,19 @@ namespace FluentTextTable
         internal int GetWidth(Column<TItem> column) => _cells[column].Width;
 
         internal void WritePlanText(TextWriter textWriter, 
-            TextTableWriter<TItem> writer, IList<Column<TItem>> columns, Borders borders)
+            TextTable<TItem> table, IList<Column<TItem>> columns, Borders borders)
         {
             // Write line in row.
             for (var lineNumber = 0; lineNumber < Height; lineNumber++)
             {
                 borders.Left.Write(textWriter);
 
-                _cells[columns.First()].WritePlanText(textWriter, writer, this, columns.First(), lineNumber);
+                _cells[columns.First()].WritePlanText(textWriter, table, this, columns.First(), lineNumber);
                 
                 foreach (var column in columns.Skip(1))
                 {
                     borders.InsideVertical.Write(textWriter);
-                    _cells[column].WritePlanText(textWriter, writer, this, column, lineNumber);
+                    _cells[column].WritePlanText(textWriter, table, this, column, lineNumber);
                 }
 
                 borders.Right.Write(textWriter);
@@ -53,12 +53,12 @@ namespace FluentTextTable
             }
         }
         
-        internal void WriteMarkdown(TextWriter textWriter, TextTableWriter<TItem> writer, IList<Column<TItem>> columns)
+        internal void WriteMarkdown(TextWriter textWriter, TextTable<TItem> table, IList<Column<TItem>> columns)
         {
             textWriter.Write("|");
             foreach (var column in columns)
             {
-                _cells[column].WriteMarkdown(textWriter, writer, column);
+                _cells[column].WriteMarkdown(textWriter, table, column);
             }
             textWriter.WriteLine();
         }

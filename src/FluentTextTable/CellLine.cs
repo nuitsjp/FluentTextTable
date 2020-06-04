@@ -25,7 +25,7 @@ namespace FluentTextTable
 
         internal void WritePlanText<TItem>(
             TextWriter textWriter,
-            TextTableWriter<TItem> writer,
+            TextTable<TItem> table,
             Column<TItem> column)
         {
             textWriter.Write(" ");
@@ -37,14 +37,14 @@ namespace FluentTextTable
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
                     leftPadding = 0;
-                    rightPadding = writer.GetColumnWidth(column) - Width;
+                    rightPadding = table.GetColumnWidth(column) - Width;
                     break;
                 case HorizontalAlignment.Center:
-                    leftPadding = (writer.GetColumnWidth(column) - Width) / 2;
-                    rightPadding = writer.GetColumnWidth(column) - Width - leftPadding;
+                    leftPadding = (table.GetColumnWidth(column) - Width) / 2;
+                    rightPadding = table.GetColumnWidth(column) - Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = writer.GetColumnWidth(column) - Width;
+                    leftPadding = table.GetColumnWidth(column) - Width;
                     rightPadding = 0;
                     break;
                 default:
@@ -59,7 +59,7 @@ namespace FluentTextTable
         
         internal void WriteMarkdown<TItem>(
             TextWriter textWriter,
-            TextTableWriter<TItem> writer,
+            TextTable<TItem> table,
             Column<TItem> column)
         {
             int leftPadding;
@@ -69,14 +69,14 @@ namespace FluentTextTable
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
                     leftPadding = 0;
-                    rightPadding = writer.GetColumnWidth(column) - Width;
+                    rightPadding = table.GetColumnWidth(column) - Width;
                     break;
                 case HorizontalAlignment.Center:
-                    leftPadding = (writer.GetColumnWidth(column) - Width) / 2;
-                    rightPadding = writer.GetColumnWidth(column) - Width - leftPadding;
+                    leftPadding = (table.GetColumnWidth(column) - Width) / 2;
+                    rightPadding = table.GetColumnWidth(column) - Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = writer.GetColumnWidth(column) - Width;
+                    leftPadding = table.GetColumnWidth(column) - Width;
                     rightPadding = 0;
                     break;
                 default:

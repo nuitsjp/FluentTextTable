@@ -32,7 +32,7 @@ namespace FluentTextTable
             _rightVerticalBorder = rightVerticalBorder;
         }
 
-        internal void Write<TItem>(TextWriter textWriter, TextTableWriter<TItem> writer, IEnumerable<Column<TItem>> columns)
+        internal void Write<TItem>(TextWriter textWriter, TextTable<TItem> table, IEnumerable<Column<TItem>> columns)
         {
             if(!IsEnable) return;
             
@@ -40,7 +40,7 @@ namespace FluentTextTable
             var items = new List<string>();
             foreach (var column in columns)
             {
-                items.Add(new string(_lineStyle, writer.GetColumnWidth(column)));
+                items.Add(new string(_lineStyle, table.GetColumnWidth(column)));
             }
 
             if (_insideVerticalBorder.IsEnable)
