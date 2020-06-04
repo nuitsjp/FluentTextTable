@@ -4,47 +4,53 @@ using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
-    internal class CellLine
+    internal class CellLine<TItem>
     {
-        internal static readonly CellLine Empty = new CellLine(string.Empty, null);
-
         private const int Margin = 2;
 
+        private readonly Column<TItem> _column;
         private readonly string _value;
 
         internal string Value => _value;
         internal int Width { get; }
 
-        public CellLine(object value, string format)
+        public CellLine(Column<TItem> column, object value)
         {
-            _value = format is null
+            _column = column;
+            _value = column?.Format is null
                 ? value?.ToString() ?? string.Empty
-                : string.Format(format, value);
+                : string.Format(column.Format, value);
             Width = _value.GetWidth() + Margin;
         }
 
-        internal void WritePlanText<TItem>(
+        public CellLine(Column<TItem> column)
+        {
+            _column = column;
+            _value = string.Empty;
+            Width = Margin;
+        }
+
+        internal void WritePlanText(
             TextWriter textWriter,
-            ITextTable<TItem> table,
-            Column<TItem> column)
+            ITextTable<TItem> table)
         {
             textWriter.Write(" ");
 
             int leftPadding;
             int rightPadding;
-            switch (column.HorizontalAlignment)
+            switch (_column.HorizontalAlignment)
             {
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
                     leftPadding = 0;
-                    rightPadding = table.GetColumnWidth(column) - Width;
+                    rightPadding = table.GetColumnWidth(_column) - Width;
                     break;
                 case HorizontalAlignment.Center:
-                    leftPadding = (table.GetColumnWidth(column) - Width) / 2;
-                    rightPadding = table.GetColumnWidth(column) - Width - leftPadding;
+                    leftPadding = (table.GetColumnWidth(_column) - Width) / 2;
+                    rightPadding = table.GetColumnWidth(_column) - Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = table.GetColumnWidth(column) - Width;
+                    leftPadding = table.GetColumnWidth(_column) - Width;
                     rightPadding = 0;
                     break;
                 default:
@@ -57,26 +63,25 @@ namespace FluentTextTable
             textWriter.Write(" ");
         }
         
-        internal void WriteMarkdown<TItem>(
+        internal void WriteMarkdown(
             TextWriter textWriter,
-            ITextTable<TItem> table,
-            Column<TItem> column)
+            ITextTable<TItem> table)
         {
             int leftPadding;
             int rightPadding;
-            switch (column.HorizontalAlignment)
+            switch (_column.HorizontalAlignment)
             {
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
                     leftPadding = 0;
-                    rightPadding = table.GetColumnWidth(column) - Width;
+                    rightPadding = table.GetColumnWidth(_column) - Width;
                     break;
                 case HorizontalAlignment.Center:
-                    leftPadding = (table.GetColumnWidth(column) - Width) / 2;
-                    rightPadding = table.GetColumnWidth(column) - Width - leftPadding;
+                    leftPadding = (table.GetColumnWidth(_column) - Width) / 2;
+                    rightPadding = table.GetColumnWidth(_column) - Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = table.GetColumnWidth(column) - Width;
+                    leftPadding = table.GetColumnWidth(_column) - Width;
                     rightPadding = 0;
                     break;
                 default:

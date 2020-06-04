@@ -2,7 +2,7 @@
 {
     public class BorderConfigBase
     {
-        public bool IsEnable { get; private set; } = true;
+        protected bool IsEnable { get; private set; } = true;
 
         public void Disable()
         {

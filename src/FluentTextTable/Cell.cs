@@ -8,11 +8,16 @@ namespace FluentTextTable
     internal class Cell<TItem>
     {
 
-        private readonly CellLine[] _cellLines;
-
-        internal Cell(TItem item, Column<TItem> column)
+        private readonly Column<TItem> _column;
+        private readonly CellLine<TItem> _blankCellLine;
+        private readonly CellLine<TItem>[] _cellLines;
+       
+        internal Cell(Column<TItem> column, TItem item)
         {
-            var value = column.GetValue(item);
+            _column = column;
+            _blankCellLine = new CellLine<TItem>(column);
+            
+            var value = _column.GetValue(item);
             IEnumerable<object> values;
             if (value is string stringValue)
             {
@@ -27,27 +32,7 @@ namespace FluentTextTable
                 values = new[] {value};
             }
 
-            _cellLines = values.Select(x => new CellLine(x, column.Format)).ToArray();
-
-            Width = _cellLines.Max(x =>x.Width);
-        }
-        public Cell(object value, string format)
-        {
-            IEnumerable<object> values;
-            if (value is string stringValue)
-            {
-                values = Split(stringValue);
-            }
-            else if(value is IEnumerable<object> enumerable)
-            {
-                values = enumerable;
-            }
-            else
-            {
-                values = new[] {value};
-            }
-
-            _cellLines = values.Select(x => new CellLine(x, format)).ToArray();
+            _cellLines = values.Select(x => new CellLine<TItem>(_column, x)).ToArray();
 
             Width = _cellLines.Max(x =>x.Width);
         }
@@ -68,13 +53,12 @@ namespace FluentTextTable
 
         internal void WritePlanText(
             TextWriter textWriter,
-            TextTable<TItem> writeraaaa,
-            Row<TItem> row,
-            Column<TItem> column,
+            TextTable<TItem> table,
+            int rowHeight,
             int lineNumber)
         {
-            CellLine value;
-            switch (column.VerticalAlignment)
+            CellLine<TItem> value;
+            switch (_column.VerticalAlignment)
             {
                 case VerticalAlignment.Top:
                     value = GetTopCellLine();
@@ -89,39 +73,39 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            value.WritePlanText(textWriter, writeraaaa, column);
+            value.WritePlanText(textWriter, table);
 
-            CellLine GetTopCellLine()
+            CellLine<TItem> GetTopCellLine()
             {
                 return lineNumber < Height
                     ? _cellLines[lineNumber]
-                    : CellLine.Empty;
+                    : _blankCellLine;
             }
 
-            CellLine GetCenterCellLine()
+            CellLine<TItem> GetCenterCellLine()
             {
-                var indent = (row.Height - Height) / 2;
+                var indent = (rowHeight - Height) / 2;
                 var localLineNumber = lineNumber - indent;
                 if (localLineNumber < 0)
                 {
-                    return CellLine.Empty;
+                    return _blankCellLine;
                 }
 
                 if (Height <= localLineNumber)
                 {
-                    return CellLine.Empty;
+                    return _blankCellLine;
                 }
 
                 return _cellLines[localLineNumber];
             }
 
-            CellLine GetBottomCellLine()
+            CellLine<TItem> GetBottomCellLine()
             {
-                var indent = row.Height - Height;
+                var indent = rowHeight - Height;
                 var localLineNumber = lineNumber - indent;
                 if (localLineNumber < 0)
                 {
-                    return CellLine.Empty;
+                    return _blankCellLine;
                 }
 
                 return _cellLines[localLineNumber];
@@ -139,7 +123,7 @@ namespace FluentTextTable
                 // In the case of 1line, padding should match the width of the column.
                 _cellLines
                     .Single()
-                    .WriteMarkdown(textWriter, table, column);
+                    .WriteMarkdown(textWriter, table);
             }
             else
             {

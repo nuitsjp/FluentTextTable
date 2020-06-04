@@ -17,7 +17,7 @@ namespace FluentTextTable
         {
             _columns = columns;
             _borders = config.BuildBorders();
-            _headers = new Headers<TItem>(_columns);
+            _headers = new Headers<TItem>(_columns, _borders);
         }
 
         public string ToPlanText(IEnumerable<TItem> items)
@@ -29,7 +29,7 @@ namespace FluentTextTable
 
         public void WritePlanText(TextWriter writer, IEnumerable<TItem> items)
         {
-            var body = new Body<TItem>(_columns, items);
+            var body = new Body<TItem>(_columns, _borders, items);
             new TextTable<TItem>(_columns, _headers, body, _borders).WritePlanText(writer);
         }
 
@@ -42,7 +42,7 @@ namespace FluentTextTable
 
         public void WriteMarkdown(TextWriter writer, IEnumerable<TItem> items)
         {
-            var body = new Body<TItem>(_columns, items);
+            var body = new Body<TItem>(_columns, _borders, items);
             new TextTable<TItem>(_columns, _headers, body, _borders).WriteMarkdown(writer);
         }
         
@@ -89,7 +89,7 @@ namespace FluentTextTable
                 var column = config.AddColumn(member.memberInfo);
                 if (member.columnFormat != null)
                 {
-                    if (member.columnFormat.Header != null) column.HeaderIs(member.columnFormat.Header);
+                    if (member.columnFormat.Header != null) column.NameIs(member.columnFormat.Header);
                     column
                         .AlignHorizontalTo(member.columnFormat.HorizontalAlignment)
                         .AlignVerticalTo(member.columnFormat.VerticalAlignment)

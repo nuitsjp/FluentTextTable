@@ -2,7 +2,7 @@
 {
     public interface IColumnConfig
     {
-        IColumnConfig HeaderIs(string header);
+        IColumnConfig NameIs(string name);
         IColumnConfig AlignHorizontalTo(HorizontalAlignment horizontalAlignment);
         IColumnConfig AlignVerticalTo(VerticalAlignment verticalAlignment);
         IColumnConfig FormatTo(string format);

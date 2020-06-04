@@ -9,25 +9,22 @@ namespace FluentTextTable
 {
     public class ColumnConfig<TItem> : IColumnConfig
     {
-        internal string Header { get; private set; }
-        internal int HeaderWidth { get; private set; }
-        internal HorizontalAlignment HorizontalAlignment { get; private set; } = HorizontalAlignment.Default;
-        internal VerticalAlignment VerticalAlignment { get; private set; } = VerticalAlignment.Top;
-        internal string Format { get; private set; }
-        internal int Width { get; private set; }
+        private string Name { get; set; }
+        private HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Default;
+        private VerticalAlignment VerticalAlignment { get; set; } = VerticalAlignment.Top;
+        private string Format { get; set; }
 
         private readonly MemberAccessor<TItem> _accessor;
 
         internal ColumnConfig(MemberAccessor<TItem> accessor)
         {
             _accessor = accessor;
-            HeaderIs(_accessor.Name);
+            NameIs(_accessor.Name);
         }
 
-        public IColumnConfig HeaderIs(string header)
+        public IColumnConfig NameIs(string name)
         {
-            Header = header;
-            HeaderWidth = header.GetWidth() + 2;
+            Name = name;
             return this;
         }
 
@@ -50,6 +47,6 @@ namespace FluentTextTable
         }
 
         internal Column<TItem> Build() 
-            => new Column<TItem>(Header, HorizontalAlignment,  VerticalAlignment, Format, _accessor);
+            => new Column<TItem>(Name, HorizontalAlignment,  VerticalAlignment, Format, _accessor);
     }
 }

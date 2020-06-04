@@ -35,13 +35,13 @@ namespace FluentTextTable
             _borders.Top.Write(writer, this, _columns);
 
             // Write header.
-            _headers.Write(writer, _borders, this);
+            _headers.Write(writer, this);
             
             // Write Header and table separator.
             _borders.HeaderHorizontal.Write(writer, this, _columns);
 
             // Write table.
-            _body.WritePlaneText(writer, this, _borders);
+            _body.WritePlaneText(writer, this);
 
             // Write bottom border.
             _borders.Bottom.Write(writer, this, _columns);
@@ -57,8 +57,8 @@ namespace FluentTextTable
             {
                 textWriter.Write(" ");
 
-                textWriter.Write(column.Header);
-                textWriter.Write(new string(' ', ((ITextTable<TItem>)this).GetColumnWidth(column) - column.Header.GetWidth() - 2)); // TODO Fix -> column.Header.GetWidth() - 2
+                textWriter.Write(column.Name);
+                textWriter.Write(new string(' ', ((ITextTable<TItem>)this).GetColumnWidth(column) - column.Name.GetWidth() - 2)); // TODO Fix -> column.Header.GetWidth() - 2
 
                 switch (column.HorizontalAlignment)
                 {

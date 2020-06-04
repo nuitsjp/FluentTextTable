@@ -6,48 +6,45 @@ namespace FluentTextTable
 {
     internal class Row<TItem>
     {
-        private readonly Dictionary<Column<TItem>, Cell<TItem>> _cells;
+        private readonly IList<Column<TItem>> _columns;
+
+        private readonly Borders _borders;
+
+        private readonly Dictionary<Column<TItem>, Cell<TItem>> _cells = new Dictionary<Column<TItem>, Cell<TItem>>();
         internal int Height { get; }
 
-        internal static Row<TItem> Create(TItem item, IList<Column<TItem>> columns)
+        internal Row(IList<Column<TItem>> columns, Borders borders, TItem item)
         {
-            var cells = new Dictionary<Column<TItem>, Cell<TItem>>();
-            foreach (var column in columns)
+            _columns = columns;
+            _borders = borders;
+
+            foreach (var column in _columns)
             {
-                cells[column] = new Cell<TItem>(column.GetValue(item), column.Format);
+                _cells[column] = new Cell<TItem>(column, item);
             }
 
-            var height = cells.Values.Max(x => x.Height);
-
-            return new Row<TItem>(cells, height);
-        }
-
-
-        private Row(Dictionary<Column<TItem>, Cell<TItem>> cells, int height)
-        {
-            _cells = cells;
-            Height = height;
+            Height = _cells.Values.Max(x => x.Height);
+            
         }
 
         internal int GetColumnWidth(Column<TItem> column) => _cells[column].Width;
 
-        internal void WritePlanText(TextWriter textWriter, 
-            TextTable<TItem> table, IList<Column<TItem>> columns, Borders borders)
+        internal void WritePlanText(TextWriter textWriter, TextTable<TItem> table)
         {
             // Write line in row.
             for (var lineNumber = 0; lineNumber < Height; lineNumber++)
             {
-                borders.Left.Write(textWriter);
+                _borders.Left.Write(textWriter);
 
-                _cells[columns.First()].WritePlanText(textWriter, table, this, columns.First(), lineNumber);
+                _cells[_columns.First()].WritePlanText(textWriter, table, Height, lineNumber);
                 
-                foreach (var column in columns.Skip(1))
+                foreach (var column in _columns.Skip(1))
                 {
-                    borders.InsideVertical.Write(textWriter);
-                    _cells[column].WritePlanText(textWriter, table, this, column, lineNumber);
+                    _borders.InsideVertical.Write(textWriter);
+                    _cells[column].WritePlanText(textWriter, table,  Height, lineNumber);
                 }
 
-                borders.Right.Write(textWriter);
+                _borders.Right.Write(textWriter);
                 
                 textWriter.WriteLine();
             }

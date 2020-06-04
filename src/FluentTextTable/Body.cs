@@ -8,29 +8,32 @@ namespace FluentTextTable
     {
         private readonly IList<Column<TItem>> _columns;
 
+        private readonly Borders _borders;
+
         private readonly IList<Row<TItem>> _rows = new List<Row<TItem>>();
         
-        internal Body(IList<Column<TItem>> columns, IEnumerable<TItem> items)
+        internal Body(IList<Column<TItem>> columns, Borders borders, IEnumerable<TItem> items)
         {
             _columns = columns;
-            
+            _borders = borders;
+
             foreach (var item in items)
             {
-                _rows.Add(Row<TItem>.Create(item, columns));
+                _rows.Add(new Row<TItem>(columns, borders, item));
             }
         }
         
         internal int GetColumnWidth(Column<TItem> column) => _rows.Max(x => x.GetColumnWidth(column));
 
-        internal void WritePlaneText(TextWriter textWriter, TextTable<TItem> table, Borders borders)
+        internal void WritePlaneText(TextWriter textWriter, TextTable<TItem> table)
         {
             if (_rows.Any())
             {
-                _rows[0].WritePlanText(textWriter, table, _columns, borders);
+                _rows[0].WritePlanText(textWriter, table);
                 for (var i = 1; i < _rows.Count; i++)
                 {
-                    borders.InsideHorizontal.Write(textWriter, table, _columns);
-                    _rows[i].WritePlanText(textWriter, table, _columns, borders);
+                    _borders.InsideHorizontal.Write(textWriter, table, _columns);
+                    _rows[i].WritePlanText(textWriter, table);
                 }
             }
         }

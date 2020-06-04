@@ -14,10 +14,10 @@ namespace FluentTextTable.Test
                 var writer = TextTableWriter<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
-                        .HeaderIs("ID")
+                        .NameIs("ID")
                         .AlignHorizontalTo(HorizontalAlignment.Center);
                     config.AddColumn(x => x.Name)
-                        .HeaderIs("氏名")
+                        .NameIs("氏名")
                         .AlignHorizontalTo(HorizontalAlignment.Left);
                     config.AddColumn(x => x.Birthday)
                         .FormatTo("{0:yyyy/MM/dd}");
@@ -65,7 +65,7 @@ namespace FluentTextTable.Test
                 var writer = TextTableWriter<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
-                        .HeaderIs("ID")
+                        .NameIs("ID")
                         .AlignHorizontalTo(HorizontalAlignment.Right);
                     config.AddColumn(x => x.Name)
                         .AlignVerticalTo(VerticalAlignment.Center);
