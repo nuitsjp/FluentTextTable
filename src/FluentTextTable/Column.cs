@@ -7,7 +7,7 @@ namespace FluentTextTable
     internal class Column<TItem>
     {
         internal string Header { get; }
-        internal int HeaderWidth { get; }
+        private int HeaderWidth { get; }
         internal HorizontalAlignment HorizontalAlignment { get; }
         internal VerticalAlignment VerticalAlignment { get; }
         internal string Format { get; }

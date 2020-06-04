@@ -11,7 +11,7 @@ namespace FluentTextTable.Test
             public void WhenBasic()
             {
 
-                var writer = TextTableWriter<User>.Build(config =>
+                var writer = TextTableWriterWriter<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .HeaderIs("ID")
@@ -43,7 +43,7 @@ namespace FluentTextTable.Test
             public void WhenAutoFormat()
             {
 
-                var writer = TextTableWriter<User>.Build();
+                var writer = TextTableWriterWriter<User>.Build();
                 writer.DataSource = new[]
                 {
                     new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
@@ -66,7 +66,7 @@ namespace FluentTextTable.Test
             public void WhenMultipleLines()
             {
 
-                var writer = TextTableWriter<User>.Build(config =>
+                var writer = TextTableWriterWriter<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .HeaderIs("ID")
@@ -119,7 +119,7 @@ namespace FluentTextTable.Test
             public void WithAttribute()
             {
 
-                var writer = TextTableWriter<UserWithAttribute>.Build();
+                var writer = TextTableWriterWriter<UserWithAttribute>.Build();
                 writer.DataSource = new[]
                 {
                     new UserWithAttribute

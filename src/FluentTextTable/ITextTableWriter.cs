@@ -3,7 +3,7 @@ using System.IO;
 
 namespace FluentTextTable
 {
-    public interface ITextTable<in TItem>
+    public interface ITextTableWriter<in TItem>
     {
         IEnumerable<TItem> DataSource { set; }
 

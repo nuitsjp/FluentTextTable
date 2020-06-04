@@ -7,13 +7,13 @@ using System.Text;
 
 namespace FluentTextTable
 {
-    public class TextTableWriter<TItem> : ITextTable<TItem>
+    public class TextTableWriterWriter<TItem> : ITextTableWriter<TItem>
     {
         private readonly List<Column<TItem>> _columns;
         private readonly Headers<TItem> _headers;
         private readonly Borders _borders;
 
-        internal TextTableWriter(TextTableConfig<TItem> config, List<Column<TItem>> columns)
+        private TextTableWriterWriter(TextTableConfig<TItem> config, List<Column<TItem>> columns)
         {
             _columns = columns;
             _borders = config.BuildBorders();
@@ -49,14 +49,14 @@ namespace FluentTextTable
             new TextTable<TItem>(_columns, _headers, body, _borders).WriteMarkdown(writer);
         }
         
-        public static ITextTable<TItem> Build()
+        public static ITextTableWriter<TItem> Build()
         {
             var config = new TextTableConfig<TItem>();
             AddColumns(config);
-            return new TextTableWriter<TItem>(config, config.FixColumnSpecs());
+            return new TextTableWriterWriter<TItem>(config, config.FixColumnSpecs());
         }
 
-        public static ITextTable<TItem> Build(Action<ITextTableConfig<TItem>> configure)
+        public static ITextTableWriter<TItem> Build(Action<ITextTableConfig<TItem>> configure)
         {
             var config = new TextTableConfig<TItem>();
             configure(config);
@@ -64,7 +64,7 @@ namespace FluentTextTable
             {
                 AddColumns(config);
             }
-            return new TextTableWriter<TItem>(config, config.FixColumnSpecs());
+            return new TextTableWriterWriter<TItem>(config, config.FixColumnSpecs());
         }
         
         private static void AddColumns(TextTableConfig<TItem> config)
