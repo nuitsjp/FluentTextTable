@@ -32,7 +32,7 @@ namespace FluentTextTable
             _rightVerticalBorder = rightVerticalBorder;
         }
 
-        internal void Write<TItem>(TextWriter textWriter, TextTable<TItem> table, IEnumerable<Column<TItem>> columns)
+        internal void Write<TItem>(TextWriter textWriter, ITextTable<TItem> table, IEnumerable<Column<TItem>> columns)
         {
             if(!IsEnable) return;
             

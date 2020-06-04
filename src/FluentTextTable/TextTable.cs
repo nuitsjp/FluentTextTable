@@ -6,7 +6,7 @@ using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
-    internal class TextTable<TItem>
+    internal class TextTable<TItem> : ITextTable<TItem>
     {
         private readonly IList<Column<TItem>> _columns;
         private readonly Headers<TItem> _headers;
@@ -20,8 +20,6 @@ namespace FluentTextTable
             _body = body;
             _borders = borders;
         }
-
-        internal int GetColumnWidth(Column<TItem> column) => column.GetWidth(_body);
 
         internal void WritePlanText(TextWriter writer)
         {
@@ -53,7 +51,7 @@ namespace FluentTextTable
                 textWriter.Write(" ");
 
                 textWriter.Write(column.Header);
-                textWriter.Write(new string(' ', GetColumnWidth(column) - column.Header.GetWidth() - 2)); // TODO Fix -> column.Header.GetWidth() - 2
+                textWriter.Write(new string(' ', ((ITextTable<TItem>)this).GetColumnWidth(column) - column.Header.GetWidth() - 2)); // TODO Fix -> column.Header.GetWidth() - 2
 
                 switch (column.HorizontalAlignment)
                 {
@@ -87,5 +85,8 @@ namespace FluentTextTable
             _body.WriteMarkdown(textWriter, this);
         }
 
+        int ITextTable<TItem>.GetColumnWidth(Column<TItem> column) => GetColumnWidth(column);
+        
+        private int GetColumnWidth(Column<TItem> column) => column.GetWidth(_body);
     }
 }
