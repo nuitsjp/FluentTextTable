@@ -8,4 +8,8 @@
     <PackageReference Include="EastAsianWidthDotNet" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Markdown" />
+  </ItemGroup>
+
 </Project>

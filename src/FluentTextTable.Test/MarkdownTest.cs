@@ -11,7 +11,7 @@ namespace FluentTextTable.Test
             public void WhenBasic()
             {
 
-                var table = TextTableBuilder.Build<User>(config =>
+                var table = TextTable<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .HeaderIs("ID")
@@ -43,7 +43,7 @@ namespace FluentTextTable.Test
             public void WhenAutoFormat()
             {
 
-                var table = TextTableBuilder.Build<User>();
+                var table = TextTable<User>.Build();
                 table.DataSource = new[]
                 {
                     new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
@@ -66,7 +66,7 @@ namespace FluentTextTable.Test
             public void WhenMultipleLines()
             {
 
-                var table = TextTableBuilder.Build<User>(config =>
+                var table = TextTable<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .HeaderIs("ID")
@@ -119,7 +119,7 @@ namespace FluentTextTable.Test
             public void WithAttribute()
             {
 
-                var table = TextTableBuilder.Build<UserWithAttribute>();
+                var table = TextTable<UserWithAttribute>.Build();
                 table.DataSource = new[]
                 {
                     new UserWithAttribute
