@@ -13,18 +13,18 @@ namespace FluentTextTable
             _columns = columns;
         }
 
-        internal void Write(TextWriter writer, Borders borders, Body<TItem> body)
+        internal void Write(TextWriter writer, Borders borders, ITextTable<TItem> table)
         {
             borders.Left.Write(writer);
             
-            _columns[0].WriteHeader(writer, body);
+            _columns[0].WriteHeader(writer, table);
             writer.Write(" ");
 
             for (var i = 1; i < _columns.Count; i++)
             {
                 borders.InsideVertical.Write(writer);
 
-                _columns[i].WriteHeader(writer, body);
+                _columns[i].WriteHeader(writer, table);
                 writer.Write(" ");
             }
             

@@ -28,7 +28,7 @@ namespace FluentTextTable
             _borders.Top.Write(writer, this, _columns);
 
             // Write header.
-            _headers.Write(writer, _borders, _body);
+            _headers.Write(writer, _borders, this);
             
             // Write Header and table separator.
             _borders.HeaderHorizontal.Write(writer, this, _columns);
@@ -86,7 +86,7 @@ namespace FluentTextTable
         }
 
         int ITextTable<TItem>.GetColumnWidth(Column<TItem> column) => GetColumnWidth(column);
-        
-        private int GetColumnWidth(Column<TItem> column) => column.GetWidth(_body);
+
+        private int GetColumnWidth(Column<TItem> column) => Math.Max(column.HeaderWidth, _body.GetWidth(column));
     }
 }

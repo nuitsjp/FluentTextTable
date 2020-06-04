@@ -7,7 +7,7 @@ namespace FluentTextTable
     internal class Column<TItem>
     {
         internal string Header { get; }
-        private int HeaderWidth { get; }
+        internal int HeaderWidth { get; }
         internal HorizontalAlignment HorizontalAlignment { get; }
         internal VerticalAlignment VerticalAlignment { get; }
         internal string Format { get; }
@@ -26,13 +26,13 @@ namespace FluentTextTable
 
         internal object GetValue(TItem item) => _accessor.GetValue(item);
 
-        internal int GetWidth(Body<TItem> body) => Math.Max(HeaderWidth, body.GetWidth(this));
+        //internal int GetWidth(Body<TItem> body) => Math.Max(HeaderWidth, body.GetWidth(this));
         
-        internal void WriteHeader(TextWriter writer, Body<TItem> body)
+        internal void WriteHeader(TextWriter writer, ITextTable<TItem> table)
         {
             writer.Write(" ");
             writer.Write(Header);
-            writer.Write(new string(' ', GetWidth(body) - HeaderWidth));
+            writer.Write(new string(' ', table.GetColumnWidth(this) - HeaderWidth));
         }
 
     }
