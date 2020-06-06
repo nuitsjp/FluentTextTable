@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-
-namespace FluentTextTable
+﻿namespace FluentTextTable
 {
     internal class Borders
     {

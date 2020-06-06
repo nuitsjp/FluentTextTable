@@ -42,12 +42,10 @@ namespace FluentTextTable
 
         private IEnumerable<object> Split(string value)
         {
-            using (var reader = new StringReader(value))
+            using var reader = new StringReader(value);
+            for (var line = reader.ReadLine(); line != null; line = reader.ReadLine())
             {
-                for (var line = reader.ReadLine(); line != null; line = reader.ReadLine())
-                {
-                    yield return line;
-                }
+                yield return line;
             }
         }
 
@@ -114,8 +112,7 @@ namespace FluentTextTable
         
         internal void WriteMarkdown(
             TextWriter textWriter,
-            ITextTable<TItem> table,
-            Column<TItem> column)
+            ITextTable<TItem> table)
         {
             textWriter.Write(' ');
             if (_cellLines.Length == 1)

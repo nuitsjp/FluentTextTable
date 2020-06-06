@@ -53,7 +53,7 @@ namespace FluentTextTable
             textWriter.Write("|");
             foreach (var column in columns)
             {
-                _cells[column].WriteMarkdown(textWriter, table, column);
+                _cells[column].WriteMarkdown(textWriter, table);
             }
             textWriter.WriteLine();
         }

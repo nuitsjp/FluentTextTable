@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using EastAsianWidthDotNet;
-
-namespace FluentTextTable
+﻿namespace FluentTextTable
 {
     public class ColumnConfig<TItem> : IColumnConfig
     {

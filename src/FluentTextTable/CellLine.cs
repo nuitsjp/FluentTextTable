@@ -9,24 +9,24 @@ namespace FluentTextTable
         private const int Margin = 2;
 
         private readonly Column<TItem> _column;
-        private readonly string _value;
 
-        internal string Value => _value;
+        internal string Value { get; }
+
         internal int Width { get; }
 
         internal CellLine(Column<TItem> column, object value)
         {
             _column = column;
-            _value = column?.Format is null
+            Value = column?.Format is null
                 ? value?.ToString() ?? string.Empty
                 : string.Format(column.Format, value);
-            Width = _value.GetWidth() + Margin;
+            Width = Value.GetWidth() + Margin;
         }
 
         internal CellLine(Column<TItem> column)
         {
             _column = column;
-            _value = string.Empty;
+            Value = string.Empty;
             Width = Margin;
         }
 
@@ -58,7 +58,7 @@ namespace FluentTextTable
             }
 
             textWriter.Write(new string(' ', leftPadding));
-            textWriter.Write(_value);
+            textWriter.Write(Value);
             textWriter.Write(new string(' ', rightPadding));
             textWriter.Write(" ");
         }
@@ -89,7 +89,7 @@ namespace FluentTextTable
             }
 
             textWriter.Write(new string(' ', leftPadding));
-            textWriter.Write(_value);
+            textWriter.Write(Value);
             textWriter.Write(new string(' ', rightPadding));
         }
     }
