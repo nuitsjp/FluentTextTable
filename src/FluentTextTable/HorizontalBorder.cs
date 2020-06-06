@@ -40,7 +40,7 @@ namespace FluentTextTable
             var items = new List<string>();
             foreach (var column in columns)
             {
-                items.Add(new string(_lineStyle, table.GetColumnWidth(column)));
+                items.Add(new string(LineStyle, table.GetColumnWidth(column)));
             }
 
             if (_insideVerticalBorder.IsEnable)

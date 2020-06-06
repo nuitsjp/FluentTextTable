@@ -14,7 +14,7 @@ namespace FluentTextTable
         internal string Value => _value;
         internal int Width { get; }
 
-        public CellLine(Column<TItem> column, object value)
+        internal CellLine(Column<TItem> column, object value)
         {
             _column = column;
             _value = column?.Format is null
@@ -23,7 +23,7 @@ namespace FluentTextTable
             Width = _value.GetWidth() + Margin;
         }
 
-        public CellLine(Column<TItem> column)
+        internal CellLine(Column<TItem> column)
         {
             _column = column;
             _value = string.Empty;

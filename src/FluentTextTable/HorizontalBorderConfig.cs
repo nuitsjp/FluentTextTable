@@ -2,32 +2,32 @@
 {
     public class HorizontalBorderConfig : BorderConfigBase, IHorizontalBorderConfig
     {
-        public char LeftEnd { get; private set; } = '+';
-        public char Line { get; private set; } = '-';
-        public char Intersection { get; private set; } = '+';
-        public char RightEnd { get; private set; } = '+';
+        private char _leftEnd = '+';
+        private char _line = '-';
+        private char _intersection = '+';
+        private char _rightEnd = '+';
 
         public IHorizontalBorderConfig LeftEndIs(char c)
         {
-            LeftEnd = c;
+            _leftEnd = c;
             return this;
         }
 
         public IHorizontalBorderConfig LineIs(char c)
         {
-            Line = c;
+            _line = c;
             return this;
         }
 
         public IHorizontalBorderConfig IntersectionIs(char c)
         {
-            Intersection = c;
+            _intersection = c;
             return this;
         }
 
         public IHorizontalBorderConfig RightEndIs(char c)
         {
-            RightEnd = c;
+            _rightEnd = c;
             return this;
         }
 
@@ -38,10 +38,10 @@
         {
             return new HorizontalBorder(
                 IsEnable,
-                Line,
-                LeftEnd,
-                Intersection,
-                RightEnd,
+                _line,
+                _leftEnd,
+                _intersection,
+                _rightEnd,
                 leftVerticalBorder,
                 insideVerticalBorder,
                 rightVerticalBorder);

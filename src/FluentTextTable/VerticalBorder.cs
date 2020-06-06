@@ -10,7 +10,7 @@ namespace FluentTextTable
 
         internal void Write(TextWriter writer)
         {
-            if(IsEnable) writer.Write(_lineStyle);
+            if(IsEnable) writer.Write(LineStyle);
         }
     }
 }

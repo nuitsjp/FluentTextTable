@@ -2,17 +2,17 @@
 {
     public class VerticalBorderConfig : BorderConfigBase, IVerticalBorderConfig
     {
-        public char Line { get; private set; } = '|';
+        private char _line  = '|';
 
         public IVerticalBorderConfig LineIs(char c)
         {
-            Line = c;
+            _line = c;
             return this;
         }
 
         internal VerticalBorder Build()
         {
-            return new VerticalBorder(IsEnable, Line);
+            return new VerticalBorder(IsEnable, _line);
         }
     }
 }

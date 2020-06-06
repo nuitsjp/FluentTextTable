@@ -25,7 +25,7 @@ namespace FluentTextTable.Test
                 var text = writer.ToMarkdown(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
-                        new User {Id = 123, Name = "Steven Paul Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                        new User {Id = 123, Name = "Steven Paul Jobs", Birthday = DateTime.Parse("1955/2/24")}
                     });
 
                 Assert.Equal(
@@ -34,7 +34,7 @@ namespace FluentTextTable.Test
 |:---:|:-----------------|------------|
 |  1  | ビル ゲイツ      | 1955/10/28 |
 | 123 | Steven Paul Jobs | 1955/02/24 |
-", Environment.NewLine + text);
+", $"{Environment.NewLine}{text}");
             }
 
             [Fact]
@@ -45,7 +45,7 @@ namespace FluentTextTable.Test
                 var text = writer.ToMarkdown(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
-                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
                     });
 
                 Assert.Equal(
@@ -54,7 +54,7 @@ namespace FluentTextTable.Test
 |----|-------------|---------|-------------|--------------------|
 | 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
 | 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
-", Environment.NewLine + text);
+", $"{Environment.NewLine}{text}");
             }
 
 
@@ -88,7 +88,7 @@ namespace FluentTextTable.Test
                         Birthday = DateTime.Parse("1955/10/28"),
                         Parents = $"Bill Gates Sr.{Environment.NewLine}Mary Maxwell Gates",
                         Occupations = new[] {"Software developer", "Investor", "Entrepreneur", "Philanthropist"}
-                    },
+                    }
                 });
 
                 Assert.Equal(
@@ -96,7 +96,7 @@ namespace FluentTextTable.Test
 | ID | Name       | Birthday   | Parents              | Occupations        |
 |---:|------------|------------|----------------------|:------------------:|
 |  1 | Bill Gates | 1955/10/28 | - Bill Gates Sr.<br>- Mary Maxwell Gates | Software developer<br>Investor<br>Entrepreneur<br>Philanthropist |
-", Environment.NewLine + text);
+", $"{Environment.NewLine}{text}");
             }
 
             private class User
@@ -123,7 +123,7 @@ namespace FluentTextTable.Test
                         Birthday = DateTime.Parse("1955/10/28"),
                         Parents = $"Bill Gates Sr.{Environment.NewLine}Mary Maxwell Gates",
                         Occupations = new []{"Software developer", "Investor", "Entrepreneur", "Philanthropist"}
-                    },
+                    }
                 });
 
                 Assert.Equal(
@@ -131,7 +131,7 @@ namespace FluentTextTable.Test
 | ID | Name       | Birthday   | Parents              | Occupations        |
 |---:|------------|------------|----------------------|:------------------:|
 |  1 | Bill Gates | 1955/10/28 | - Bill Gates Sr.<br>- Mary Maxwell Gates | Software developer<br>Investor<br>Entrepreneur<br>Philanthropist |
-", Environment.NewLine + text);
+", $"{Environment.NewLine}{text}");
             }
 
             private class UserWithAttribute

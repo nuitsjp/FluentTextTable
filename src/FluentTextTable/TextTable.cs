@@ -30,26 +30,15 @@ namespace FluentTextTable
 
         internal void WritePlanText(TextWriter writer)
         {
-
-            // Write top border.
             _borders.Top.Write(writer, this, _columns);
-
-            // Write header.
             _headers.Write(writer, this);
-            
-            // Write Header and table separator.
             _borders.HeaderHorizontal.Write(writer, this, _columns);
-
-            // Write table.
             _body.WritePlaneText(writer, this);
-
-            // Write bottom border.
             _borders.Bottom.Write(writer, this, _columns);
         }
 
         internal void WriteMarkdown(TextWriter textWriter)
         {
-            // Write header and separator.
             var headerSeparator = new StringBuilder();
             textWriter.Write("|");
             headerSeparator.Append("|");

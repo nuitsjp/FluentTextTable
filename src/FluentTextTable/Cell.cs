@@ -53,7 +53,7 @@ namespace FluentTextTable
 
         internal void WritePlanText(
             TextWriter textWriter,
-            TextTable<TItem> table,
+            ITextTable<TItem> table,
             int rowHeight,
             int lineNumber)
         {
@@ -114,7 +114,7 @@ namespace FluentTextTable
         
         internal void WriteMarkdown(
             TextWriter textWriter,
-            TextTable<TItem> table,
+            ITextTable<TItem> table,
             Column<TItem> column)
         {
             textWriter.Write(' ');

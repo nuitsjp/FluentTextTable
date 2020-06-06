@@ -9,7 +9,7 @@ namespace FluentTextTable
     public class TextTableConfig<TItem> : ITextTableConfig<TItem>
     {
         private readonly BordersConfig _borders = new BordersConfig();
-        internal List<ColumnConfig<TItem>> Columns { get; } = new List<ColumnConfig<TItem>>();
+        private readonly List<ColumnConfig<TItem>> _columns  = new List<ColumnConfig<TItem>>();
 
         public bool AutoGenerateColumns { get; set; } = false;
 
@@ -19,21 +19,21 @@ namespace FluentTextTable
         {
             var memberAccessor = new MemberAccessor<TItem>(getMemberExpression);
             var column = new ColumnConfig<TItem>(memberAccessor);
-            Columns.Add(column);
+            _columns.Add(column);
 
             return column;
         }
 
-        public IColumnConfig AddColumn(MemberInfo memberInfo)
+        internal IColumnConfig AddColumn(MemberInfo memberInfo)
         {
             var memberAccessor = new MemberAccessor<TItem>(memberInfo);
             var column = new ColumnConfig<TItem>(memberAccessor);
-            Columns.Add(column);
+            _columns.Add(column);
 
             return column;
         }
 
-        internal List<Column<TItem>> FixColumnSpecs() => Columns.Select(x => x.Build()).ToList();
+        internal List<Column<TItem>> FixColumnSpecs() => _columns.Select(x => x.Build()).ToList();
         internal Borders BuildBorders() => _borders.Build();
 
     }
