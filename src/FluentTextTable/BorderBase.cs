@@ -9,6 +9,6 @@
         }
 
         internal bool IsEnable { get; }
-        protected char LineStyle { get; }
+        internal char LineStyle { get; }
     }
 }

@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
-    public class TextTableWriter<TItem> : ITextTableWriter<TItem>
+    public class MarkdownTableWriter<TItem> : ITextTableWriter<TItem>
     {
         private readonly List<Column<TItem>> _columns;
         private readonly Headers<TItem> _headers;
         private readonly Borders _borders;
 
-        private TextTableWriter(TextTableConfig<TItem> config, List<Column<TItem>> columns)
+        private MarkdownTableWriter(TextTableConfig<TItem> config, List<Column<TItem>> columns)
         {
             _columns = columns;
             _borders = config.BuildBorders();
@@ -30,75 +32,61 @@ namespace FluentTextTable
         {
             var body = new Body<TItem>(_columns, _borders, items);
             var table = new TextTable<TItem>(_columns, _headers, body, _borders);
-            
-            WriteHorizontalBorder(writer, _borders.Top, table);
-            WriteHeader(writer, table);
-            WriteHorizontalBorder(writer, _borders.HeaderHorizontal, table);
-            WriteBody(writer, table);
-            WriteHorizontalBorder(writer, _borders.Bottom, table);
+            Write(writer, table, body);
         }
-        
-        private void WriteHorizontalBorder(TextWriter textWriter, HorizontalBorder border, ITextTable<TItem> table)
+
+        private void Write(TextWriter textWriter, ITextTable<TItem> table, Body<TItem> body)
         {
-            if(!border.IsEnable) return;
-            
-            if(_borders.Left.IsEnable) textWriter.Write(border.LeftStyle);
-            var items = new List<string>();
+            var headerSeparator = new StringBuilder();
+            textWriter.Write("|");
+            headerSeparator.Append("|");
             foreach (var column in _columns)
             {
-                items.Add(new string(border.LineStyle, table.GetColumnWidth(column)));
-            }
+                textWriter.Write(" ");
 
-            textWriter.Write(_borders.InsideVertical.IsEnable
-                ? string.Join(border.IntersectionStyle.ToString(), items)
-                : string.Join(string.Empty, items));
+                textWriter.Write(column.Name);
+                textWriter.Write(new string(' ', table.GetColumnWidth(column) - column.Name.GetWidth() - 2)); // TODO Fix -> column.Header.GetWidth() - 2
 
-            if(_borders.Right.IsEnable) textWriter.Write(border.RightStyle);
-            
-            textWriter.WriteLine();
-        }
-
-        private void WriteHeader(TextWriter writer, ITextTable<TItem> table)
-        {
-            _borders.Left.Write(writer);
-            
-            _columns[0].WriteHeader(writer, table);
-            writer.Write(" ");
-
-            for (var i = 1; i < _columns.Count; i++)
-            {
-                _borders.InsideVertical.Write(writer);
-
-                _columns[i].WriteHeader(writer, table);
-                writer.Write(" ");
-            }
-            
-            _borders.Right.Write(writer);
-
-            writer.WriteLine();
-        }
-
-        private void WriteBody(TextWriter textWriter, TextTable<TItem> table)
-        {
-            if (table.Body.Rows.Any())
-            {
-                table.Body.Rows[0].WritePlanText(textWriter, table);
-                for (var i = 1; i < table.Body.Rows.Count; i++)
+                switch (column.HorizontalAlignment)
                 {
-                    WriteHorizontalBorder(textWriter, _borders.InsideHorizontal, table);
-                    table.Body.Rows[i].WritePlanText(textWriter, table);
+                    case HorizontalAlignment.Default:
+                        headerSeparator.Append(new string('-', table.GetColumnWidth(column)));
+                        break;
+                    case HorizontalAlignment.Left:
+                        headerSeparator.Append(':');
+                        headerSeparator.Append(new string('-', table.GetColumnWidth(column) - 1));
+                        break;
+                    case HorizontalAlignment.Center:
+                        headerSeparator.Append(':');
+                        headerSeparator.Append(new string('-', table.GetColumnWidth(column) - 2));
+                        headerSeparator.Append(':');
+                        break;
+                    case HorizontalAlignment.Right:
+                        headerSeparator.Append(new string('-', table.GetColumnWidth(column) - 1));
+                        headerSeparator.Append(':');
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
+
+                textWriter.Write(" |");
+                headerSeparator.Append("|");
             }
+            textWriter.WriteLine();
+            textWriter.WriteLine(headerSeparator.ToString());
+
+            // Write table.
+            body.WriteMarkdown(textWriter, (TextTable<TItem>)table);
         }
 
-        public static TextTableWriter<TItem> Build()
+        public static ITextTableWriter<TItem> Build()
         {
             var config = new TextTableConfig<TItem>();
             AddColumns(config);
-            return new TextTableWriter<TItem>(config, config.FixColumnSpecs());
+            return new MarkdownTableWriter<TItem>(config, config.FixColumnSpecs());
         }
 
-        public static TextTableWriter<TItem> Build(Action<ITextTableConfig<TItem>> configure)
+        public static ITextTableWriter<TItem> Build(Action<ITextTableConfig<TItem>> configure)
         {
             var config = new TextTableConfig<TItem>();
             configure(config);
@@ -106,7 +94,7 @@ namespace FluentTextTable
             {
                 AddColumns(config);
             }
-            return new TextTableWriter<TItem>(config, config.FixColumnSpecs());
+            return new MarkdownTableWriter<TItem>(config, config.FixColumnSpecs());
         }
         
         private static void AddColumns(TextTableConfig<TItem> config)

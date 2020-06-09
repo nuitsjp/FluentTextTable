@@ -16,7 +16,7 @@ namespace FluentTextTable.Test
             public void WhenBasic()
             {
 
-                var writer = TextTableWriter<User>.Build(config =>
+                var writer = MarkdownTableWriter<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .NameIs("ID")
@@ -27,7 +27,7 @@ namespace FluentTextTable.Test
                     config.AddColumn(x => x.Birthday)
                         .FormatTo("{0:yyyy/MM/dd}");
                 });
-                var text = writer.ToMarkdown(new[]
+                var text = writer.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 123, Name = "Steven Paul Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -46,8 +46,8 @@ namespace FluentTextTable.Test
             public void WhenAutoFormat()
             {
 
-                var writer = TextTableWriter<User>.Build();
-                var text = writer.ToMarkdown(new[]
+                var writer = MarkdownTableWriter<User>.Build();
+                var text = writer.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -67,7 +67,7 @@ namespace FluentTextTable.Test
             public void WhenMultipleLines()
             {
 
-                var writer = TextTableWriter<User>.Build(config =>
+                var writer = MarkdownTableWriter<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .NameIs("ID")
@@ -84,7 +84,7 @@ namespace FluentTextTable.Test
                     config.AddColumn(x => x.Occupations)
                         .AlignHorizontalTo(HorizontalAlignment.Center);
                 });
-                var text = writer.ToMarkdown(new[]
+                var text = writer.ToString(new[]
                 {
                     new User
                     {
@@ -118,8 +118,8 @@ namespace FluentTextTable.Test
             public void WithAttribute()
             {
 
-                var writer = TextTableWriter<UserWithAttribute>.Build();
-                var text = writer.ToMarkdown(new[]
+                var writer = MarkdownTableWriter<UserWithAttribute>.Build();
+                var text = writer.ToString(new[]
                 {
                     new UserWithAttribute
                     {

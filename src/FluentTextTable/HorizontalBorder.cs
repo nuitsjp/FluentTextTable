@@ -3,11 +3,11 @@ using System.IO;
 
 namespace FluentTextTable
 {
-    public class HorizontalBorder : BorderBase
+    internal class HorizontalBorder : BorderBase
     {
-        private readonly char _leftStyle;
-        private readonly char _intersectionStyle;
-        private readonly char _rightStyle;
+        internal char LeftStyle { get; }
+        internal char IntersectionStyle { get; }
+        internal char RightStyle { get; }
         private readonly VerticalBorder _leftVerticalBorder;
         private readonly VerticalBorder _insideVerticalBorder;
         private readonly VerticalBorder _rightVerticalBorder;
@@ -23,9 +23,9 @@ namespace FluentTextTable
             VerticalBorder rightVerticalBorder) 
             : base(isEnable, lineStyle)
         {
-            _leftStyle = leftStyle;
-            _intersectionStyle = intersectionStyle;
-            _rightStyle = rightStyle;
+            LeftStyle = leftStyle;
+            IntersectionStyle = intersectionStyle;
+            RightStyle = rightStyle;
             _leftVerticalBorder = leftVerticalBorder;
             _insideVerticalBorder = insideVerticalBorder;
             _rightVerticalBorder = rightVerticalBorder;
@@ -35,7 +35,7 @@ namespace FluentTextTable
         {
             if(!IsEnable) return;
             
-            if(_leftVerticalBorder.IsEnable) textWriter.Write(_leftStyle);
+            if(_leftVerticalBorder.IsEnable) textWriter.Write(LeftStyle);
             var items = new List<string>();
             foreach (var column in columns)
             {
@@ -43,10 +43,10 @@ namespace FluentTextTable
             }
 
             textWriter.Write(_insideVerticalBorder.IsEnable
-                ? string.Join(_intersectionStyle.ToString(), items)
+                ? string.Join(IntersectionStyle.ToString(), items)
                 : string.Join(string.Empty, items));
 
-            if(_rightVerticalBorder.IsEnable) textWriter.Write(_rightStyle);
+            if(_rightVerticalBorder.IsEnable) textWriter.Write(RightStyle);
             
             textWriter.WriteLine();
         }

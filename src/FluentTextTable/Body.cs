@@ -10,7 +10,9 @@ namespace FluentTextTable
 
         private readonly Borders _borders;
 
-        private readonly IList<Row<TItem>> _rows = new List<Row<TItem>>();
+        private readonly List<Row<TItem>> _rows = new List<Row<TItem>>();
+
+        internal IReadOnlyList<Row<TItem>> Rows => _rows;
         
         internal Body(IList<Column<TItem>> columns, Borders borders, IEnumerable<TItem> items)
         {
