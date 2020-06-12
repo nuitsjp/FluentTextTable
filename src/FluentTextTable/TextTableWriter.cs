@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using FluentTextTable.PlanText;
 
 namespace FluentTextTable
 {
     public class TextTableWriter<TItem> : ITextTableWriter<TItem>
     {
         private readonly List<Column<TItem>> _columns;
-        private readonly Headers<TItem> _headers;
+        private readonly Header<TItem> _header;
         private readonly Borders _borders;
 
         private TextTableWriter(TextTableConfig<TItem> config, List<Column<TItem>> columns)
         {
             _columns = columns;
             _borders = config.BuildBorders();
-            _headers = new Headers<TItem>(_columns, _borders);
+            _header = new Header<TItem>(_columns, _borders);
         }
 
         public string ToString(IEnumerable<TItem> items)
@@ -28,69 +29,20 @@ namespace FluentTextTable
 
         public void Write(TextWriter writer, IEnumerable<TItem> items)
         {
-            var body = new Body<TItem>(_columns, _borders, items);
-            var table = new TextTable<TItem>(_columns, _headers, body, _borders);
+            var rows = new List<Row<TItem>>();
+            foreach (var item in items)
+            {
+                rows.Add(new Row<TItem>(_columns, _borders, item));
+            }
+            var layout = new TextTableLayout<TItem>(_borders, _columns, rows);
             
-            WriteHorizontalBorder(writer, _borders.Top, table);
-            WriteHeader(writer, table);
-            WriteHorizontalBorder(writer, _borders.HeaderHorizontal, table);
-            WriteBody(writer, table);
-            WriteHorizontalBorder(writer, _borders.Bottom, table);
+            _borders.Top.Write(writer, layout);
+            _header.Write(writer, layout);
+            _borders.HeaderHorizontal.Write(writer, layout);
+            rows.Write(writer, layout);
+            _borders.Bottom.Write(writer, layout);
         }
         
-        private void WriteHorizontalBorder(TextWriter textWriter, HorizontalBorder border, ITextTable<TItem> table)
-        {
-            if(!border.IsEnable) return;
-            
-            if(_borders.Left.IsEnable) textWriter.Write(border.LeftStyle);
-            var items = new List<string>();
-            foreach (var column in _columns)
-            {
-                items.Add(new string(border.LineStyle, table.GetColumnWidth(column)));
-            }
-
-            textWriter.Write(_borders.InsideVertical.IsEnable
-                ? string.Join(border.IntersectionStyle.ToString(), items)
-                : string.Join(string.Empty, items));
-
-            if(_borders.Right.IsEnable) textWriter.Write(border.RightStyle);
-            
-            textWriter.WriteLine();
-        }
-
-        private void WriteHeader(TextWriter writer, ITextTable<TItem> table)
-        {
-            _borders.Left.Write(writer);
-            
-            _columns[0].WriteHeader(writer, table);
-            writer.Write(" ");
-
-            for (var i = 1; i < _columns.Count; i++)
-            {
-                _borders.InsideVertical.Write(writer);
-
-                _columns[i].WriteHeader(writer, table);
-                writer.Write(" ");
-            }
-            
-            _borders.Right.Write(writer);
-
-            writer.WriteLine();
-        }
-
-        private void WriteBody(TextWriter textWriter, TextTable<TItem> table)
-        {
-            if (table.Body.Rows.Any())
-            {
-                table.Body.Rows[0].WritePlanText(textWriter, table);
-                for (var i = 1; i < table.Body.Rows.Count; i++)
-                {
-                    WriteHorizontalBorder(textWriter, _borders.InsideHorizontal, table);
-                    table.Body.Rows[i].WritePlanText(textWriter, table);
-                }
-            }
-        }
-
         public static TextTableWriter<TItem> Build()
         {
             var config = new TextTableConfig<TItem>();

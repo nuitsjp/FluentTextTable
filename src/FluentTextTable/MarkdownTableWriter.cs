@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using EastAsianWidthDotNet;
+using FluentTextTable.Markdown;
 
 namespace FluentTextTable
 {
     public class MarkdownTableWriter<TItem> : ITextTableWriter<TItem>
     {
         private readonly List<Column<TItem>> _columns;
-        private readonly Headers<TItem> _headers;
+        private readonly Header<TItem> _header;
         private readonly Borders _borders;
 
         private MarkdownTableWriter(TextTableConfig<TItem> config, List<Column<TItem>> columns)
         {
             _columns = columns;
             _borders = config.BuildBorders();
-            _headers = new Headers<TItem>(_columns, _borders);
+            _header = new Header<TItem>(_columns, _borders);
         }
 
         public string ToString(IEnumerable<TItem> items)
@@ -28,55 +27,18 @@ namespace FluentTextTable
             return writer.ToString();
         }
 
-        public void Write(TextWriter writer, IEnumerable<TItem> items)
+        public void Write(TextWriter textWriter, IEnumerable<TItem> items)
         {
-            var body = new Body<TItem>(_columns, _borders, items);
-            var table = new TextTable<TItem>(_columns, _headers, body, _borders);
-            Write(writer, table, body);
-        }
-
-        private void Write(TextWriter textWriter, ITextTable<TItem> table, Body<TItem> body)
-        {
-            var headerSeparator = new StringBuilder();
-            textWriter.Write("|");
-            headerSeparator.Append("|");
-            foreach (var column in _columns)
+            var rows = new List<Row<TItem>>();
+            foreach (var item in items)
             {
-                textWriter.Write(" ");
-
-                textWriter.Write(column.Name);
-                textWriter.Write(new string(' ', table.GetColumnWidth(column) - column.Name.GetWidth() - 2)); // TODO Fix -> column.Header.GetWidth() - 2
-
-                switch (column.HorizontalAlignment)
-                {
-                    case HorizontalAlignment.Default:
-                        headerSeparator.Append(new string('-', table.GetColumnWidth(column)));
-                        break;
-                    case HorizontalAlignment.Left:
-                        headerSeparator.Append(':');
-                        headerSeparator.Append(new string('-', table.GetColumnWidth(column) - 1));
-                        break;
-                    case HorizontalAlignment.Center:
-                        headerSeparator.Append(':');
-                        headerSeparator.Append(new string('-', table.GetColumnWidth(column) - 2));
-                        headerSeparator.Append(':');
-                        break;
-                    case HorizontalAlignment.Right:
-                        headerSeparator.Append(new string('-', table.GetColumnWidth(column) - 1));
-                        headerSeparator.Append(':');
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                textWriter.Write(" |");
-                headerSeparator.Append("|");
+                rows.Add(new Row<TItem>(_columns, _borders, item));
             }
-            textWriter.WriteLine();
-            textWriter.WriteLine(headerSeparator.ToString());
+            var layout = new TextTableLayout<TItem>(_borders, _columns, rows);
 
+            _header.Write(textWriter, layout);
             // Write table.
-            body.WriteMarkdown(textWriter, (TextTable<TItem>)table);
+            rows.Write(textWriter, layout);
         }
 
         public static ITextTableWriter<TItem> Build()

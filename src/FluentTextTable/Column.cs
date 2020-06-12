@@ -29,13 +29,5 @@ namespace FluentTextTable
         }
 
         internal object GetValue(TItem item) => _accessor.GetValue(item);
-        
-        internal void WriteHeader(TextWriter writer, ITextTable<TItem> table)
-        {
-            writer.Write(" ");
-            writer.Write(Name);
-            writer.Write(new string(' ', table.GetColumnWidth(this) - HeaderWidth));
-        }
-
     }
 }

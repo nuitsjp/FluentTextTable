@@ -8,9 +8,9 @@ namespace FluentTextTable
         internal char LeftStyle { get; }
         internal char IntersectionStyle { get; }
         internal char RightStyle { get; }
-        private readonly VerticalBorder _leftVerticalBorder;
-        private readonly VerticalBorder _insideVerticalBorder;
-        private readonly VerticalBorder _rightVerticalBorder;
+        internal VerticalBorder LeftVerticalBorder { get; }
+        internal VerticalBorder InsideVerticalBorder { get; }
+        internal VerticalBorder RightVerticalBorder { get; }
 
         internal HorizontalBorder(
             bool isEnable, 
@@ -26,30 +26,9 @@ namespace FluentTextTable
             LeftStyle = leftStyle;
             IntersectionStyle = intersectionStyle;
             RightStyle = rightStyle;
-            _leftVerticalBorder = leftVerticalBorder;
-            _insideVerticalBorder = insideVerticalBorder;
-            _rightVerticalBorder = rightVerticalBorder;
+            LeftVerticalBorder = leftVerticalBorder;
+            InsideVerticalBorder = insideVerticalBorder;
+            RightVerticalBorder = rightVerticalBorder;
         }
-
-        internal void Write<TItem>(TextWriter textWriter, ITextTable<TItem> table, IEnumerable<Column<TItem>> columns)
-        {
-            if(!IsEnable) return;
-            
-            if(_leftVerticalBorder.IsEnable) textWriter.Write(LeftStyle);
-            var items = new List<string>();
-            foreach (var column in columns)
-            {
-                items.Add(new string(LineStyle, table.GetColumnWidth(column)));
-            }
-
-            textWriter.Write(_insideVerticalBorder.IsEnable
-                ? string.Join(IntersectionStyle.ToString(), items)
-                : string.Join(string.Empty, items));
-
-            if(_rightVerticalBorder.IsEnable) textWriter.Write(RightStyle);
-            
-            textWriter.WriteLine();
-        }
-
     }
 }

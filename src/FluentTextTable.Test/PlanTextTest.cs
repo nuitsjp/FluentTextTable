@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentTextTable.PlanText;
 using Xunit;
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable NotAccessedField.Local
@@ -15,15 +16,6 @@ namespace FluentTextTable.Test
             [Fact]
             public void WhenBasic()
             {
-                // var table = TextTableBuilder.Build<User>(config =>
-                // {
-                //
-                // });
-                // using (var writer = new TextTableWriter(table, new TextWriter()))
-                // {
-                //     writer.Write(items);
-                // }
-
                 var writer = TextTableWriter<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
