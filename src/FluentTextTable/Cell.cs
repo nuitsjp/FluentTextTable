@@ -7,15 +7,11 @@ namespace FluentTextTable
 {
     internal class Cell<TItem>
     {
-
-        private readonly Column<TItem> _column;
         private readonly CellLine<TItem>[] _cellLines;
        
         internal Cell(Column<TItem> column, TItem item)
         {
-            _column = column;
-            
-            var value = _column.GetValue(item);
+            var value = column.GetValue(item);
             IEnumerable<object> values;
             if (value is string stringValue)
             {
@@ -30,7 +26,7 @@ namespace FluentTextTable
                 values = new[] {value};
             }
 
-            _cellLines = values.Select(x => new CellLine<TItem>(_column, x)).ToArray();
+            _cellLines = values.Select(x => new CellLine<TItem>(column, x)).ToArray();
 
             Width = _cellLines.Max(x =>x.Width);
         }
