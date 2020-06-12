@@ -7,10 +7,5 @@ namespace FluentTextTable
         internal VerticalBorder(bool isEnable, char lineStyle) : base(isEnable, lineStyle)
         {
         }
-
-        internal void Write(TextWriter writer)
-        {
-            if(IsEnable) writer.Write(LineStyle);
-        }
     }
 }
