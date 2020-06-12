@@ -36,7 +36,7 @@ namespace FluentTextTable.Markdown
         }
 
         
-        internal static void Write<TItem>(this Header<TItem> header, TextWriter textWriter, ITextTableLayout<TItem> layout)
+        internal static void WriteHeader<TItem>(this ITextTableLayout<TItem> layout, TextWriter textWriter)
         {
             var headerSeparator = new StringBuilder();
             textWriter.Write("|");

@@ -10,14 +10,12 @@ namespace FluentTextTable
     public class TextTableWriter<TItem> : ITextTableWriter<TItem>
     {
         private readonly List<Column<TItem>> _columns;
-        private readonly Header<TItem> _header;
         private readonly Borders _borders;
 
         private TextTableWriter(TextTableConfig<TItem> config, List<Column<TItem>> columns)
         {
             _columns = columns;
             _borders = config.BuildBorders();
-            _header = new Header<TItem>(_columns, _borders);
         }
 
         public string ToString(IEnumerable<TItem> items)
@@ -37,7 +35,7 @@ namespace FluentTextTable
             var layout = new TextTableLayout<TItem>(_borders, _columns, rows);
             
             _borders.Top.Write(writer, layout);
-            _header.Write(writer, layout);
+            layout.WriteHeader(writer);
             _borders.HeaderHorizontal.Write(writer, layout);
             rows.Write(writer, layout);
             _borders.Bottom.Write(writer, layout);

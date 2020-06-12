@@ -10,14 +10,12 @@ namespace FluentTextTable
     public class MarkdownTableWriter<TItem> : ITextTableWriter<TItem>
     {
         private readonly List<Column<TItem>> _columns;
-        private readonly Header<TItem> _header;
         private readonly Borders _borders;
 
         private MarkdownTableWriter(TextTableConfig<TItem> config, List<Column<TItem>> columns)
         {
             _columns = columns;
             _borders = config.BuildBorders();
-            _header = new Header<TItem>(_columns, _borders);
         }
 
         public string ToString(IEnumerable<TItem> items)
@@ -36,7 +34,7 @@ namespace FluentTextTable
             }
             var layout = new TextTableLayout<TItem>(_borders, _columns, rows);
 
-            _header.Write(textWriter, layout);
+            layout.WriteHeader(textWriter);
             // Write table.
             rows.Write(textWriter, layout);
         }

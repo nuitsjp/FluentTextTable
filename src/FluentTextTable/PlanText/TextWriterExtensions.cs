@@ -33,8 +33,7 @@ namespace FluentTextTable.PlanText
             if(border.IsEnable) writer.Write(border.LineStyle);
         }
 
-        
-        internal static void Write<TItem>(this Header<TItem> header, TextWriter writer, ITextTableLayout<TItem> layout)
+        internal static void WriteHeader<TItem>(this ITextTableLayout<TItem> layout, TextWriter writer)
         {
             layout.Borders.Left.Write(writer);
 
