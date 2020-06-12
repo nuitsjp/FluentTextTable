@@ -3,17 +3,17 @@ using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
-    internal class Column<TItem>
+    public class Column<TItem>
     {
-        internal string Name { get; }
-        internal int HeaderWidth { get; }
-        internal HorizontalAlignment HorizontalAlignment { get; }
-        internal VerticalAlignment VerticalAlignment { get; }
-        internal string Format { get; }
+        public string Name { get; }
+        public int HeaderWidth { get; }
+        public HorizontalAlignment HorizontalAlignment { get; }
+        public VerticalAlignment VerticalAlignment { get; }
+        public string Format { get; }
 
         private readonly MemberAccessor<TItem> _accessor;
 
-        public Column(
+        internal Column(
             string name,
             HorizontalAlignment horizontalAlignment,
             VerticalAlignment verticalAlignment,
@@ -28,6 +28,6 @@ namespace FluentTextTable
             _accessor = accessor;
         }
 
-        internal object GetValue(TItem item) => _accessor.GetValue(item);
+        public object GetValue(TItem item) => _accessor.GetValue(item);
     }
 }

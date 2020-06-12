@@ -1,6 +1,6 @@
 ﻿namespace FluentTextTable
 {
-    internal class Borders
+    public class Borders
     {
         internal Borders(HorizontalBorder top, HorizontalBorder headerHorizontal, HorizontalBorder insideHorizontal, HorizontalBorder bottom, VerticalBorder left, VerticalBorder insideVertical, VerticalBorder right)
         {
@@ -13,12 +13,12 @@
             Right = right;
         }
 
-        internal HorizontalBorder Top { get; }
-        internal HorizontalBorder HeaderHorizontal { get; }
-        internal HorizontalBorder InsideHorizontal { get; }
-        internal HorizontalBorder Bottom { get; }
-        internal VerticalBorder Left { get; }
-        internal VerticalBorder InsideVertical { get; }
-        internal VerticalBorder Right { get; }
+        public HorizontalBorder Top { get; }
+        public HorizontalBorder HeaderHorizontal { get; }
+        public HorizontalBorder InsideHorizontal { get; }
+        public HorizontalBorder Bottom { get; }
+        public VerticalBorder Left { get; }
+        public VerticalBorder InsideVertical { get; }
+        public VerticalBorder Right { get; }
     }
 }

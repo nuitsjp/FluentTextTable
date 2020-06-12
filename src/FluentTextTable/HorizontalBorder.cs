@@ -3,14 +3,14 @@ using System.IO;
 
 namespace FluentTextTable
 {
-    internal class HorizontalBorder : BorderBase
+    public class HorizontalBorder : BorderBase
     {
-        internal char LeftStyle { get; }
-        internal char IntersectionStyle { get; }
-        internal char RightStyle { get; }
-        internal VerticalBorder LeftVerticalBorder { get; }
-        internal VerticalBorder InsideVerticalBorder { get; }
-        internal VerticalBorder RightVerticalBorder { get; }
+        public char LeftStyle { get; }
+        public char IntersectionStyle { get; }
+        public char RightStyle { get; }
+        public VerticalBorder LeftVerticalBorder { get; }
+        public VerticalBorder InsideVerticalBorder { get; }
+        public VerticalBorder RightVerticalBorder { get; }
 
         internal HorizontalBorder(
             bool isEnable, 

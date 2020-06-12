@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    internal class Cell<TItem>
+    public class Cell<TItem>
     {
         private readonly CellLine<TItem>[] _cellLines;
        
@@ -31,12 +31,12 @@ namespace FluentTextTable
             Width = _cellLines.Max(x =>x.Width);
         }
 
-        internal int Width { get; }
-        internal int Height => _cellLines.Length;
+        public int Width { get; }
+        public int Height => _cellLines.Length;
 
-        internal CellLine<TItem> GetCellLine(int lineNumber) => _cellLines[lineNumber];
+        public CellLine<TItem> GetCellLine(int lineNumber) => _cellLines[lineNumber];
 
-        internal IEnumerable<CellLine<TItem>> GetCellLines() => _cellLines;
+        public IEnumerable<CellLine<TItem>> GetCellLines() => _cellLines;
 
         private IEnumerable<object> Split(string value)
         {

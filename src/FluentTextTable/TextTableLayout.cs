@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    internal class TextTableLayout<TItem> : ITextTableLayout<TItem>
+    public class TextTableLayout<TItem> : ITextTableLayout<TItem>
     {
         private readonly Dictionary<Column<TItem>, int> _columnWidths = new Dictionary<Column<TItem>, int>();
 

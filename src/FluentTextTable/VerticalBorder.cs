@@ -2,7 +2,7 @@
 
 namespace FluentTextTable
 {
-    internal class VerticalBorder : BorderBase
+    public class VerticalBorder : BorderBase
     {
         internal VerticalBorder(bool isEnable, char lineStyle) : base(isEnable, lineStyle)
         {

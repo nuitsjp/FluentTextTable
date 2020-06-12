@@ -2,7 +2,7 @@
 
 namespace FluentTextTable
 {
-    internal interface ITextTableLayout<TItem>
+    public interface ITextTableLayout<TItem>
     {
         Borders Borders { get; }
         IReadOnlyList<Column<TItem>> Columns { get; }

@@ -2,13 +2,13 @@
 {
     public class BorderBase
     {
-        internal BorderBase(bool isEnable, char lineStyle)
+        protected BorderBase(bool isEnable, char lineStyle)
         {
             IsEnable = isEnable;
             LineStyle = lineStyle;
         }
 
-        internal bool IsEnable { get; }
-        internal char LineStyle { get; }
+        public bool IsEnable { get; }
+        public char LineStyle { get; }
     }
 }
