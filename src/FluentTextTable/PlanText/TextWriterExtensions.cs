@@ -119,7 +119,7 @@ namespace FluentTextTable.PlanText
             {
                 return lineNumber < cell.Height
                     ? cell.GetCellLine(lineNumber)
-                    : layout.BlankCellLines[column];
+                    : CellLine<TItem>.BlankCellLine;
             }
 
             CellLine<TItem> GetCenterCellLine()
@@ -128,12 +128,12 @@ namespace FluentTextTable.PlanText
                 var localLineNumber = lineNumber - indent;
                 if (localLineNumber < 0)
                 {
-                    return layout.BlankCellLines[column];
+                    return CellLine<TItem>.BlankCellLine;
                 }
 
                 if (cell.Height <= localLineNumber)
                 {
-                    return layout.BlankCellLines[column];
+                    return CellLine<TItem>.BlankCellLine;
                 }
 
                 return cell.GetCellLine(localLineNumber);
@@ -145,7 +145,7 @@ namespace FluentTextTable.PlanText
                 var localLineNumber = lineNumber - indent;
                 if (localLineNumber < 0)
                 {
-                    return layout.BlankCellLines[column];
+                    return CellLine<TItem>.BlankCellLine;
                 }
 
                 return cell.GetCellLine(localLineNumber);

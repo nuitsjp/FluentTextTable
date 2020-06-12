@@ -9,13 +9,11 @@ namespace FluentTextTable
     {
 
         private readonly Column<TItem> _column;
-        private readonly CellLine<TItem> _blankCellLine;
         private readonly CellLine<TItem>[] _cellLines;
        
         internal Cell(Column<TItem> column, TItem item)
         {
             _column = column;
-            _blankCellLine = new CellLine<TItem>(column);
             
             var value = _column.GetValue(item);
             IEnumerable<object> values;
