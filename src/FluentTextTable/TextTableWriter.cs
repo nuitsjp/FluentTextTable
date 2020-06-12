@@ -12,10 +12,10 @@ namespace FluentTextTable
         private readonly List<Column<TItem>> _columns;
         private readonly Borders _borders;
 
-        private TextTableWriter(TextTableConfig<TItem> config, List<Column<TItem>> columns)
+        private TextTableWriter(List<Column<TItem>> columns, Borders borders)
         {
             _columns = columns;
-            _borders = config.BuildBorders();
+            _borders = borders;
         }
 
         public string ToString(IEnumerable<TItem> items)
@@ -45,7 +45,7 @@ namespace FluentTextTable
         {
             var config = new TextTableConfig<TItem>();
             AddColumns(config);
-            return new TextTableWriter<TItem>(config, config.FixColumnSpecs());
+            return new TextTableWriter<TItem>(config.FixColumnSpecs(), config.BuildBorders());
         }
 
         public static TextTableWriter<TItem> Build(Action<ITextTableConfig<TItem>> configure)
@@ -56,7 +56,7 @@ namespace FluentTextTable
             {
                 AddColumns(config);
             }
-            return new TextTableWriter<TItem>(config, config.FixColumnSpecs());
+            return new TextTableWriter<TItem>(config.FixColumnSpecs(), config.BuildBorders());
         }
         
         private static void AddColumns(TextTableConfig<TItem> config)

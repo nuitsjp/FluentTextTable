@@ -12,7 +12,7 @@ namespace FluentTextTable
         {
             Borders = borders;
             Columns = columns.ToList();
-            foreach (var column in columns)
+            foreach (var column in Columns)
             {
                 _columnWidths[column] = 
                     Math.Max(
