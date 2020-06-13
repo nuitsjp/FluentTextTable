@@ -5,13 +5,12 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    public class Cell<TItem>
+    public class Cell
     {
-        private readonly CellLine<TItem>[] _cellLines;
+        private readonly CellLine[] _cellLines;
        
-        internal Cell(Column<TItem> column, TItem item)
+        internal Cell(IColumn column, object value)
         {
-            var value = column.GetValue(item);
             IEnumerable<object> values;
             if (value is string stringValue)
             {
@@ -26,7 +25,7 @@ namespace FluentTextTable
                 values = new[] {value};
             }
 
-            _cellLines = values.Select(x => new CellLine<TItem>(column, x)).ToArray();
+            _cellLines = values.Select(x => new CellLine(column, x)).ToArray();
 
             Width = _cellLines.Max(x =>x.Width);
         }
@@ -34,9 +33,9 @@ namespace FluentTextTable
         public int Width { get; }
         public int Height => _cellLines.Length;
 
-        public CellLine<TItem> GetCellLine(int lineNumber) => _cellLines[lineNumber];
+        public CellLine GetCellLine(int lineNumber) => _cellLines[lineNumber];
 
-        public IEnumerable<CellLine<TItem>> GetCellLines() => _cellLines;
+        public IEnumerable<CellLine> GetCellLines() => _cellLines;
 
         private IEnumerable<object> Split(string value)
         {

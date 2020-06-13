@@ -4,9 +4,9 @@ using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
-    public class CellLine<TItem>
+    public class CellLine
     {
-        internal static readonly CellLine<TItem> BlankCellLine = new CellLine<TItem>(); 
+        internal static readonly CellLine BlankCellLine = new CellLine(); 
         
         private const int Margin = 2;
 
@@ -14,7 +14,7 @@ namespace FluentTextTable
 
         public int Width { get; }
 
-        internal CellLine(Column<TItem> column, object value)
+        internal CellLine(IColumn column, object value)
         {
             Value = column?.Format is null
                 ? value?.ToString() ?? string.Empty

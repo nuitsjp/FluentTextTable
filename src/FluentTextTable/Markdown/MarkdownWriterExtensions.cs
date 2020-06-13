@@ -125,9 +125,9 @@ namespace FluentTextTable.Markdown
             writer.Write(column.Name);
             writer.Write(new string(' ', layout.GetColumnWidth(column) - column.HeaderWidth));
         }
-        
-        internal static void Write<TItem>(
-            this CellLine<TItem> cellLine,
+
+        private static void Write<TItem>(
+            this CellLine cellLine,
             TextWriter textWriter,
             ITextTableLayout<TItem> layout,
             Column<TItem> column)

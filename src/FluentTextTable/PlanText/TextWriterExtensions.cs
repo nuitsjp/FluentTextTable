@@ -96,7 +96,7 @@ namespace FluentTextTable.PlanText
             int lineNumber)
         {
             var cell = row.Cells[column];
-            CellLine<TItem> cellLine;
+            CellLine cellLine;
             switch (column.VerticalAlignment)
             {
                 case VerticalAlignment.Top:
@@ -114,52 +114,52 @@ namespace FluentTextTable.PlanText
 
             cellLine.Write(textWriter, layout, column);
 
-            CellLine<TItem> GetTopCellLine()
+            CellLine GetTopCellLine()
             {
                 return lineNumber < cell.Height
                     ? cell.GetCellLine(lineNumber)
-                    : CellLine<TItem>.BlankCellLine;
+                    : CellLine.BlankCellLine;
             }
 
-            CellLine<TItem> GetCenterCellLine()
+            CellLine GetCenterCellLine()
             {
                 var indent = (row.Height - cell.Height) / 2;
                 var localLineNumber = lineNumber - indent;
                 if (localLineNumber < 0)
                 {
-                    return CellLine<TItem>.BlankCellLine;
+                    return CellLine.BlankCellLine;
                 }
 
                 if (cell.Height <= localLineNumber)
                 {
-                    return CellLine<TItem>.BlankCellLine;
+                    return CellLine.BlankCellLine;
                 }
 
                 return cell.GetCellLine(localLineNumber);
             }
 
-            CellLine<TItem> GetBottomCellLine()
+            CellLine GetBottomCellLine()
             {
                 var indent = row.Height - cell.Height;
                 var localLineNumber = lineNumber - indent;
                 if (localLineNumber < 0)
                 {
-                    return CellLine<TItem>.BlankCellLine;
+                    return CellLine.BlankCellLine;
                 }
 
                 return cell.GetCellLine(localLineNumber);
             }
         }
-        
-        internal static void WriteHeader<TItem>(TextWriter writer, ITextTableLayout<TItem> layout, Column<TItem> column)
+
+        private static void WriteHeader<TItem>(TextWriter writer, ITextTableLayout<TItem> layout, Column<TItem> column)
         {
             writer.Write(" ");
             writer.Write(column.Name);
             writer.Write(new string(' ', layout.GetColumnWidth(column) - column.HeaderWidth));
         }
-        
-        internal static void Write<TItem>(
-            this CellLine<TItem> cellLine,
+
+        private static void Write<TItem>(
+            this CellLine cellLine,
             TextWriter textWriter,
             ITextTableLayout<TItem> layout,
             Column<TItem> column)
