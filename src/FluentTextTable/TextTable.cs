@@ -7,16 +7,17 @@ using FluentTextTable.PlanText;
 
 namespace FluentTextTable
 {
-    public class TextTableWriter<TItem> : ITextTableWriter<TItem>
+    public class TextTable<TItem> : ITextTable<TItem>
     {
-        private readonly List<Column<TItem>> _columns;
-        private readonly Borders _borders;
+        public IReadOnlyList<Column<TItem>> Columns { get; }
 
-        private TextTableWriter(List<Column<TItem>> columns, Borders borders)
+        private TextTable(List<Column<TItem>> columns, Borders borders)
         {
-            _columns = columns;
-            _borders = borders;
+            Columns = columns;
+            Borders = borders;
         }
+
+        public Borders Borders { get; }
 
         public string ToString(IEnumerable<TItem> items)
         {
@@ -30,25 +31,25 @@ namespace FluentTextTable
             var rows = new List<Row<TItem>>();
             foreach (var item in items)
             {
-                rows.Add(new Row<TItem>(_columns, _borders, item));
+                rows.Add(new Row<TItem>(Columns, item));
             }
-            var layout = new TextTableLayout<TItem>(_borders, _columns, rows);
+            var rowSet = new RowSet<TItem>(Columns, rows);
             
-            _borders.Top.Write(writer, layout);
-            layout.WriteHeader(writer);
-            _borders.HeaderHorizontal.Write(writer, layout);
-            rows.Write(writer, layout);
-            _borders.Bottom.Write(writer, layout);
+            Borders.Top.Write(writer, this, rowSet);
+            this.WriteHeader(writer, rowSet);
+            Borders.HeaderHorizontal.Write(writer, this, rowSet);
+            rowSet.Write(writer, this);
+            Borders.Bottom.Write(writer, this, rowSet);
         }
         
-        public static TextTableWriter<TItem> Build()
+        public static TextTable<TItem> Build()
         {
             var config = new TextTableConfig<TItem>();
             AddColumns(config);
-            return new TextTableWriter<TItem>(config.FixColumnSpecs(), config.BuildBorders());
+            return new TextTable<TItem>(config.FixColumnSpecs(), config.BuildBorders());
         }
 
-        public static TextTableWriter<TItem> Build(Action<ITextTableConfig<TItem>> configure)
+        public static TextTable<TItem> Build(Action<ITextTableConfig<TItem>> configure)
         {
             var config = new TextTableConfig<TItem>();
             configure(config);
@@ -56,7 +57,7 @@ namespace FluentTextTable
             {
                 AddColumns(config);
             }
-            return new TextTableWriter<TItem>(config.FixColumnSpecs(), config.BuildBorders());
+            return new TextTable<TItem>(config.FixColumnSpecs(), config.BuildBorders());
         }
         
         private static void AddColumns(TextTableConfig<TItem> config)

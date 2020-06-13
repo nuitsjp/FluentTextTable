@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Xunit;
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable NotAccessedField.Local
@@ -8,7 +9,7 @@ using Xunit;
 
 namespace FluentTextTable.Test
 {
-    namespace MarkdownTest
+    namespace MarkdownTableTest
     {
         public class WriteMarkdown
         {
@@ -16,7 +17,7 @@ namespace FluentTextTable.Test
             public void WhenBasic()
             {
 
-                var writer = MarkdownTableWriter<User>.Build(config =>
+                var table = MarkdownTable<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .NameIs("ID")
@@ -27,7 +28,7 @@ namespace FluentTextTable.Test
                     config.AddColumn(x => x.Birthday)
                         .FormatTo("{0:yyyy/MM/dd}");
                 });
-                var text = writer.ToString(new[]
+                var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 123, Name = "Steven Paul Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -45,9 +46,9 @@ namespace FluentTextTable.Test
             [Fact]
             public void WhenAutoFormat()
             {
-
-                var writer = MarkdownTableWriter<User>.Build();
-                var text = writer.ToString(new[]
+                using var writer = new StringWriter();
+                var table = MarkdownTable<User>.Build();
+                table.Write(writer,new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -59,7 +60,7 @@ namespace FluentTextTable.Test
 |----|-------------|---------|-------------|--------------------|
 | 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
 | 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
-", $"{Environment.NewLine}{text}");
+", $"{Environment.NewLine}{writer}");
             }
 
 
@@ -67,7 +68,7 @@ namespace FluentTextTable.Test
             public void WhenMultipleLines()
             {
 
-                var writer = MarkdownTableWriter<User>.Build(config =>
+                var table = MarkdownTable<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .NameIs("ID")
@@ -84,7 +85,7 @@ namespace FluentTextTable.Test
                     config.AddColumn(x => x.Occupations)
                         .AlignHorizontalTo(HorizontalAlignment.Center);
                 });
-                var text = writer.ToString(new[]
+                var text = table.ToString(new[]
                 {
                     new User
                     {
@@ -118,8 +119,8 @@ namespace FluentTextTable.Test
             public void WithAttribute()
             {
 
-                var writer = MarkdownTableWriter<UserWithAttribute>.Build();
-                var text = writer.ToString(new[]
+                var table = MarkdownTable<UserWithAttribute>.Build();
+                var text = table.ToString(new[]
                 {
                     new UserWithAttribute
                     {

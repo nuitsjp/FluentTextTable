@@ -7,16 +7,16 @@ namespace FluentTextTable.PlanText
 {
     internal static class TextWriterExtensions
     {
-        internal static void Write<TItem>(this HorizontalBorder border, TextWriter textWriter, ITextTableLayout<TItem> layout)
+        internal static void Write<TItem>(this HorizontalBorder border, TextWriter textWriter, ITable<TItem> table, IRowSet<TItem> rowSet)
         {
             if(!border.IsEnable) return;
             
             if(border.LeftVerticalBorder.IsEnable) textWriter.Write(border.LeftStyle);
             
             var items = new List<string>();
-            foreach (var column in layout.Columns)
+            foreach (var column in table.Columns)
             {
-                items.Add(new string(border.LineStyle, layout.GetColumnWidth(column)));
+                items.Add(new string(border.LineStyle, rowSet.GetColumnWidth(column)));
             }
 
             textWriter.Write(border.InsideVerticalBorder.IsEnable
@@ -33,56 +33,63 @@ namespace FluentTextTable.PlanText
             if(border.IsEnable) writer.Write(border.LineStyle);
         }
 
-        internal static void WriteHeader<TItem>(this ITextTableLayout<TItem> layout, TextWriter writer)
+        internal static void WriteHeader<TItem>(this ITextTable<TItem> table, TextWriter writer, IRowSet<TItem> rowSet)
         {
-            layout.Borders.Left.Write(writer);
+            table.Borders.Left.Write(writer);
 
-            WriteHeader(writer, layout, layout.Columns[0]);
+            WriteHeader(writer, rowSet, table.Columns[0]);
             writer.Write(" ");
 
-            for (var i = 1; i < layout.Columns.Count; i++)
+            for (var i = 1; i < table.Columns.Count; i++)
             {
-                layout.Borders.InsideVertical.Write(writer);
+                table.Borders.InsideVertical.Write(writer);
 
-                WriteHeader(writer, layout, layout.Columns[i]);
+                WriteHeader(writer, rowSet, table.Columns[i]);
                 writer.Write(" ");
             }
             
-            layout.Borders.Right.Write(writer);
+            table.Borders.Right.Write(writer);
 
             writer.WriteLine();
         }
          
-        internal static void Write<TItem>(this List<Row<TItem>> rows, TextWriter textWriter, ITextTableLayout<TItem> layout)
+        private static void WriteHeader<TItem>(TextWriter writer, IRowSet<TItem> rowSet, Column<TItem> column)
         {
-            if (rows.Any())
+            writer.Write(" ");
+            writer.Write(column.Name);
+            writer.Write(new string(' ', rowSet.GetColumnWidth(column) - column.HeaderWidth));
+        }
+
+        internal static void Write<TItem>(this RowSet<TItem> rowSet, TextWriter textWriter, ITextTable<TItem> table)
+        {
+            if (rowSet.Rows.Any())
             {
-                rows[0].Write(textWriter, layout);
-                for (var i = 1; i < rows.Count; i++)
+                rowSet.Rows[0].Write(textWriter, table, rowSet);
+                for (var i = 1; i < rowSet.Rows.Count; i++)
                 {
-                    layout.Borders.InsideHorizontal.Write(textWriter, layout);
-                    rows[i].Write(textWriter, layout);
+                    table.Borders.InsideHorizontal.Write(textWriter, table, rowSet);
+                    rowSet.Rows[i].Write(textWriter, table, rowSet);
                 }
             }
         }
 
 
-        private static void Write<TItem>(this Row<TItem> row, TextWriter textWriter, ITextTableLayout<TItem> layout)
+        private static void Write<TItem>(this Row<TItem> row, TextWriter textWriter, ITextTable<TItem> table, IRowSet<TItem> rowSet)
         {
             for (var lineNumber = 0; lineNumber < row.Height; lineNumber++)
             {
-                layout.Borders.Left.Write(textWriter);
+                table.Borders.Left.Write(textWriter);
 
-                row.WriteCell(layout.Columns[0], textWriter, layout, lineNumber);
+                row.WriteCell(table.Columns[0], textWriter, lineNumber, rowSet.GetColumnWidth(table.Columns[0]));
 
-                for (int i = 1; i < layout.Columns.Count; i++)
+                for (int i = 1; i < table.Columns.Count; i++)
                 {
-                    var column = layout.Columns[i];
-                    layout.Borders.InsideVertical.Write(textWriter);
-                    row.WriteCell(column, textWriter, layout, lineNumber);
+                    var column = table.Columns[i];
+                    table.Borders.InsideVertical.Write(textWriter);
+                    row.WriteCell(column, textWriter, lineNumber, rowSet.GetColumnWidth(table.Columns[i]));
                 }
 
-                layout.Borders.Right.Write(textWriter);
+                table.Borders.Right.Write(textWriter);
                 
                 textWriter.WriteLine();
             }
@@ -92,8 +99,8 @@ namespace FluentTextTable.PlanText
             this Row<TItem> row,
             Column<TItem> column,
             TextWriter textWriter,
-            ITextTableLayout<TItem> layout,
-            int lineNumber)
+            int lineNumber,
+            int columnWidth)
         {
             var cell = row.Cells[column];
             CellLine cellLine;
@@ -112,7 +119,7 @@ namespace FluentTextTable.PlanText
                     throw new ArgumentOutOfRangeException();
             }
 
-            cellLine.Write(textWriter, layout, column);
+            cellLine.Write(textWriter, column, columnWidth);
 
             CellLine GetTopCellLine()
             {
@@ -151,18 +158,11 @@ namespace FluentTextTable.PlanText
             }
         }
 
-        private static void WriteHeader<TItem>(TextWriter writer, ITextTableLayout<TItem> layout, Column<TItem> column)
-        {
-            writer.Write(" ");
-            writer.Write(column.Name);
-            writer.Write(new string(' ', layout.GetColumnWidth(column) - column.HeaderWidth));
-        }
-
         private static void Write<TItem>(
             this CellLine cellLine,
             TextWriter textWriter,
-            ITextTableLayout<TItem> layout,
-            Column<TItem> column)
+            Column<TItem> column,
+            int columnWidth)
         {
             textWriter.Write(" ");
 
@@ -173,14 +173,14 @@ namespace FluentTextTable.PlanText
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
                     leftPadding = 0;
-                    rightPadding = layout.GetColumnWidth(column) - cellLine.Width;
+                    rightPadding = columnWidth - cellLine.Width;
                     break;
                 case HorizontalAlignment.Center:
-                    leftPadding = (layout.GetColumnWidth(column) - cellLine.Width) / 2;
-                    rightPadding = layout.GetColumnWidth(column) - cellLine.Width - leftPadding;
+                    leftPadding = (columnWidth - cellLine.Width) / 2;
+                    rightPadding = columnWidth - cellLine.Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = layout.GetColumnWidth(column) - cellLine.Width;
+                    leftPadding = columnWidth - cellLine.Width;
                     rightPadding = 0;
                     break;
                 default:

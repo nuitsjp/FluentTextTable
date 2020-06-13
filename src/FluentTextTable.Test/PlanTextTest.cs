@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using FluentTextTable.PlanText;
 using Xunit;
 // ReSharper disable UnusedAutoPropertyAccessor.Local
@@ -9,14 +10,14 @@ using Xunit;
 
 namespace FluentTextTable.Test
 {
-    namespace PlanTextTest
+    namespace TextTableTest
     {
         public class ToPlanText
         {
             [Fact]
             public void WhenBasic()
             {
-                var writer = TextTableWriter<User>.Build(config =>
+                var table = TextTable<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .NameIs("ID")
@@ -26,7 +27,7 @@ namespace FluentTextTable.Test
                     config.AddColumn(x => x.Birthday)
                         .FormatTo("{0:yyyy/MM/dd}");
                 });
-                var text = writer.ToString(new[]
+                var text = table.ToString(new[]
                 {
                     new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                     new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -47,16 +48,17 @@ namespace FluentTextTable.Test
             [Fact]
             public void WhenAutoFormat()
             {
-
-                var writer = TextTableWriter<User>.Build();
-                var text = writer.ToString(new[]
+                using (var writer = new StringWriter())
                 {
-                    new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
-                    new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
-                });
+                    var table = TextTable<User>.Build();
+                    table.Write(writer, new[]
+                    {
+                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
+                    });
 
-                Assert.Equal(
-                    @"
+                    Assert.Equal(
+                        @"
 +----+-------------+---------+-------------+--------------------+
 | Id | Name        | Parents | Occupations | Birthday           |
 +----+-------------+---------+-------------+--------------------+
@@ -64,18 +66,19 @@ namespace FluentTextTable.Test
 +----+-------------+---------+-------------+--------------------+
 | 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
 +----+-------------+---------+-------------+--------------------+
-", $"{Environment.NewLine}{text}");
+", $"{Environment.NewLine}{writer}");
+                }
             }
 
             [Fact]
             public void WhenAutoGenerateColumnsIsTrue()
             {
 
-                var writer = TextTableWriter<User>.Build(config =>
+                var table = TextTable<User>.Build(config =>
                 {
                     config.AutoGenerateColumns = true;
                 });
-                var text = writer.ToString(new[]
+                var text = table.ToString(new[]
                 {
                     new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                     new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -97,7 +100,7 @@ namespace FluentTextTable.Test
             public void WhenMultipleLines()
             {
 
-                var table = TextTableWriter<User>.Build(config =>
+                var table = TextTable<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .NameIs("ID")
@@ -143,8 +146,8 @@ namespace FluentTextTable.Test
             public void WithAttribute()
             {
 
-                var writer = TextTableWriter<UserWithAttribute>.Build();
-                var text = writer.ToString(new[]
+                var table = TextTable<UserWithAttribute>.Build();
+                var text = table.ToString(new[]
                 {
                     new UserWithAttribute
                     {
@@ -197,12 +200,12 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.Top.Disable();
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -223,7 +226,7 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.Top
@@ -232,7 +235,7 @@ namespace FluentTextTable.Test
                             .IntersectionIs('$')
                             .RightEndIs('%');
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -257,12 +260,12 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.HeaderHorizontal.Disable();
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -283,7 +286,7 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.HeaderHorizontal
@@ -292,7 +295,7 @@ namespace FluentTextTable.Test
                             .IntersectionIs('$')
                             .RightEndIs('%');
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -317,12 +320,12 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.InsideHorizontal.Disable();
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -343,7 +346,7 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.InsideHorizontal
@@ -352,7 +355,7 @@ namespace FluentTextTable.Test
                             .IntersectionIs('$')
                             .RightEndIs('%');
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -377,12 +380,12 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.Bottom.Disable();
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -403,7 +406,7 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.Bottom
@@ -412,7 +415,7 @@ namespace FluentTextTable.Test
                             .IntersectionIs('$')
                             .RightEndIs('%');
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -437,12 +440,12 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.Left.Disable();
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -464,12 +467,12 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.Left.LineIs('\\');
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -494,12 +497,12 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.InsideVertical.Disable();
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -521,12 +524,12 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.InsideVertical.LineIs('\\');
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -551,12 +554,12 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.Right.Disable();
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -578,12 +581,12 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var writer = TextTableWriter<User>.Build(config =>
+                    var table = TextTable<User>.Build(config =>
                     {
                         config.AutoGenerateColumns = true;
                         config.Borders.Right.LineIs('\\');
                     });
-                    var text = writer.ToString(new[]
+                    var text = table.ToString(new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                         new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}

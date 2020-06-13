@@ -7,15 +7,13 @@ using FluentTextTable.Markdown;
 
 namespace FluentTextTable
 {
-    public class MarkdownTableWriter<TItem> : ITextTableWriter<TItem>
+    public class MarkdownTable<TItem> : ITable<TItem>
     {
-        private readonly List<Column<TItem>> _columns;
-        private readonly Borders _borders;
+        public IReadOnlyList<Column<TItem>> Columns { get; }
 
-        private MarkdownTableWriter(List<Column<TItem>> columns, Borders borders)
+        private MarkdownTable(List<Column<TItem>> columns)
         {
-            _columns = columns;
-            _borders = borders;
+            Columns = columns;
         }
 
         public string ToString(IEnumerable<TItem> items)
@@ -30,34 +28,33 @@ namespace FluentTextTable
             var rows = new List<Row<TItem>>();
             foreach (var item in items)
             {
-                rows.Add(new Row<TItem>(_columns, _borders, item));
+                rows.Add(new Row<TItem>(Columns, item));
             }
-            var layout = new TextTableLayout<TItem>(_borders, _columns, rows);
+            var rowSet = new RowSet<TItem>(Columns, rows);
 
-            layout.WriteHeader(textWriter);
-            // Write table.
-            rows.Write(textWriter, layout);
+            this.WriteHeader(textWriter, rowSet);
+            rowSet.Write(textWriter, this);
         }
 
-        public static ITextTableWriter<TItem> Build()
+        public static ITable<TItem> Build()
         {
-            var config = new TextTableConfig<TItem>();
+            var config = new TableConfig<TItem>();
             AddColumns(config);
-            return new MarkdownTableWriter<TItem>(config.FixColumnSpecs(), config.BuildBorders());
+            return new MarkdownTable<TItem>(config.FixColumnSpecs());
         }
 
-        public static ITextTableWriter<TItem> Build(Action<ITextTableConfig<TItem>> configure)
+        public static ITable<TItem> Build(Action<ITableConfig<TItem>> configure)
         {
-            var config = new TextTableConfig<TItem>();
+            var config = new TableConfig<TItem>();
             configure(config);
             if (config.AutoGenerateColumns)
             {
                 AddColumns(config);
             }
-            return new MarkdownTableWriter<TItem>(config.FixColumnSpecs(), config.BuildBorders());
+            return new MarkdownTable<TItem>(config.FixColumnSpecs());
         }
         
-        private static void AddColumns(TextTableConfig<TItem> config)
+        private static void AddColumns(TableConfig<TItem> config)
         {
             var memberInfos =
                 typeof(TItem).GetMembers(BindingFlags.Public | BindingFlags.Instance)

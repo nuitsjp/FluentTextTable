@@ -4,15 +4,16 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    public class TextTableLayout<TItem> : ITextTableLayout<TItem>
+    public class RowSet<TItem> : IRowSet<TItem>
     {
         private readonly Dictionary<Column<TItem>, int> _columnWidths = new Dictionary<Column<TItem>, int>();
 
-        internal TextTableLayout(Borders borders, IEnumerable<Column<TItem>> columns, IEnumerable<Row<TItem>> rows)
+        private readonly List<Row<TItem>> _rows;
+
+        internal RowSet(IEnumerable<Column<TItem>> columns, List<Row<TItem>> rows)
         {
-            Borders = borders;
-            Columns = columns.ToList();
-            foreach (var column in Columns)
+            _rows = rows;
+            foreach (var column in columns)
             {
                 _columnWidths[column] = 
                     Math.Max(
@@ -21,8 +22,7 @@ namespace FluentTextTable
             }
         }
 
-        public Borders Borders { get; }
-        public IReadOnlyList<Column<TItem>> Columns { get; }
+        public IReadOnlyList<Row<TItem>> Rows => _rows;
         public int GetColumnWidth(Column<TItem> column) => _columnWidths[column];
     }
 }
