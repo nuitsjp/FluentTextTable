@@ -10,7 +10,7 @@ namespace FluentTextTable
 
         private readonly List<IRow<TItem>> _rows;
 
-        internal RowSet(IEnumerable<Column<TItem>> columns, List<IRow<TItem>> rows)
+        internal RowSet(IEnumerable<IColumn<TItem>> columns, List<IRow<TItem>> rows)
         {
             _rows = rows;
             foreach (var column in columns)

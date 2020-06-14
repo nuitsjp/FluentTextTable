@@ -98,7 +98,7 @@ namespace FluentTextTable.Markdown
 
         private static void WriteCell<TItem>(
             this IRow<TItem> row,
-            Column<TItem> column,
+            IColumn<TItem> column,
             TextWriter textWriter,
             IRowSet<TItem> rowSet)
         {
@@ -119,7 +119,7 @@ namespace FluentTextTable.Markdown
 
         }
         
-        internal static void WriteHeader<TItem>(TextWriter writer, IRowSet<TItem> rowSet, Column<TItem> column)
+        internal static void WriteHeader<TItem>(TextWriter writer, IRowSet<TItem> rowSet, IColumn<TItem> column)
         {
             writer.Write(" ");
             writer.Write(column.Name);
@@ -130,7 +130,7 @@ namespace FluentTextTable.Markdown
             this CellLine cellLine,
             TextWriter textWriter,
             IRowSet<TItem> rowSet,
-            Column<TItem> column)
+            IColumn<TItem> column)
         {
             int leftPadding;
             int rightPadding;

@@ -5,7 +5,7 @@ namespace FluentTextTable
 {
     public interface ITable<TItem>
     {
-        IReadOnlyList<Column<TItem>> Columns { get; }
+        IReadOnlyList<IColumn<TItem>> Columns { get; }
         string ToString(IEnumerable<TItem> items);
         void Write(TextWriter writer, IEnumerable<TItem> items);
     }

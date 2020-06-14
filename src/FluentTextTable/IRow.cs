@@ -6,6 +6,6 @@ namespace FluentTextTable
     {
         IReadOnlyDictionary<IColumn<TItem>, Cell> Cells { get; }
         int Height { get; }
-        int GetColumnWidth(Column<TItem> column);
+        int GetColumnWidth(IColumn<TItem> column);
     }
 }

@@ -22,6 +22,6 @@ namespace FluentTextTable
 
         public int Height { get; }
 
-        public int GetColumnWidth(Column<TItem> column) => _cells[column].Width;
+        public int GetColumnWidth(IColumn<TItem> column) => _cells[column].Width;
     }
 }

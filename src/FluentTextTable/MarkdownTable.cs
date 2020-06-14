@@ -9,9 +9,9 @@ namespace FluentTextTable
 {
     public class MarkdownTable<TItem> : ITable<TItem>
     {
-        public IReadOnlyList<Column<TItem>> Columns { get; }
+        public IReadOnlyList<IColumn<TItem>> Columns { get; }
 
-        private MarkdownTable(List<Column<TItem>> columns)
+        private MarkdownTable(List<IColumn<TItem>> columns)
         {
             Columns = columns;
         }

@@ -9,9 +9,9 @@ namespace FluentTextTable
 {
     public class TextTable<TItem> : ITextTable<TItem>
     {
-        public IReadOnlyList<Column<TItem>> Columns { get; }
+        public IReadOnlyList<IColumn<TItem>> Columns { get; }
 
-        private TextTable(List<Column<TItem>> columns, Borders borders)
+        private TextTable(List<IColumn<TItem>> columns, Borders borders)
         {
             Columns = columns;
             Borders = borders;

@@ -39,7 +39,7 @@
             return this;
         }
 
-        internal Column<TItem> Build() 
+        internal IColumn<TItem> Build() 
             => new Column<TItem>(Name, HorizontalAlignment,  VerticalAlignment, Format, _accessor);
     }
 }

@@ -30,6 +30,6 @@ namespace FluentTextTable
             return column;
         }
 
-        internal List<Column<TItem>> FixColumnSpecs() => _columns.Select(x => x.Build()).ToList();
+        internal List<IColumn<TItem>> FixColumnSpecs() => _columns.Select(x => x.Build()).ToList();
     }
 }

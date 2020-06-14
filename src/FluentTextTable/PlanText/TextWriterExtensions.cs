@@ -53,7 +53,7 @@ namespace FluentTextTable.PlanText
             writer.WriteLine();
         }
          
-        private static void WriteHeader<TItem>(TextWriter writer, IRowSet<TItem> rowSet, Column<TItem> column)
+        private static void WriteHeader<TItem>(TextWriter writer, IRowSet<TItem> rowSet, IColumn<TItem> column)
         {
             writer.Write(" ");
             writer.Write(column.Name);
@@ -97,7 +97,7 @@ namespace FluentTextTable.PlanText
 
         private static void WriteCell<TItem>(
             this IRow<TItem> row,
-            Column<TItem> column,
+            IColumn<TItem> column,
             TextWriter textWriter,
             int lineNumber,
             int columnWidth)
@@ -161,7 +161,7 @@ namespace FluentTextTable.PlanText
         private static void Write<TItem>(
             this CellLine cellLine,
             TextWriter textWriter,
-            Column<TItem> column,
+            IColumn<TItem> column,
             int columnWidth)
         {
             textWriter.Write(" ");
