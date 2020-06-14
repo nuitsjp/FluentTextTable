@@ -1,11 +1,18 @@
 ﻿namespace FluentTextTable
 {
-    public class HorizontalBorderConfig : BorderConfigBase, IHorizontalBorderConfig
+    public class HorizontalBorderConfig : IHorizontalBorderConfig
     {
+        private bool _isEnable  = true;
+
         private char _leftEnd = '+';
         private char _line = '-';
         private char _intersection = '+';
         private char _rightEnd = '+';
+
+        public void Disable()
+        {
+            _isEnable = false;
+        }
 
         public IHorizontalBorderConfig LeftEndIs(char c)
         {
@@ -37,7 +44,7 @@
             VerticalBorder rightVerticalBorder)
         {
             return new HorizontalBorder(
-                IsEnable,
+                _isEnable,
                 _line,
                 _leftEnd,
                 _intersection,

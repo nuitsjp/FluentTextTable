@@ -1,8 +1,14 @@
 ﻿namespace FluentTextTable
 {
-    public class VerticalBorderConfig : BorderConfigBase, IVerticalBorderConfig
+    public class VerticalBorderConfig : IVerticalBorderConfig
     {
+        private bool _isEnable  = true;
         private char _line  = '|';
+
+        public void Disable()
+        {
+            _isEnable = false;
+        }
 
         public IVerticalBorderConfig LineIs(char c)
         {
@@ -12,7 +18,7 @@
 
         internal VerticalBorder Build()
         {
-            return new VerticalBorder(IsEnable, _line);
+            return new VerticalBorder(_isEnable, _line);
         }
     }
 }
