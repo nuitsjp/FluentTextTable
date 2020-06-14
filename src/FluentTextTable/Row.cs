@@ -12,7 +12,7 @@ namespace FluentTextTable
         {
             foreach (var column in columns)
             {
-                _cells[column] = new Cell(column, column.GetValue(item));
+                _cells[column] = new Cell(column.GetValue(item), column.Format);
             }
 
             Height = _cells.Values.Max(x => x.Height);

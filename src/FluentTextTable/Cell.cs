@@ -9,7 +9,7 @@ namespace FluentTextTable
     {
         private readonly CellLine[] _cellLines;
        
-        internal Cell(IColumn column, object value)
+        internal Cell(object value, string format)
         {
             IEnumerable<object> values;
             if (value is string stringValue)
@@ -25,7 +25,7 @@ namespace FluentTextTable
                 values = new[] {value};
             }
 
-            _cellLines = values.Select(x => new CellLine(column, x)).ToArray();
+            _cellLines = values.Select(x => new CellLine(x, format)).ToArray();
 
             Width = _cellLines.Max(x =>x.Width);
         }
