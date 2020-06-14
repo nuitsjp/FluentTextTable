@@ -47,7 +47,7 @@ namespace FluentTextTable
         {
             var config = new TableConfig<TItem>();
             configure(config);
-            if (config.AutoGenerateColumns)
+            if (config.IsEnableGenerateColumns)
             {
                 AddColumns(config);
             }

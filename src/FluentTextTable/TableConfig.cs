@@ -10,7 +10,13 @@ namespace FluentTextTable
     {
         private readonly List<ColumnConfig<TItem>> _columns  = new List<ColumnConfig<TItem>>();
 
-        public bool AutoGenerateColumns { get; set; } = false;
+        internal bool IsEnableGenerateColumns { get; private set; }
+        
+        public ITableConfig<TItem> EnableGenerateColumns( )
+        {
+            IsEnableGenerateColumns = true;
+            return this;
+        }
 
         public IColumnConfig AddColumn(Expression<Func<TItem, object>> getMemberExpression)
         {

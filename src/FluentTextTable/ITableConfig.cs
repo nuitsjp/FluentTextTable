@@ -5,7 +5,7 @@ namespace FluentTextTable
 {
     public interface ITableConfig<TItem>
     {
-        bool AutoGenerateColumns { get; set; }
+        ITableConfig<TItem> EnableGenerateColumns();
         IColumnConfig AddColumn(Expression<Func<TItem, object>> expression);
     }
 }

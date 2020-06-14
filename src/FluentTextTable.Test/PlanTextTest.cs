@@ -76,7 +76,7 @@ namespace FluentTextTable.Test
 
                 var table = TextTable<User>.Build(config =>
                 {
-                    config.AutoGenerateColumns = true;
+                    config.EnableGenerateColumns();
                 });
                 var text = table.ToString(new[]
                 {
@@ -202,7 +202,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.Disable();
                     });
                     var text = table.ToString(new[]
@@ -228,7 +228,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.Top.Disable();
                     });
                     var text = table.ToString(new[]
@@ -254,7 +254,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.Top
                             .LeftEndIs('#')
                             .LineIs('=')
@@ -288,7 +288,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.HeaderHorizontal.Disable();
                     });
                     var text = table.ToString(new[]
@@ -314,7 +314,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.HeaderHorizontal
                             .LeftEndIs('#')
                             .LineIs('=')
@@ -348,7 +348,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.InsideHorizontal.Disable();
                     });
                     var text = table.ToString(new[]
@@ -374,7 +374,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.InsideHorizontal
                             .LeftEndIs('#')
                             .LineIs('=')
@@ -408,7 +408,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.Bottom.Disable();
                     });
                     var text = table.ToString(new[]
@@ -434,7 +434,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.Bottom
                             .LeftEndIs('#')
                             .LineIs('=')
@@ -468,7 +468,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.Left.Disable();
                     });
                     var text = table.ToString(new[]
@@ -495,7 +495,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.Left.LineIs('\\');
                     });
                     var text = table.ToString(new[]
@@ -525,7 +525,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.InsideVertical.Disable();
                     });
                     var text = table.ToString(new[]
@@ -552,7 +552,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.InsideVertical.LineIs('\\');
                     });
                     var text = table.ToString(new[]
@@ -582,7 +582,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.Right.Disable();
                     });
                     var text = table.ToString(new[]
@@ -609,7 +609,7 @@ namespace FluentTextTable.Test
 
                     var table = TextTable<User>.Build(config =>
                     {
-                        config.AutoGenerateColumns = true;
+                        config.EnableGenerateColumns();
                         config.Borders.Right.LineIs('\\');
                     });
                     var text = table.ToString(new[]
