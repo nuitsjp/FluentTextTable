@@ -61,11 +61,11 @@ namespace FluentTextTable
                 var column = AddColumn(member.memberInfo);
                 if (member.columnFormat != null)
                 {
-                    if (member.columnFormat.Header != null) column.NameIs(member.columnFormat.Header);
+                    if (member.columnFormat.Header != null) column.HasName(member.columnFormat.Header);
                     column
-                        .AlignHorizontalTo(member.columnFormat.HorizontalAlignment)
-                        .AlignVerticalTo(member.columnFormat.VerticalAlignment)
-                        .FormatTo(member.columnFormat.Format);
+                        .AlignHorizontal(member.columnFormat.HorizontalAlignment)
+                        .AlignVertical(member.columnFormat.VerticalAlignment)
+                        .HasFormat(member.columnFormat.Format);
                 }
             }
         }

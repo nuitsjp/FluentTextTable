@@ -20,12 +20,12 @@ namespace FluentTextTable.Test
                 var table = TextTable<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
-                        .NameIs("ID")
-                        .AlignHorizontalTo(HorizontalAlignment.Right);
+                        .HasName("ID")
+                        .AlignHorizontal(HorizontalAlignment.Right);
                     config.AddColumn(x => x.Name)
-                        .NameIs("氏名");
+                        .HasName("氏名");
                     config.AddColumn(x => x.Birthday)
-                        .FormatTo("{0:yyyy/MM/dd}");
+                        .HasFormat("{0:yyyy/MM/dd}");
                 });
                 var text = table.ToString(new[]
                 {
@@ -103,19 +103,19 @@ namespace FluentTextTable.Test
                 var table = TextTable<User>.Build(config =>
                 {
                     config.AddColumn(x => x.Id)
-                        .NameIs("ID")
-                        .AlignHorizontalTo(HorizontalAlignment.Right);
+                        .HasName("ID")
+                        .AlignHorizontal(HorizontalAlignment.Right);
                     config.AddColumn(x => x.Name)
-                        .AlignVerticalTo(VerticalAlignment.Center);
+                        .AlignVertical(VerticalAlignment.Center);
                     config.AddColumn(x => x.Birthday)
-                        .AlignVerticalTo(VerticalAlignment.Center)
-                        .FormatTo("{0:yyyy/MM/dd}")
-                        .AlignVerticalTo(VerticalAlignment.Bottom);
+                        .AlignVertical(VerticalAlignment.Center)
+                        .HasFormat("{0:yyyy/MM/dd}")
+                        .AlignVertical(VerticalAlignment.Bottom);
                     config.AddColumn(x => x.Parents)
-                        .AlignVerticalTo(VerticalAlignment.Center)
-                        .FormatTo("- {0}");
+                        .AlignVertical(VerticalAlignment.Center)
+                        .HasFormat("- {0}");
                     config.AddColumn(x => x.Occupations)
-                        .AlignHorizontalTo(HorizontalAlignment.Center);
+                        .AlignHorizontal(HorizontalAlignment.Center);
                 });
                 var text = table.ToString(new[]
                 {

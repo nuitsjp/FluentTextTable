@@ -2,44 +2,44 @@
 {
     public class ColumnConfig<TItem> : IColumnConfig
     {
+        private string _name;
+        private HorizontalAlignment _horizontalAlignment= HorizontalAlignment.Default;
+        private VerticalAlignment _verticalAlignment = VerticalAlignment.Top;
+        private string _format;
+
         private readonly MemberAccessor<TItem> _accessor;
 
         internal ColumnConfig(MemberAccessor<TItem> accessor)
         {
             _accessor = accessor;
-            NameIs(_accessor.Name);
+            HasName(_accessor.Name);
         }
 
-        private string Name { get; set; }
-        private HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Default;
-        private VerticalAlignment VerticalAlignment { get; set; } = VerticalAlignment.Top;
-        private string Format { get; set; }
-
-        public IColumnConfig NameIs(string name)
+        public IColumnConfig HasName(string name)
         {
-            Name = name;
+            _name = name;
             return this;
         }
 
-        public IColumnConfig AlignHorizontalTo(HorizontalAlignment horizontalAlignment)
+        public IColumnConfig AlignHorizontal(HorizontalAlignment horizontalAlignment)
         {
-            HorizontalAlignment = horizontalAlignment;
+            _horizontalAlignment = horizontalAlignment;
             return this;
         }
 
-        public IColumnConfig AlignVerticalTo(VerticalAlignment verticalAlignment)
+        public IColumnConfig AlignVertical(VerticalAlignment verticalAlignment)
         {
-            VerticalAlignment = verticalAlignment;
+            _verticalAlignment = verticalAlignment;
             return this;
         }
 
-        public IColumnConfig FormatTo(string format)
+        public IColumnConfig HasFormat(string format)
         {
-            Format = format;
+            _format = format;
             return this;
         }
 
         internal IColumn<TItem> Build() 
-            => new Column<TItem>(Name, HorizontalAlignment,  VerticalAlignment, Format, _accessor);
+            => new Column<TItem>(_name, _horizontalAlignment,  _verticalAlignment, _format, _accessor);
     }
 }

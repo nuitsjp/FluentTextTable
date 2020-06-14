@@ -2,9 +2,9 @@
 {
     public interface IColumnConfig
     {
-        IColumnConfig NameIs(string name);
-        IColumnConfig AlignHorizontalTo(HorizontalAlignment horizontalAlignment);
-        IColumnConfig AlignVerticalTo(VerticalAlignment verticalAlignment);
-        IColumnConfig FormatTo(string format);
+        IColumnConfig HasName(string name);
+        IColumnConfig AlignHorizontal(HorizontalAlignment horizontalAlignment);
+        IColumnConfig AlignVertical(VerticalAlignment verticalAlignment);
+        IColumnConfig HasFormat(string format);
     }
 }
