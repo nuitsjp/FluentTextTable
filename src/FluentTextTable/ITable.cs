@@ -3,7 +3,7 @@ using System.IO;
 
 namespace FluentTextTable
 {
-    public interface ITable<TItem>
+    public interface ITable<in TItem>
     {
         IReadOnlyList<IColumn<TItem>> Columns { get; }
         string ToString(IEnumerable<TItem> items);

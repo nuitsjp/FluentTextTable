@@ -1,6 +1,6 @@
 ﻿namespace FluentTextTable
 {
-    public interface ITextTable<TItem> : ITable<TItem>
+    public interface ITextTable<in TItem> : ITable<TItem>
     {
         Borders Borders { get; }
     }

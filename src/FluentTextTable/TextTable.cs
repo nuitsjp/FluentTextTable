@@ -45,8 +45,8 @@ namespace FluentTextTable
         public static TextTable<TItem> Build()
         {
             var config = new TextTableConfig<TItem>();
-            AddColumns(config);
-            return new TextTable<TItem>(config.FixColumnSpecs(), config.BuildBorders());
+            config.GenerateColumns();
+            return new TextTable<TItem>(config.BuildColumns(), config.BuildBorders());
         }
 
         public static TextTable<TItem> Build(Action<ITextTableConfig<TItem>> configure)
@@ -55,43 +55,9 @@ namespace FluentTextTable
             configure(config);
             if (config.IsEnableGenerateColumns)
             {
-                AddColumns(config);
+                config.GenerateColumns();
             }
-            return new TextTable<TItem>(config.FixColumnSpecs(), config.BuildBorders());
-        }
-        
-        private static void AddColumns(TextTableConfig<TItem> config)
-        {
-            var memberInfos =
-                typeof(TItem).GetMembers(BindingFlags.Public | BindingFlags.Instance)
-                    .Where(x => x.MemberType == MemberTypes.Field || x.MemberType == MemberTypes.Property);
-            var members = new List<(int index, MemberInfo memberInfo, ColumnFormatAttribute columnFormat)>();
-            foreach (var memberInfo in memberInfos)
-            {
-                var columnFormat = memberInfo.GetCustomAttribute<ColumnFormatAttribute>();
-                if (columnFormat is null)
-                {
-                    members.Add((0, memberInfo, null));
-                }
-
-                if (columnFormat != null)
-                {
-                    members.Add((columnFormat.Index, memberInfo, columnFormat));
-                }
-            }
-
-            foreach (var member in members.OrderBy(x => x.index))
-            {
-                var column = config.AddColumn(member.memberInfo);
-                if (member.columnFormat != null)
-                {
-                    if (member.columnFormat.Header != null) column.NameIs(member.columnFormat.Header);
-                    column
-                        .AlignHorizontalTo(member.columnFormat.HorizontalAlignment)
-                        .AlignVerticalTo(member.columnFormat.VerticalAlignment)
-                        .FormatTo(member.columnFormat.Format);
-                }
-            }
+            return new TextTable<TItem>(config.BuildColumns(), config.BuildBorders());
         }
     }
 }

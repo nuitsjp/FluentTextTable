@@ -39,8 +39,8 @@ namespace FluentTextTable
         public static ITable<TItem> Build()
         {
             var config = new TableConfig<TItem>();
-            AddColumns(config);
-            return new MarkdownTable<TItem>(config.FixColumnSpecs());
+            config.GenerateColumns();
+            return new MarkdownTable<TItem>(config.BuildColumns());
         }
 
         public static ITable<TItem> Build(Action<ITableConfig<TItem>> configure)
@@ -49,43 +49,9 @@ namespace FluentTextTable
             configure(config);
             if (config.IsEnableGenerateColumns)
             {
-                AddColumns(config);
+                config.GenerateColumns();
             }
-            return new MarkdownTable<TItem>(config.FixColumnSpecs());
-        }
-        
-        private static void AddColumns(TableConfig<TItem> config)
-        {
-            var memberInfos =
-                typeof(TItem).GetMembers(BindingFlags.Public | BindingFlags.Instance)
-                    .Where(x => x.MemberType == MemberTypes.Field || x.MemberType == MemberTypes.Property);
-            var members = new List<(int index, MemberInfo memberInfo, ColumnFormatAttribute columnFormat)>();
-            foreach (var memberInfo in memberInfos)
-            {
-                var columnFormat = memberInfo.GetCustomAttribute<ColumnFormatAttribute>();
-                if (columnFormat is null)
-                {
-                    members.Add((0, memberInfo, null));
-                }
-
-                if (columnFormat != null)
-                {
-                    members.Add((columnFormat.Index, memberInfo, columnFormat));
-                }
-            }
-
-            foreach (var member in members.OrderBy(x => x.index))
-            {
-                var column = config.AddColumn(member.memberInfo);
-                if (member.columnFormat != null)
-                {
-                    if (member.columnFormat.Header != null) column.NameIs(member.columnFormat.Header);
-                    column
-                        .AlignHorizontalTo(member.columnFormat.HorizontalAlignment)
-                        .AlignVerticalTo(member.columnFormat.VerticalAlignment)
-                        .FormatTo(member.columnFormat.Format);
-                }
-            }
+            return new MarkdownTable<TItem>(config.BuildColumns());
         }
     }
 }
