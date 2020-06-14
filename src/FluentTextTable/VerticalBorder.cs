@@ -2,10 +2,15 @@
 
 namespace FluentTextTable
 {
-    public class VerticalBorder : BorderBase
+    public class VerticalBorder
     {
-        internal VerticalBorder(bool isEnable, char lineStyle) : base(isEnable, lineStyle)
+        internal VerticalBorder(bool isEnable, char lineStyle)
         {
+            IsEnable = isEnable;
+            LineStyle = lineStyle;
         }
+
+        public bool IsEnable { get; }
+        public char LineStyle { get; }
     }
 }

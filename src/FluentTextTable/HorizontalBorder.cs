@@ -3,7 +3,7 @@ using System.IO;
 
 namespace FluentTextTable
 {
-    public class HorizontalBorder : BorderBase
+    public class HorizontalBorder
     {
         public char LeftStyle { get; }
         public char IntersectionStyle { get; }
@@ -11,6 +11,8 @@ namespace FluentTextTable
         public VerticalBorder LeftVerticalBorder { get; }
         public VerticalBorder InsideVerticalBorder { get; }
         public VerticalBorder RightVerticalBorder { get; }
+        public bool IsEnable { get; }
+        public char LineStyle { get; }
 
         internal HorizontalBorder(
             bool isEnable, 
@@ -20,9 +22,10 @@ namespace FluentTextTable
             char rightStyle,
             VerticalBorder leftVerticalBorder,
             VerticalBorder insideVerticalBorder,
-            VerticalBorder rightVerticalBorder) 
-            : base(isEnable, lineStyle)
+            VerticalBorder rightVerticalBorder)
         {
+            IsEnable = isEnable;
+            LineStyle = lineStyle;
             LeftStyle = leftStyle;
             IntersectionStyle = intersectionStyle;
             RightStyle = rightStyle;
