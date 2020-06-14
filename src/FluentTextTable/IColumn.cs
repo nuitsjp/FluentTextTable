@@ -1,16 +1,12 @@
 ﻿namespace FluentTextTable
 {
-    public interface IColumn
+    public interface IColumn<in TItem>
     {
-        string Format { get; }
-    }
-    
-    public interface IColumn<in TItem> : IColumn
-    {
-        object GetValue(TItem item);
-        int HeaderWidth { get; }
         string Name { get; }
+        string Format { get; }
+        int HeaderWidth { get; }
         HorizontalAlignment HorizontalAlignment { get; }
         VerticalAlignment VerticalAlignment { get; }
+        object GetValue(TItem item);
     }
 }

@@ -5,15 +5,6 @@ namespace FluentTextTable
 {
     public class HorizontalBorder
     {
-        public char LeftStyle { get; }
-        public char IntersectionStyle { get; }
-        public char RightStyle { get; }
-        public VerticalBorder LeftVerticalBorder { get; }
-        public VerticalBorder InsideVerticalBorder { get; }
-        public VerticalBorder RightVerticalBorder { get; }
-        public bool IsEnable { get; }
-        public char LineStyle { get; }
-
         internal HorizontalBorder(
             bool isEnable, 
             char lineStyle,
@@ -33,5 +24,14 @@ namespace FluentTextTable
             InsideVerticalBorder = insideVerticalBorder;
             RightVerticalBorder = rightVerticalBorder;
         }
+        
+        public char LeftStyle { get; }
+        public char IntersectionStyle { get; }
+        public char RightStyle { get; }
+        public VerticalBorder LeftVerticalBorder { get; }
+        public VerticalBorder InsideVerticalBorder { get; }
+        public VerticalBorder RightVerticalBorder { get; }
+        public bool IsEnable { get; }
+        public char LineStyle { get; }
     }
 }

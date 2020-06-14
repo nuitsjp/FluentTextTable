@@ -9,14 +9,13 @@ namespace FluentTextTable
 {
     public class TextTable<TItem> : ITextTable<TItem>
     {
-        public IReadOnlyList<IColumn<TItem>> Columns { get; }
-
         private TextTable(List<IColumn<TItem>> columns, Borders borders)
         {
             Columns = columns;
             Borders = borders;
         }
 
+        public IReadOnlyList<IColumn<TItem>> Columns { get; }
         public Borders Borders { get; }
 
         public string ToString(IEnumerable<TItem> items)

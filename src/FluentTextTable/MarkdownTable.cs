@@ -9,12 +9,12 @@ namespace FluentTextTable
 {
     public class MarkdownTable<TItem> : ITable<TItem>
     {
-        public IReadOnlyList<IColumn<TItem>> Columns { get; }
-
         private MarkdownTable(List<IColumn<TItem>> columns)
         {
             Columns = columns;
         }
+
+        public IReadOnlyList<IColumn<TItem>> Columns { get; }
 
         public string ToString(IEnumerable<TItem> items)
         {

@@ -10,20 +10,6 @@
         private readonly VerticalBorderConfig _insideVertical = new VerticalBorderConfig();
         private readonly VerticalBorderConfig _right = new VerticalBorderConfig();
 
-        public IHorizontalBorderConfig Top => _top;
-
-        public IHorizontalBorderConfig HeaderHorizontal => _headerHorizontal;
-
-        public IHorizontalBorderConfig InsideHorizontal => _insideHorizontal;
-
-        public IHorizontalBorderConfig Bottom => _bottom;
-
-        public IVerticalBorderConfig Left => _left;
-
-        public IVerticalBorderConfig InsideVertical => _insideVertical;
-
-        public IVerticalBorderConfig Right => _right;
-
         internal Borders Build()
         {
             var left = _left.Build();
@@ -38,6 +24,20 @@
                 insideVertical,
                 right);
         }
+
+        public IHorizontalBorderConfig Top => _top;
+
+        public IHorizontalBorderConfig HeaderHorizontal => _headerHorizontal;
+
+        public IHorizontalBorderConfig InsideHorizontal => _insideHorizontal;
+
+        public IHorizontalBorderConfig Bottom => _bottom;
+
+        public IVerticalBorderConfig Left => _left;
+
+        public IVerticalBorderConfig InsideVertical => _insideVertical;
+
+        public IVerticalBorderConfig Right => _right;
 
         public void Disable()
         {

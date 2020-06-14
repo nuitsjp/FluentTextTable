@@ -9,7 +9,6 @@ namespace FluentTextTable
     {
         private readonly Func<TItem, object> _getValue;
 
-        internal string Name { get; }
         internal MemberAccessor(Expression<Func<TItem, object>> getValue)
         {
             _getValue = getValue.Compile();
@@ -31,6 +30,7 @@ namespace FluentTextTable
             Name = memberInfo.Name;
         }
 
+        internal string Name { get; }
         internal object GetValue(TItem item) => _getValue(item);
 
         private static MemberInfo GetMemberInfo(LambdaExpression lambda)

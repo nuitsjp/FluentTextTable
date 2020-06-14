@@ -5,11 +5,6 @@ namespace FluentTextTable
 {
     public class Column<TItem> : IColumn<TItem>
     {
-        public string Name { get; }
-        public int HeaderWidth { get; }
-        public HorizontalAlignment HorizontalAlignment { get; }
-        public VerticalAlignment VerticalAlignment { get; }
-        public string Format { get; }
         private readonly MemberAccessor<TItem> _accessor;
 
         internal Column(
@@ -26,6 +21,12 @@ namespace FluentTextTable
             Format = format;
             _accessor = accessor;
         }
+
+        public string Name { get; }
+        public int HeaderWidth { get; }
+        public HorizontalAlignment HorizontalAlignment { get; }
+        public VerticalAlignment VerticalAlignment { get; }
+        public string Format { get; }
 
         public object GetValue(TItem item) => _accessor.GetValue(item);
     }
