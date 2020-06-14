@@ -1,6 +1,6 @@
 ﻿namespace FluentTextTable
 {
-    public class BordersConfig : BorderConfigBase, IBordersConfig
+    public class BordersConfig : IBordersConfig
     {
         private readonly HorizontalBorderConfig _top = new HorizontalBorderConfig();
         private readonly HorizontalBorderConfig _headerHorizontal = new HorizontalBorderConfig();
@@ -37,6 +37,17 @@
                 left,
                 insideVertical,
                 right);
+        }
+
+        public void Disable()
+        {
+            _top.Disable();
+            _headerHorizontal.Disable();
+            _insideHorizontal.Disable();
+            _bottom.Disable();
+            _left.Disable();
+            _insideVertical.Disable();
+            _right.Disable();
         }
     }
 }
