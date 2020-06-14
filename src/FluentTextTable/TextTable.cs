@@ -28,12 +28,13 @@ namespace FluentTextTable
 
         public void Write(TextWriter writer, IEnumerable<TItem> items)
         {
-            var rows = new List<IRow<TItem>>();
-            foreach (var item in items)
-            {
-                rows.Add(new Row<TItem>(Columns, item));
-            }
-            var rowSet = new RowSet<TItem>(Columns, rows);
+            var rowSet = 
+                new RowSet<TItem>(
+                    Columns,
+                    items
+                        .Select(item => new Row<TItem>(Columns, item))
+                        .Cast<IRow<TItem>>()
+                        .ToList());
             
             Borders.Top.Write(writer, this, rowSet);
             this.WriteHeader(writer, rowSet);
