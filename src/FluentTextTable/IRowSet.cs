@@ -4,7 +4,7 @@ namespace FluentTextTable
 {
     public interface IRowSet<TItem>
     {
-        IReadOnlyList<Row<TItem>> Rows { get; }
-        int GetColumnWidth(Column<TItem> column);
+        IReadOnlyList<IRow<TItem>> Rows { get; }
+        int GetColumnWidth(IColumn<TItem> column);
     }
 }

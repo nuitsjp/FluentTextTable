@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    public class Row<TItem>
+    public class Row<TItem> : IRow<TItem>
     {
         private readonly Dictionary<IColumn<TItem>, Cell> _cells = new Dictionary<IColumn<TItem>, Cell>();
 
@@ -18,7 +18,7 @@ namespace FluentTextTable
             Height = _cells.Values.Max(x => x.Height);
         }
 
-        public Dictionary<IColumn<TItem>, Cell> Cells => _cells;
+        public IReadOnlyDictionary<IColumn<TItem>, Cell> Cells => _cells;
 
         public int Height { get; }
 

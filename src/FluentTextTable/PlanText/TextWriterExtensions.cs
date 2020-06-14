@@ -74,7 +74,7 @@ namespace FluentTextTable.PlanText
         }
 
 
-        private static void Write<TItem>(this Row<TItem> row, TextWriter textWriter, ITextTable<TItem> table, IRowSet<TItem> rowSet)
+        private static void Write<TItem>(this IRow<TItem> row, TextWriter textWriter, ITextTable<TItem> table, IRowSet<TItem> rowSet)
         {
             for (var lineNumber = 0; lineNumber < row.Height; lineNumber++)
             {
@@ -96,7 +96,7 @@ namespace FluentTextTable.PlanText
         }
 
         private static void WriteCell<TItem>(
-            this Row<TItem> row,
+            this IRow<TItem> row,
             Column<TItem> column,
             TextWriter textWriter,
             int lineNumber,

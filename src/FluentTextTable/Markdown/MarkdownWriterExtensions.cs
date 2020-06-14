@@ -86,7 +86,7 @@ namespace FluentTextTable.Markdown
         }
 
 
-        private static void Write<TItem>(this Row<TItem> row, TextWriter textWriter, ITable<TItem> table, IRowSet<TItem> rowSet)
+        private static void Write<TItem>(this IRow<TItem> row, TextWriter textWriter, ITable<TItem> table, IRowSet<TItem> rowSet)
         {
             textWriter.Write("|");
             foreach (var column in table.Columns)
@@ -97,7 +97,7 @@ namespace FluentTextTable.Markdown
         }
 
         private static void WriteCell<TItem>(
-            this Row<TItem> row,
+            this IRow<TItem> row,
             Column<TItem> column,
             TextWriter textWriter,
             IRowSet<TItem> rowSet)

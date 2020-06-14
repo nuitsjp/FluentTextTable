@@ -28,7 +28,7 @@ namespace FluentTextTable
 
         public void Write(TextWriter writer, IEnumerable<TItem> items)
         {
-            var rows = new List<Row<TItem>>();
+            var rows = new List<IRow<TItem>>();
             foreach (var item in items)
             {
                 rows.Add(new Row<TItem>(Columns, item));

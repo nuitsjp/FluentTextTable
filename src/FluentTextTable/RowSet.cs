@@ -6,11 +6,11 @@ namespace FluentTextTable
 {
     public class RowSet<TItem> : IRowSet<TItem>
     {
-        private readonly Dictionary<Column<TItem>, int> _columnWidths = new Dictionary<Column<TItem>, int>();
+        private readonly Dictionary<IColumn<TItem>, int> _columnWidths = new Dictionary<IColumn<TItem>, int>();
 
-        private readonly List<Row<TItem>> _rows;
+        private readonly List<IRow<TItem>> _rows;
 
-        internal RowSet(IEnumerable<Column<TItem>> columns, List<Row<TItem>> rows)
+        internal RowSet(IEnumerable<Column<TItem>> columns, List<IRow<TItem>> rows)
         {
             _rows = rows;
             foreach (var column in columns)
@@ -22,7 +22,7 @@ namespace FluentTextTable
             }
         }
 
-        public IReadOnlyList<Row<TItem>> Rows => _rows;
-        public int GetColumnWidth(Column<TItem> column) => _columnWidths[column];
+        public IReadOnlyList<IRow<TItem>> Rows => _rows;
+        public int GetColumnWidth(IColumn<TItem> column) => _columnWidths[column];
     }
 }
