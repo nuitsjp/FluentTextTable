@@ -9,7 +9,7 @@ namespace FluentTextTable
 {
     public class TextTable<TItem> : ITextTable<TItem>
     {
-        private TextTable(List<IColumn<TItem>> columns, Borders borders)
+        internal TextTable(List<IColumn<TItem>> columns, Borders borders)
         {
             Columns = columns;
             Borders = borders;
@@ -46,7 +46,7 @@ namespace FluentTextTable
         {
             var config = new TextTableConfig<TItem>();
             config.GenerateColumns();
-            return new TextTable<TItem>(config.BuildColumns(), config.BuildBorders());
+            return config.Build();
         }
 
         public static TextTable<TItem> Build(Action<ITextTableConfig<TItem>> configure)
@@ -57,7 +57,7 @@ namespace FluentTextTable
             {
                 config.GenerateColumns();
             }
-            return new TextTable<TItem>(config.BuildColumns(), config.BuildBorders());
+            return config.Build();
         }
     }
 }

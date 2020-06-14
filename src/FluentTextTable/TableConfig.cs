@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace FluentTextTable
 {
-    public class TableConfig<TItem> : ITableConfig<TItem>
+    public abstract class TableConfig<TItem> : ITableConfig<TItem>
     {
         private readonly List<ColumnConfig<TItem>> _columns  = new List<ColumnConfig<TItem>>();
 

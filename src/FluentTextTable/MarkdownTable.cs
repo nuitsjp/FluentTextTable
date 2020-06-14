@@ -9,7 +9,7 @@ namespace FluentTextTable
 {
     public class MarkdownTable<TItem> : ITable<TItem>
     {
-        private MarkdownTable(List<IColumn<TItem>> columns)
+        internal MarkdownTable(List<IColumn<TItem>> columns)
         {
             Columns = columns;
         }
@@ -39,20 +39,20 @@ namespace FluentTextTable
 
         public static ITable<TItem> Build()
         {
-            var config = new TableConfig<TItem>();
+            var config = new MarkdownTableConfig<TItem>();
             config.GenerateColumns();
-            return new MarkdownTable<TItem>(config.BuildColumns());
+            return config.Build();
         }
 
         public static ITable<TItem> Build(Action<ITableConfig<TItem>> configure)
         {
-            var config = new TableConfig<TItem>();
+            var config = new MarkdownTableConfig<TItem>();
             configure(config);
             if (config.IsEnableGenerateColumns)
             {
                 config.GenerateColumns();
             }
-            return new MarkdownTable<TItem>(config.BuildColumns());
+            return config.Build();
         }
     }
 }

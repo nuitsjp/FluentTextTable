@@ -7,5 +7,10 @@
         public IBordersConfig Borders => _borders;
 
         internal Borders BuildBorders() => _borders.Build();
+
+        internal TextTable<TItem> Build()
+        {
+            return new TextTable<TItem>(BuildColumns(), BuildBorders());
+        }
     }
 }
