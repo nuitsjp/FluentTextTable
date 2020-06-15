@@ -10,15 +10,16 @@ namespace FluentTextTable
 
         private readonly List<IRow<TItem>> _rows;
 
-        internal RowSet(IEnumerable<IColumn<TItem>> columns, List<IRow<TItem>> rows)
+        internal RowSet(ITable<TItem> table, List<IRow<TItem>> rows)
         {
             _rows = rows;
-            foreach (var column in columns)
+            foreach (var column in table.Columns)
             {
                 _columnWidths[column] = 
                     Math.Max(
                         column.HeaderWidth, 
-                        rows.Max(x => x.GetColumnWidth(column)));
+                        rows.Max(x => x.GetColumnWidth(column)))
+                    + table.Padding * 2;
             }
         }
 

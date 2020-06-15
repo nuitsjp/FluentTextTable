@@ -6,11 +6,13 @@ namespace FluentTextTable
 {
     public class Row<TItem> : IRow<TItem>
     {
+        private readonly int _padding;
         private readonly Dictionary<IColumn<TItem>, Cell> _cells = new Dictionary<IColumn<TItem>, Cell>();
 
-        internal Row(IEnumerable<IColumn<TItem>> columns, TItem item)
+        internal Row(ITable<TItem> table, TItem item)
         {
-            foreach (var column in columns)
+            _padding = table.Padding;
+            foreach (var column in table.Columns)
             {
                 _cells[column] = new Cell(column.GetValue(item), column.Format);
             }

@@ -8,10 +8,20 @@ namespace FluentTextTable
 {
     public abstract class TableConfig<TItem> : ITableConfig<TItem>
     {
+        private const int DefaultPadding = 1;
+        
         private readonly List<ColumnConfig<TItem>> _columns  = new List<ColumnConfig<TItem>>();
 
+        internal int Padding { get; private set; } = DefaultPadding;
+
         internal bool IsEnableGenerateColumns { get; private set; }
-        
+
+        public ITableConfig<TItem> HasPadding(int padding)
+        {
+            Padding = padding;
+            return this;
+        }
+
         public ITableConfig<TItem> EnableGenerateColumns( )
         {
             IsEnableGenerateColumns = true;
@@ -27,7 +37,7 @@ namespace FluentTextTable
             return column;
         }
 
-        internal IColumnConfig AddColumn(MemberInfo memberInfo)
+        private IColumnConfig AddColumn(MemberInfo memberInfo)
         {
             var memberAccessor = new MemberAccessor<TItem>(memberInfo);
             var column = new ColumnConfig<TItem>(memberAccessor);

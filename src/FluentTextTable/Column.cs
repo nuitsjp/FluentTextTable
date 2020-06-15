@@ -15,7 +15,7 @@ namespace FluentTextTable
             MemberAccessor<TItem> accessor)
         {
             Name = name;
-            HeaderWidth = name.GetWidth() + 2;
+            HeaderWidth = name.GetWidth();
             HorizontalAlignment = horizontalAlignment;
             VerticalAlignment = verticalAlignment;
             Format = format;

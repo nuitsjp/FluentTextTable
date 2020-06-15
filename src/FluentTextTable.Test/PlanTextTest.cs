@@ -97,6 +97,38 @@ namespace FluentTextTable.Test
             }
 
             [Fact]
+            public void WhenSpecifyPadding()
+            {
+                var table = TextTable<User>.Build(config =>
+                {
+                    config.HasPadding(2);
+                    config.AddColumn(x => x.Id)
+                        .HasName("ID")
+                        .AlignHorizontal(HorizontalAlignment.Right);
+                    config.AddColumn(x => x.Name)
+                        .HasName("氏名");
+                    config.AddColumn(x => x.Birthday)
+                        .HasFormat("{0:yyyy/MM/dd}");
+                });
+                var text = table.ToString(new[]
+                {
+                    new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                    new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
+                });
+
+                Assert.Equal(
+                    @"
++------+---------------+--------------+
+|  ID  |  氏名         |  Birthday    |
++------+---------------+--------------+
+|   1  |  ビル ゲイツ  |  1955/10/28  |
++------+---------------+--------------+
+|   2  |  Steven Jobs  |  1955/02/24  |
++------+---------------+--------------+
+", $"{Environment.NewLine}{text}");
+            }
+
+            [Fact]
             public void WhenMultipleLines()
             {
 

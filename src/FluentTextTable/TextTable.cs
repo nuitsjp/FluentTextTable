@@ -9,12 +9,14 @@ namespace FluentTextTable
 {
     public class TextTable<TItem> : ITextTable<TItem>
     {
-        internal TextTable(List<IColumn<TItem>> columns, Borders borders)
+        internal TextTable(int padding, List<IColumn<TItem>> columns, Borders borders)
         {
+            Padding = padding;
             Columns = columns;
             Borders = borders;
         }
 
+        public int Padding { get; }
         public IReadOnlyList<IColumn<TItem>> Columns { get; }
         public Borders Borders { get; }
 
@@ -29,9 +31,9 @@ namespace FluentTextTable
         {
             var rowSet = 
                 new RowSet<TItem>(
-                    Columns,
+                    this,
                     items
-                        .Select(item => new Row<TItem>(Columns, item))
+                        .Select(item => new Row<TItem>(this, item))
                         .Cast<IRow<TItem>>()
                         .ToList());
             

@@ -9,11 +9,13 @@ namespace FluentTextTable
 {
     public class MarkdownTable<TItem> : ITable<TItem>
     {
-        internal MarkdownTable(List<IColumn<TItem>> columns)
+        internal MarkdownTable(int padding, List<IColumn<TItem>> columns)
         {
+            Padding = padding;
             Columns = columns;
         }
 
+        public int Padding { get; }
         public IReadOnlyList<IColumn<TItem>> Columns { get; }
 
         public string ToString(IEnumerable<TItem> items)
@@ -27,9 +29,9 @@ namespace FluentTextTable
         {
             var rowSet = 
                 new RowSet<TItem>(
-                    Columns, 
+                    this, 
                     items
-                        .Select(item => new Row<TItem>(Columns, item))
+                        .Select(item => new Row<TItem>(this, item))
                         .Cast<IRow<TItem>>()
                         .ToList());
 

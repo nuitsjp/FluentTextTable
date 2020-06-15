@@ -10,7 +10,7 @@
 
         internal TextTable<TItem> Build()
         {
-            return new TextTable<TItem>(BuildColumns(), BuildBorders());
+            return new TextTable<TItem>(Padding, BuildColumns(), BuildBorders());
         }
     }
 }

@@ -43,10 +43,10 @@ namespace FluentTextTable.Markdown
             headerSeparator.Append("|");
             foreach (var column in table.Columns)
             {
-                textWriter.Write(" ");
+                textWriter.Write(new string(' ', table.Padding));
 
                 textWriter.Write(column.Name);
-                textWriter.Write(new string(' ', rowSet.GetColumnWidth(column) - column.Name.GetWidth() - 2)); // TODO Fix -> column.Header.GetWidth() - 2
+                textWriter.Write(new string(' ', rowSet.GetColumnWidth(column) - column.Name.GetWidth() - table.Padding - 1));
 
                 switch (column.HorizontalAlignment)
                 {
@@ -91,7 +91,7 @@ namespace FluentTextTable.Markdown
             textWriter.Write("|");
             foreach (var column in table.Columns)
             {
-                row.WriteCell(column, textWriter, rowSet);
+                row.WriteCell(column, textWriter, rowSet, table.Padding);
             }
             textWriter.WriteLine();
         }
@@ -100,37 +100,32 @@ namespace FluentTextTable.Markdown
             this IRow<TItem> row,
             IColumn<TItem> column,
             TextWriter textWriter,
-            IRowSet<TItem> rowSet)
+            IRowSet<TItem> rowSet,
+            int padding)
         {
             var cell = row.Cells[column];
-            textWriter.Write(' ');
             if (cell.Height == 1)
             {
                 // In the case of 1line, padding should match the width of the column.
-                cell.GetCellLine(0).Write(textWriter, rowSet, column);
+                cell.GetCellLine(0).Write(textWriter, rowSet, column, padding);
             }
             else
             {
                 // If you're multi-line in Markdown, you can't match the widths, so it doesn't padding.
                 // Simply combine them with <br> to describe them.
+                textWriter.Write(new string(' ', padding));
                 textWriter.Write(string.Join("<br>", cell.GetCellLines().Select(x => x.Value)));
+                textWriter.Write(new string(' ', padding));
             }
-            textWriter.Write(" |");
-
+            textWriter.Write("|");
         }
         
-        internal static void WriteHeader<TItem>(TextWriter writer, IRowSet<TItem> rowSet, IColumn<TItem> column)
-        {
-            writer.Write(" ");
-            writer.Write(column.Name);
-            writer.Write(new string(' ', rowSet.GetColumnWidth(column) - column.HeaderWidth));
-        }
-
         private static void Write<TItem>(
             this CellLine cellLine,
             TextWriter textWriter,
             IRowSet<TItem> rowSet,
-            IColumn<TItem> column)
+            IColumn<TItem> column,
+            int padding)
         {
             int leftPadding;
             int rightPadding;
@@ -138,16 +133,16 @@ namespace FluentTextTable.Markdown
             {
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
-                    leftPadding = 0;
-                    rightPadding = rowSet.GetColumnWidth(column) - cellLine.Width;
+                    leftPadding = padding;
+                    rightPadding = rowSet.GetColumnWidth(column) - cellLine.Width - padding;
                     break;
                 case HorizontalAlignment.Center:
                     leftPadding = (rowSet.GetColumnWidth(column) - cellLine.Width) / 2;
                     rightPadding = rowSet.GetColumnWidth(column) - cellLine.Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = rowSet.GetColumnWidth(column) - cellLine.Width;
-                    rightPadding = 0;
+                    leftPadding = rowSet.GetColumnWidth(column) - cellLine.Width - padding;
+                    rightPadding = padding;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

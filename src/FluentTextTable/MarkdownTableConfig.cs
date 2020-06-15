@@ -4,7 +4,7 @@
     {
         public MarkdownTable<TItem> Build()
         {
-            return new MarkdownTable<TItem>(BuildColumns());
+            return new MarkdownTable<TItem>(Padding, BuildColumns());
         }
     }
 }

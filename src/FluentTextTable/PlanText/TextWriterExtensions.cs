@@ -37,15 +37,13 @@ namespace FluentTextTable.PlanText
         {
             table.Borders.Left.Write(writer);
 
-            WriteHeader(writer, rowSet, table.Columns[0]);
-            writer.Write(" ");
+            WriteHeader(writer, table, rowSet, table.Columns[0]);
 
             for (var i = 1; i < table.Columns.Count; i++)
             {
                 table.Borders.InsideVertical.Write(writer);
 
-                WriteHeader(writer, rowSet, table.Columns[i]);
-                writer.Write(" ");
+                WriteHeader(writer, table, rowSet, table.Columns[i]);
             }
             
             table.Borders.Right.Write(writer);
@@ -53,11 +51,11 @@ namespace FluentTextTable.PlanText
             writer.WriteLine();
         }
          
-        private static void WriteHeader<TItem>(TextWriter writer, IRowSet<TItem> rowSet, IColumn<TItem> column)
+        private static void WriteHeader<TItem>(TextWriter writer, ITextTable<TItem> table, IRowSet<TItem> rowSet, IColumn<TItem> column)
         {
-            writer.Write(" ");
+            writer.Write(new string(' ', table.Padding));
             writer.Write(column.Name);
-            writer.Write(new string(' ', rowSet.GetColumnWidth(column) - column.HeaderWidth));
+            writer.Write(new string(' ', rowSet.GetColumnWidth(column) - column.HeaderWidth - table.Padding));
         }
 
         internal static void Write<TItem>(this RowSet<TItem> rowSet, TextWriter textWriter, ITextTable<TItem> table)
@@ -80,13 +78,13 @@ namespace FluentTextTable.PlanText
             {
                 table.Borders.Left.Write(textWriter);
 
-                row.WriteCell(table.Columns[0], textWriter, lineNumber, rowSet.GetColumnWidth(table.Columns[0]));
+                row.WriteCell(table.Columns[0], textWriter, lineNumber, rowSet.GetColumnWidth(table.Columns[0]), table.Padding);
 
                 for (int i = 1; i < table.Columns.Count; i++)
                 {
                     var column = table.Columns[i];
                     table.Borders.InsideVertical.Write(textWriter);
-                    row.WriteCell(column, textWriter, lineNumber, rowSet.GetColumnWidth(table.Columns[i]));
+                    row.WriteCell(column, textWriter, lineNumber, rowSet.GetColumnWidth(table.Columns[i]), table.Padding);
                 }
 
                 table.Borders.Right.Write(textWriter);
@@ -100,7 +98,8 @@ namespace FluentTextTable.PlanText
             IColumn<TItem> column,
             TextWriter textWriter,
             int lineNumber,
-            int columnWidth)
+            int columnWidth,
+            int padding)
         {
             var cell = row.Cells[column];
             CellLine cellLine;
@@ -119,7 +118,7 @@ namespace FluentTextTable.PlanText
                     throw new ArgumentOutOfRangeException();
             }
 
-            cellLine.Write(textWriter, column, columnWidth);
+            cellLine.Write(textWriter, column, columnWidth, padding);
 
             CellLine GetTopCellLine()
             {
@@ -162,26 +161,25 @@ namespace FluentTextTable.PlanText
             this CellLine cellLine,
             TextWriter textWriter,
             IColumn<TItem> column,
-            int columnWidth)
+            int columnWidth,
+            int padding)
         {
-            textWriter.Write(" ");
-
             int leftPadding;
             int rightPadding;
             switch (column.HorizontalAlignment)
             {
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
-                    leftPadding = 0;
-                    rightPadding = columnWidth - cellLine.Width;
+                    leftPadding = padding;
+                    rightPadding = columnWidth - cellLine.Width - leftPadding;
                     break;
                 case HorizontalAlignment.Center:
                     leftPadding = (columnWidth - cellLine.Width) / 2;
                     rightPadding = columnWidth - cellLine.Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = columnWidth - cellLine.Width;
-                    rightPadding = 0;
+                    leftPadding = columnWidth - cellLine.Width - padding;
+                    rightPadding = padding;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -190,7 +188,6 @@ namespace FluentTextTable.PlanText
             textWriter.Write(new string(' ', leftPadding));
             textWriter.Write(cellLine.Value);
             textWriter.Write(new string(' ', rightPadding));
-            textWriter.Write(" ");
         }
     }
 }

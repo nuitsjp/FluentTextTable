@@ -8,8 +8,6 @@ namespace FluentTextTable
     {
         internal static readonly CellLine BlankCellLine = new CellLine(null, null); 
         
-        private const int Margin = 2;
-        
         internal CellLine(object value, string format)
         {
             Value = format is null
@@ -17,7 +15,7 @@ namespace FluentTextTable
                     ? string.Empty
                     : value.ToString()
                 : string.Format(format, value);
-            Width = Value.GetWidth() + Margin;
+            Width = Value.GetWidth();
         }
 
         public string Value { get; }
