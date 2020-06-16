@@ -2,41 +2,25 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using FluentTextTable.Markdown;
 
 namespace FluentTextTable
 {
-    public class MarkdownTable<TItem> : ITable<TItem>
+    public class MarkdownTable<TItem> : Table<TItem>
     {
-        internal MarkdownTable(int padding, List<IColumn<TItem>> columns)
+        internal MarkdownTable(int padding, List<IColumn<TItem>> columns) : base(padding, columns)
         {
-            Padding = padding;
-            Columns = columns;
         }
 
-        public int Padding { get; }
-        public IReadOnlyList<IColumn<TItem>> Columns { get; }
-
-        public string ToString(IEnumerable<TItem> items)
+        public override void Write(TextWriter textWriter, IEnumerable<TItem> items)
         {
-            var writer = new StringWriter();
-            Write(writer, items);
-            return writer.ToString();
-        }
-
-        public void Write(TextWriter textWriter, IEnumerable<TItem> items)
-        {
-            var rowSet = 
-                new RowSet<TItem>(
-                    this, 
+            var tableInstance = 
+                new MarkdownTableInstance<TItem>(
+                    this,
                     items
-                        .Select(item => new Row<TItem>(this, item))
+                        .Select(item => new Row<TItem>(Columns, Padding, item))
                         .Cast<IRow<TItem>>()
                         .ToList());
-
-            this.WriteHeader(textWriter, rowSet);
-            rowSet.Write(textWriter, this);
+            tableInstance.Write(textWriter);
         }
 
         public static ITable<TItem> Build()

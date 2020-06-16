@@ -9,10 +9,10 @@ namespace FluentTextTable
         private readonly int _padding;
         private readonly Dictionary<IColumn<TItem>, Cell> _cells = new Dictionary<IColumn<TItem>, Cell>();
 
-        internal Row(ITable<TItem> table, TItem item)
+        internal Row(IEnumerable<IColumn<TItem>> columns, int padding, TItem item)
         {
-            _padding = table.Padding;
-            foreach (var column in table.Columns)
+            _padding = padding;
+            foreach (var column in columns)
             {
                 _cells[column] = new Cell(column.GetValue(item), column.Format);
             }

@@ -2,46 +2,29 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using FluentTextTable.PlanText;
 
 namespace FluentTextTable
 {
-    public class TextTable<TItem> : ITextTable<TItem>
+    public class TextTable<TItem> : Table<TItem>, ITextTable<TItem>
     {
         internal TextTable(int padding, List<IColumn<TItem>> columns, Borders borders)
+            : base(padding, columns)
         {
-            Padding = padding;
-            Columns = columns;
             Borders = borders;
         }
 
-        public int Padding { get; }
-        public IReadOnlyList<IColumn<TItem>> Columns { get; }
-        public Borders Borders { get; }
+        internal Borders Borders { get; }
 
-        public string ToString(IEnumerable<TItem> items)
+        public override void Write(TextWriter writer, IEnumerable<TItem> items)
         {
-            var writer = new StringWriter();
-            Write(writer, items);
-            return writer.ToString();
-        }
-
-        public void Write(TextWriter writer, IEnumerable<TItem> items)
-        {
-            var rowSet = 
-                new RowSet<TItem>(
+            var tableInstance = 
+                new TextTableInstance<TItem>(
                     this,
                     items
-                        .Select(item => new Row<TItem>(this, item))
+                        .Select(item => new Row<TItem>(Columns, Padding, item))
                         .Cast<IRow<TItem>>()
                         .ToList());
-            
-            Borders.Top.Write(writer, this, rowSet);
-            this.WriteHeader(writer, rowSet);
-            Borders.HeaderHorizontal.Write(writer, this, rowSet);
-            rowSet.Write(writer, this);
-            Borders.Bottom.Write(writer, this, rowSet);
+            tableInstance.Write(writer);
         }
         
         public static TextTable<TItem> Build()

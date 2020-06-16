@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using FluentTextTable.PlanText;
 using Xunit;
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable NotAccessedField.Local
