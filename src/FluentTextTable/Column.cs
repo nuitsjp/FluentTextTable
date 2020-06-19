@@ -1,5 +1,4 @@
-﻿using System.IO;
-using EastAsianWidthDotNet;
+﻿using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {

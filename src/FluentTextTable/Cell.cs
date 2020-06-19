@@ -9,41 +9,78 @@ namespace FluentTextTable
     {
         private readonly CellLine[] _cellLines;
        
-        internal Cell(object value, string format)
+        internal Cell(IColumn column, IEnumerable<CellLine> cellLines)
         {
-            IEnumerable<object> values;
-            if (value is string stringValue)
-            {
-                values = Split(stringValue);
-            }
-            else if(value is IEnumerable<object> enumerable)
-            {
-                values = enumerable;
-            }
-            else
-            {
-                values = new[] {value};
-            }
-
-            _cellLines = values.Select(x => new CellLine(x, format)).ToArray();
-
+            Column = column;
+            _cellLines = cellLines.ToArray();
             Width = _cellLines.Max(x =>x.Width);
         }
 
+        public IColumn Column { get; }
         public int Width { get; }
         public int Height => _cellLines.Length;
 
-        public CellLine GetCellLine(int lineNumber) => _cellLines[lineNumber];
-
-        public IEnumerable<CellLine> GetCellLines() => _cellLines;
-
-        private IEnumerable<object> Split(string value)
+        internal void Write(
+            TextWriter writer,
+            IColumn column,
+            int rowHeight,
+            int lineNumber,
+            int columnWidth,
+            int padding)
         {
-            using var reader = new StringReader(value);
-            for (var line = reader.ReadLine(); line != null; line = reader.ReadLine())
+            CellLine cellLine;
+            switch (column.VerticalAlignment)
             {
-                yield return line;
+                case VerticalAlignment.Top:
+                    cellLine = GetTopCellLine();
+                    break;
+                case VerticalAlignment.Center:
+                    cellLine = GetCenterCellLine();
+                    break;
+                case VerticalAlignment.Bottom:
+                    cellLine = GetBottomCellLine();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            cellLine.Write(writer, column, columnWidth, padding);
+
+            CellLine GetTopCellLine()
+            {
+                return lineNumber < Height
+                    ? _cellLines[lineNumber]
+                    : CellLine.BlankCellLine;
+            }
+
+            CellLine GetCenterCellLine()
+            {
+                var indent = (rowHeight - Height) / 2;
+                var localLineNumber = lineNumber - indent;
+                if (localLineNumber < 0)
+                {
+                    return CellLine.BlankCellLine;
+                }
+
+                if (Height <= localLineNumber)
+                {
+                    return CellLine.BlankCellLine;
+                }
+
+                return _cellLines[localLineNumber];
+            }
+
+            CellLine GetBottomCellLine()
+            {
+                var indent = rowHeight - Height;
+                var localLineNumber = lineNumber - indent;
+                if (localLineNumber < 0)
+                {
+                    return CellLine.BlankCellLine;
+                }
+
+                return _cellLines[localLineNumber];
             }
         }
-   }
+    }
 }

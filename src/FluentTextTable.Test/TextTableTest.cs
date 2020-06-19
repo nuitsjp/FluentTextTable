@@ -47,17 +47,16 @@ namespace FluentTextTable.Test
             [Fact]
             public void WhenAutoFormat()
             {
-                using (var writer = new StringWriter())
+                using var writer = new StringWriter();
+                var table = TextTable<User>.Build();
+                table.Write(writer, new[]
                 {
-                    var table = TextTable<User>.Build();
-                    table.Write(writer, new[]
-                    {
-                        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
-                        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
-                    });
+                    new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+                    new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
+                });
 
-                    Assert.Equal(
-                        @"
+                Assert.Equal(
+                    @"
 +----+-------------+---------+-------------+--------------------+
 | Id | Name        | Parents | Occupations | Birthday           |
 +----+-------------+---------+-------------+--------------------+
@@ -66,7 +65,6 @@ namespace FluentTextTable.Test
 | 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
 +----+-------------+---------+-------------+--------------------+
 ", $"{Environment.NewLine}{writer}");
-                }
             }
 
             [Fact]

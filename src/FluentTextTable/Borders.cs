@@ -2,7 +2,14 @@
 {
     public class Borders
     {
-        internal Borders(HorizontalBorder top, HorizontalBorder headerHorizontal, HorizontalBorder insideHorizontal, HorizontalBorder bottom, VerticalBorder left, VerticalBorder insideVertical, VerticalBorder right)
+        internal Borders(
+            HorizontalBorder top, 
+            HorizontalBorder headerHorizontal, 
+            HorizontalBorder insideHorizontal, 
+            HorizontalBorder bottom, 
+            VerticalBorder left, 
+            VerticalBorder insideVertical, 
+            VerticalBorder right)
         {
             Top = top;
             HeaderHorizontal = headerHorizontal;

@@ -129,8 +129,8 @@ namespace FluentTextTable.Test
 
                 Assert.Equal(
                     @"
-| ID | Name       | Birthday   | Parents              | Occupations        |
-|---:|------------|------------|----------------------|:------------------:|
+| ID | Name       | Birthday   | Parents                                  | Occupations                                                      |
+|---:|------------|------------|------------------------------------------|:----------------------------------------------------------------:|
 |  1 | Bill Gates | 1955/10/28 | - Bill Gates Sr.<br>- Mary Maxwell Gates | Software developer<br>Investor<br>Entrepreneur<br>Philanthropist |
 ", $"{Environment.NewLine}{text}");
             }
@@ -164,8 +164,8 @@ namespace FluentTextTable.Test
 
                 Assert.Equal(
                     @"
-| ID | Name       | Birthday   | Parents              | Occupations        |
-|---:|------------|------------|----------------------|:------------------:|
+| ID | Name       | Birthday   | Parents                                  | Occupations                                                      |
+|---:|------------|------------|------------------------------------------|:----------------------------------------------------------------:|
 |  1 | Bill Gates | 1955/10/28 | - Bill Gates Sr.<br>- Mary Maxwell Gates | Software developer<br>Investor<br>Entrepreneur<br>Philanthropist |
 ", $"{Environment.NewLine}{text}");
             }

@@ -24,14 +24,40 @@ namespace FluentTextTable
             InsideVerticalBorder = insideVerticalBorder;
             RightVerticalBorder = rightVerticalBorder;
         }
+
+        protected HorizontalBorder()
+        {
+        }
+
+        private char LeftStyle { get; }
+        private char IntersectionStyle { get; }
+        private char RightStyle { get; }
+        private VerticalBorder LeftVerticalBorder { get; }
+        private VerticalBorder InsideVerticalBorder { get; }
+        private VerticalBorder RightVerticalBorder { get; }
+        private bool IsEnable { get; }
+        private char LineStyle { get; }
         
-        public char LeftStyle { get; }
-        public char IntersectionStyle { get; }
-        public char RightStyle { get; }
-        public VerticalBorder LeftVerticalBorder { get; }
-        public VerticalBorder InsideVerticalBorder { get; }
-        public VerticalBorder RightVerticalBorder { get; }
-        public bool IsEnable { get; }
-        public char LineStyle { get; }
+        internal virtual void Write<TItem>(TextWriter textWriter, ITableInstance<TItem> tableInstance)
+        {
+            if(!IsEnable) return;
+            
+            if(LeftVerticalBorder.IsEnable) textWriter.Write(LeftStyle);
+            
+            var items = new List<string>();
+            foreach (var column in tableInstance.Columns)
+            {
+                items.Add(new string(LineStyle, tableInstance.GetColumnWidth(column)));
+            }
+
+            textWriter.Write(InsideVerticalBorder.IsEnable
+                ? string.Join(IntersectionStyle.ToString(), items)
+                : string.Join(string.Empty, items));
+
+            if(RightVerticalBorder.IsEnable) textWriter.Write(RightStyle);
+            
+            textWriter.WriteLine();
+        }
+
     }
 }

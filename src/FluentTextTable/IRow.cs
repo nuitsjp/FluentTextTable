@@ -2,10 +2,10 @@
 
 namespace FluentTextTable
 {
-    public interface IRow<TItem>
+    public interface IRow
     {
-        IReadOnlyDictionary<IColumn<TItem>, Cell> Cells { get; }
+        IReadOnlyDictionary<IColumn, Cell> Cells { get; }
         int Height { get; }
-        int GetColumnWidth(IColumn<TItem> column);
+        int GetColumnWidth(IColumn column);
     }
 }

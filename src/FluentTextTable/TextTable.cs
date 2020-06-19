@@ -8,32 +8,18 @@ namespace FluentTextTable
     public class TextTable<TItem> : Table<TItem>, ITextTable<TItem>
     {
         internal TextTable(int padding, List<IColumn<TItem>> columns, Borders borders)
-            : base(padding, columns)
+            : base(padding, columns, borders, ToStrings)
         {
-            Borders = borders;
         }
 
-        internal Borders Borders { get; }
-
-        public override void Write(TextWriter writer, IEnumerable<TItem> items)
+        private static IEnumerable<string> ToStrings(IEnumerable<object> objects, string format)
         {
-            var tableInstance = 
-                new TextTableInstance<TItem>(
-                    this,
-                    items
-                        .Select(item => new Row<TItem>(Columns, Padding, item))
-                        .Cast<IRow<TItem>>()
-                        .ToList());
-            tableInstance.Write(writer);
+            return objects.Select(x => x.ToString(format));
         }
-        
+
         public static TextTable<TItem> Build()
-        {
-            var config = new TextTableConfig<TItem>();
-            config.GenerateColumns();
-            return config.Build();
-        }
-
+            => Build(x => x.EnableGenerateColumns());
+        
         public static TextTable<TItem> Build(Action<ITextTableConfig<TItem>> configure)
         {
             var config = new TextTableConfig<TItem>();

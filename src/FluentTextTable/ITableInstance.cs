@@ -2,11 +2,11 @@
 
 namespace FluentTextTable
 {
-    public interface ITableInstance<TItem>
+    public interface ITableInstance<TItem> : ITable<TItem>
     {
         int Padding { get; }
-        IReadOnlyList<IColumn<TItem>> Columns { get; }
-        IReadOnlyList<IRow<TItem>> Rows { get; }
-        int GetColumnWidth(IColumn<TItem> column);
+        Borders Borders { get; }
+        IReadOnlyList<IColumn> Columns { get; }
+        int GetColumnWidth(IColumn column);
     }
 }

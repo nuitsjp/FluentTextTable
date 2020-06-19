@@ -6,20 +6,48 @@ namespace FluentTextTable
 {
     public class CellLine
     {
-        internal static readonly CellLine BlankCellLine = new CellLine(null, null); 
+        internal static readonly CellLine BlankCellLine = new CellLine(string.Empty); 
+
+        private readonly string _values;
         
-        internal CellLine(object value, string format)
+        internal CellLine(string values)
         {
-            Value = format is null
-                ? value is null
-                    ? string.Empty
-                    : value.ToString()
-                : string.Format(format, value);
-            Width = Value.GetWidth();
+            _values = values;
+            Width = values.GetWidth();
         }
 
-        public string Value { get; }
-
         public int Width { get; }
+
+        internal void Write(
+            TextWriter writer,
+            IColumn column,
+            int columnWidth,
+            int padding)
+        {
+            int leftPadding;
+            int rightPadding;
+            switch (column.HorizontalAlignment)
+            {
+                case HorizontalAlignment.Default:
+                case HorizontalAlignment.Left:
+                    leftPadding = padding;
+                    rightPadding = columnWidth - Width - leftPadding;
+                    break;
+                case HorizontalAlignment.Center:
+                    leftPadding = (columnWidth - Width) / 2;
+                    rightPadding = columnWidth - Width - leftPadding;
+                    break;
+                case HorizontalAlignment.Right:
+                    leftPadding = columnWidth - Width - padding;
+                    rightPadding = padding;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            writer.Write(new string(' ', leftPadding));
+            writer.Write(_values);
+            writer.Write(new string(' ', rightPadding));
+        }
     }
 }

@@ -4,26 +4,42 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    public class Row<TItem> : IRow<TItem>
+    public class Row<TItem> : IRow
     {
-        private readonly int _padding;
-        private readonly Dictionary<IColumn<TItem>, Cell> _cells = new Dictionary<IColumn<TItem>, Cell>();
+        private readonly Dictionary<IColumn, Cell> _cells;
 
-        internal Row(IEnumerable<IColumn<TItem>> columns, int padding, TItem item)
+        internal Row(IEnumerable<Cell> cells)
         {
-            _padding = padding;
-            foreach (var column in columns)
-            {
-                _cells[column] = new Cell(column.GetValue(item), column.Format);
-            }
-
+            _cells = cells.ToDictionary(x => x.Column);
             Height = _cells.Values.Max(x => x.Height);
         }
 
-        public IReadOnlyDictionary<IColumn<TItem>, Cell> Cells => _cells;
+        public IReadOnlyDictionary<IColumn, Cell> Cells => _cells;
 
         public int Height { get; }
 
-        public int GetColumnWidth(IColumn<TItem> column) => _cells[column].Width;
+        public int GetColumnWidth(IColumn column) => _cells[column].Width;
+        
+        internal void Write(TextWriter writer, ITableInstance<TItem> tableInstance)
+        {
+            for (var lineNumber = 0; lineNumber < Height; lineNumber++)
+            {
+                tableInstance.Borders.Left.Write(writer);
+
+                Cells[tableInstance.Columns[0]].Write(writer, tableInstance.Columns[0], Height, lineNumber, tableInstance.GetColumnWidth(tableInstance.Columns[0]), tableInstance.Padding);
+
+                for (int i = 1; i < tableInstance.Columns.Count; i++)
+                {
+                    var column = tableInstance.Columns[i];
+                    tableInstance.Borders.InsideVertical.Write(writer);
+                    Cells[column].Write(writer, column, Height, lineNumber, tableInstance.GetColumnWidth(column), tableInstance.Padding);
+                }
+
+                tableInstance.Borders.Right.Write(writer);
+                
+                writer.WriteLine();
+            }
+        }
+
     }
 }
