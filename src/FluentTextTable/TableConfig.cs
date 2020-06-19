@@ -80,6 +80,6 @@ namespace FluentTextTable
             }
         }
         
-        internal List<IColumn<TItem>> BuildColumns() => _columns.Select(x => x.Build()).ToList();
+        internal IHeader BuildHeader() => new Header(_columns.Select(x => x.Build()));
     }
 }

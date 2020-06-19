@@ -3,9 +3,9 @@ using System.IO;
 
 namespace FluentTextTable
 {
-    public interface IRow
+    public interface IRowSet
     {
         int GetColumnWidth(IColumn column);
-        void Write(TextWriter writer, ITableLayout tableLayout);
+        void WriteRows(TextWriter writer, ITableLayout tableLayout);
     }
 }

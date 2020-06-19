@@ -5,22 +5,52 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    public abstract class Table<TItem> : ITable<TItem>
+    public abstract class Table : ITable
     {
-        private readonly Func<IEnumerable<object>, string, IEnumerable<string>> _toStrings;
-        private readonly List<IColumn<TItem>> _columns;
-        internal Table(int padding, List<IColumn<TItem>> columns, Borders borders, Func<IEnumerable<object>, string, IEnumerable<string>> toStrings)
+        
+        public static ITable<TItem> Build<TItem>()
+            => Build<TItem>(x => x.EnableGenerateColumns());
+        
+        public static ITable<TItem> Build<TItem>(Action<ITextTableConfig<TItem>> configure)
         {
-            Padding = padding;
-            _columns = columns;
-            Borders = borders;
+            var config = new TextTableConfig<TItem>();
+            configure(config);
+            if (config.IsEnableGenerateColumns)
+            {
+                config.GenerateColumns();
+            }
+            return config.Build();
+        }
+
+        public static ITable<TItem> BuildMarkdown<TItem>()
+            => BuildMarkdown<TItem>(x => x.EnableGenerateColumns());
+
+        public static ITable<TItem> BuildMarkdown<TItem>(Action<ITableConfig<TItem>> configure)
+        {
+            var config = new MarkdownTableConfig<TItem>();
+            configure(config);
+            if (config.IsEnableGenerateColumns)
+            {
+                config.GenerateColumns();
+            }
+            return config.Build();
+        }
+    }
+    
+    public class Table<TItem> : Table, ITable<TItem>
+    {
+        private readonly IHeader _header;
+        private readonly Borders _borders;
+        private readonly int _padding;
+        private readonly Func<IEnumerable<object>, string, IEnumerable<string>> _toStrings;
+        internal Table(int padding, IHeader header, Borders borders, Func<IEnumerable<object>, string, IEnumerable<string>> toStrings)
+        {
+            _header = header;
+            _padding = padding;
+            _borders = borders;
             _toStrings = toStrings;
         }
 
-        public IReadOnlyList<IColumn> Columns => _columns;
-
-        public int Padding { get; }
-        internal Borders Borders { get; }
 
         public string ToString(IEnumerable<TItem> items)
         {
@@ -31,60 +61,22 @@ namespace FluentTextTable
 
         public void Write(TextWriter writer, IEnumerable<TItem> items)
         {
-            var rows = items.Select(NewRow).ToList();
-            var tableInstance = new TableInstance<TItem>(this, rows);
-            var columnWidths = new ColumnWidths(this, rows);
-            tableInstance.Write(writer);
-        }
+            var rowSet = NewRowSet(items);
+            var tableLayout = new TableLayout(_header.Columns, _borders, _padding, rowSet);
 
-        // public void Write(TextWriter writer)
-        // {
-        //     Borders.Top.Write(writer, this);
-        //     WriteHeader(writer);
-        //     Borders.HeaderHorizontal.Write(writer, this);
-        //     WriteRows(writer);
-        //     Borders.Bottom.Write(writer, this);
-        // }
-        //
-        // private void WriteHeader(TextWriter writer)
-        // {
-        //     Borders.Left.Write(writer);
-        //
-        //     WriteHeaderColumn(writer, Columns[0]);
-        //
-        //     for (var i = 1; i < Columns.Count; i++)
-        //     {
-        //         Borders.InsideVertical.Write(writer);
-        //         WriteHeaderColumn(writer, Columns[i]);
-        //     }
-        //     
-        //     Borders.Right.Write(writer);
-        //
-        //     writer.WriteLine();
-        // }
-        //  
-        // private void WriteHeaderColumn(TextWriter writer, IColumn column)
-        // {
-        //     writer.Write(new string(' ', Padding));
-        //     writer.Write(column.Name);
-        //     writer.Write(new string(' ', GetColumnWidth(column) - column.HeaderWidth - Padding));
-        // }
-        //
-        // private void WriteRows(TextWriter writer, IList<Row<TItem>> rows)
-        // {
-        //     if (rows.Any())
-        //     {
-        //         rows[0].Write(writer, this);
-        //         for (var i = 1; i < rows.Count; i++)
-        //         {
-        //             Borders.InsideHorizontal.Write(writer, this);
-        //             rows[i].Write(writer, this);
-        //         }
-        //     }
-        // }
-        private Row<TItem> NewRow(TItem item)
+            _borders.Top.Write(writer, tableLayout);
+            _header.Write(writer, tableLayout);
+            _borders.HeaderHorizontal.Write(writer, tableLayout);
+            rowSet.WriteRows(writer, tableLayout);
+            _borders.Bottom.Write(writer, tableLayout);
+        }
+        
+        private IRowSet NewRowSet(IEnumerable<TItem> items) =>
+            new RowSet(items.Select(NewRow).ToList());
+        
+        private Row NewRow(TItem item)
         {
-            return new Row<TItem>(_columns.Select(column => NewCell(item, column)));
+            return new Row(_header.Columns.Select(column => NewCell(item, (IColumn<TItem>)column)));
         }
 
         private Cell NewCell(TItem item, IColumn<TItem> column)

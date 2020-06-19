@@ -8,12 +8,12 @@ namespace FluentTextTable
     {
         internal static readonly CellLine BlankCellLine = new CellLine(string.Empty); 
 
-        private readonly string _values;
+        private readonly string _value;
         
-        internal CellLine(string values)
+        internal CellLine(string value)
         {
-            _values = values;
-            Width = values.GetWidth();
+            _value = value;
+            Width = value.GetWidth();
         }
 
         public int Width { get; }
@@ -46,7 +46,7 @@ namespace FluentTextTable
             }
 
             writer.Write(new string(' ', leftPadding));
-            writer.Write(_values);
+            writer.Write(_value);
             writer.Write(new string(' ', rightPadding));
         }
     }

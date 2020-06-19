@@ -3,9 +3,10 @@ using System.IO;
 
 namespace FluentTextTable
 {
-    public interface IRow
+    public interface IHeader
     {
-        int GetColumnWidth(IColumn column);
+        IReadOnlyList<IColumn> Columns { get; }
+
         void Write(TextWriter writer, ITableLayout tableLayout);
     }
 }

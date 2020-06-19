@@ -1,4 +1,6 @@
-﻿namespace FluentTextTable
+﻿using System.IO;
+
+namespace FluentTextTable
 {
     public interface IColumn
     {
@@ -7,6 +9,8 @@
         int HeaderWidth { get; }
         HorizontalAlignment HorizontalAlignment { get; }
         VerticalAlignment VerticalAlignment { get; }
+
+        void WriteHeader(TextWriter writer, ITableLayout tableLayout);
     }
     public interface IColumn<in TItem> : IColumn
     {

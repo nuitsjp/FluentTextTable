@@ -2,10 +2,10 @@
 
 namespace FluentTextTable
 {
-    public interface ITableInstance<TItem> : ITable<TItem>
+    public interface ITableLayout
     {
-        int Padding { get; }
         Borders Borders { get; }
+        int Padding { get; }
         IReadOnlyList<IColumn> Columns { get; }
         int GetColumnWidth(IColumn column);
     }

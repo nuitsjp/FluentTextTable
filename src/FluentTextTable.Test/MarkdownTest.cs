@@ -17,7 +17,7 @@ namespace FluentTextTable.Test
             public void WhenBasic()
             {
 
-                var table = MarkdownTable<User>.Build(config =>
+                var table = Table.BuildMarkdown<User>(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .HasName("ID")
@@ -47,7 +47,7 @@ namespace FluentTextTable.Test
             public void WhenAutoFormat()
             {
                 using var writer = new StringWriter();
-                var table = MarkdownTable<User>.Build();
+                var table = Table.BuildMarkdown<User>();
                 table.Write(writer,new[]
                     {
                         new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
@@ -67,7 +67,7 @@ namespace FluentTextTable.Test
             public void WhenSpecifyPadding()
             {
 
-                var table = MarkdownTable<User>.Build(config =>
+                var table = Table.BuildMarkdown<User>(config =>
                 {
                     config.HasPadding(2);
                     config.AddColumn(x => x.Id)
@@ -98,7 +98,7 @@ namespace FluentTextTable.Test
             public void WhenMultipleLines()
             {
 
-                var table = MarkdownTable<User>.Build(config =>
+                var table = Table.BuildMarkdown<User>(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .HasName("ID")
@@ -149,7 +149,7 @@ namespace FluentTextTable.Test
             public void WithAttribute()
             {
 
-                var table = MarkdownTable<UserWithAttribute>.Build();
+                var table = Table.BuildMarkdown<UserWithAttribute>();
                 var text = table.ToString(new[]
                 {
                     new UserWithAttribute

@@ -5,8 +5,6 @@ namespace FluentTextTable
 {
     public interface ITable
     {
-        public int Padding { get; }
-        public IReadOnlyList<IColumn> Columns { get; }
     }
     
     public interface ITable<in TItem> : ITable

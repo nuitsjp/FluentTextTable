@@ -1,4 +1,5 @@
-﻿using EastAsianWidthDotNet;
+﻿using System.IO;
+using EastAsianWidthDotNet;
 
 namespace FluentTextTable
 {
@@ -28,5 +29,13 @@ namespace FluentTextTable
         public string Format { get; }
 
         public object GetValue(TItem item) => _accessor.GetValue(item);
+        
+        public void WriteHeader(TextWriter writer, ITableLayout tableLayout)
+        {
+            writer.Write(new string(' ', tableLayout.Padding));
+            writer.Write(Name);
+            writer.Write(new string(' ', tableLayout.GetColumnWidth(this) - HeaderWidth - tableLayout.Padding));
+        }
+
     }
 }

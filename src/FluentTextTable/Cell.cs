@@ -22,14 +22,13 @@ namespace FluentTextTable
 
         internal void Write(
             TextWriter writer,
-            IColumn column,
             int rowHeight,
             int lineNumber,
             int columnWidth,
             int padding)
         {
             CellLine cellLine;
-            switch (column.VerticalAlignment)
+            switch (Column.VerticalAlignment)
             {
                 case VerticalAlignment.Top:
                     cellLine = GetTopCellLine();
@@ -44,7 +43,7 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            cellLine.Write(writer, column, columnWidth, padding);
+            cellLine.Write(writer, Column, columnWidth, padding);
 
             CellLine GetTopCellLine()
             {

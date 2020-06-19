@@ -16,7 +16,7 @@ namespace FluentTextTable.Test
             [Fact]
             public void WhenBasic()
             {
-                var table = TextTable<User>.Build(config =>
+                var table = Table.Build<User>(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .HasName("ID")
@@ -48,7 +48,7 @@ namespace FluentTextTable.Test
             public void WhenAutoFormat()
             {
                 using var writer = new StringWriter();
-                var table = TextTable<User>.Build();
+                var table = Table.Build<User>();
                 table.Write(writer, new[]
                 {
                     new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
@@ -71,7 +71,7 @@ namespace FluentTextTable.Test
             public void WhenAutoGenerateColumnsIsTrue()
             {
 
-                var table = TextTable<User>.Build(config =>
+                var table = Table.Build<User>(config =>
                 {
                     config.EnableGenerateColumns();
                 });
@@ -96,7 +96,7 @@ namespace FluentTextTable.Test
             [Fact]
             public void WhenSpecifyPadding()
             {
-                var table = TextTable<User>.Build(config =>
+                var table = Table.Build<User>(config =>
                 {
                     config.HasPadding(2);
                     config.AddColumn(x => x.Id)
@@ -129,7 +129,7 @@ namespace FluentTextTable.Test
             public void WhenMultipleLines()
             {
 
-                var table = TextTable<User>.Build(config =>
+                var table = Table.Build<User>(config =>
                 {
                     config.AddColumn(x => x.Id)
                         .HasName("ID")
@@ -175,7 +175,7 @@ namespace FluentTextTable.Test
             public void WithAttribute()
             {
 
-                var table = TextTable<UserWithAttribute>.Build();
+                var table = Table.Build<UserWithAttribute>();
                 var text = table.ToString(new[]
                 {
                     new UserWithAttribute
@@ -229,7 +229,7 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.Disable();
@@ -255,7 +255,7 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.Top.Disable();
@@ -281,7 +281,7 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.Top
@@ -315,7 +315,7 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.HeaderHorizontal.Disable();
@@ -341,7 +341,7 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.HeaderHorizontal
@@ -375,7 +375,7 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.InsideHorizontal.Disable();
@@ -401,7 +401,7 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.InsideHorizontal
@@ -435,7 +435,7 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.Bottom.Disable();
@@ -461,7 +461,7 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.Bottom
@@ -495,7 +495,7 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.Left.Disable();
@@ -522,7 +522,7 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.Left.LineIs('\\');
@@ -552,7 +552,7 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.InsideVertical.Disable();
@@ -579,7 +579,7 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.InsideVertical.LineIs('\\');
@@ -609,7 +609,7 @@ namespace FluentTextTable.Test
                 public void WhenDisable()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.Right.Disable();
@@ -636,7 +636,7 @@ namespace FluentTextTable.Test
                 public void WhenChangeDecorations()
                 {
 
-                    var table = TextTable<User>.Build(config =>
+                    var table = Table.Build<User>(config =>
                     {
                         config.EnableGenerateColumns();
                         config.Borders.Right.LineIs('\\');
