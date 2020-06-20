@@ -6,6 +6,6 @@ namespace FluentTextTable
     public interface IRowSet
     {
         int GetColumnWidth(IColumn column);
-        void WriteRows(TextWriter writer, ITableLayout tableLayout);
+        void WriteRows(TextWriter writer, ITextTableLayout textTableLayout);
     }
 }

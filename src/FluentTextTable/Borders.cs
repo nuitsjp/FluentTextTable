@@ -2,6 +2,19 @@
 {
     public class Borders
     {
+        private static readonly VerticalBorder MarkdownVerticalBorder = new VerticalBorder(true, '|');
+        private static readonly HorizontalBorder DisableHorizontalBorder =
+            new HorizontalBorder(false, '-', '-', '|', '-', MarkdownVerticalBorder, MarkdownVerticalBorder, MarkdownVerticalBorder);
+
+        internal static readonly Borders MarkdownTableBorders = new Borders(
+            DisableHorizontalBorder,
+            new MarkdownHeaderHorizontalBorder(),
+            DisableHorizontalBorder,
+            DisableHorizontalBorder,
+            MarkdownVerticalBorder,
+            MarkdownVerticalBorder,
+            MarkdownVerticalBorder);
+
         internal Borders(
             HorizontalBorder top, 
             HorizontalBorder headerHorizontal, 

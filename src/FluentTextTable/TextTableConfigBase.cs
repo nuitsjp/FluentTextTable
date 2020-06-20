@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace FluentTextTable
 {
-    public abstract class TableConfig<TItem> : ITableConfig<TItem>
+    public abstract class TextTableConfigBase<TItem> : ITextTableConfig<TItem>
     {
         private const int DefaultPadding = 1;
         
@@ -16,13 +16,13 @@ namespace FluentTextTable
 
         internal bool IsEnableGenerateColumns { get; private set; }
 
-        public ITableConfig<TItem> HasPadding(int padding)
+        public ITextTableConfig<TItem> HasPadding(int padding)
         {
             Padding = padding;
             return this;
         }
 
-        public ITableConfig<TItem> EnableGenerateColumns( )
+        public ITextTableConfig<TItem> EnableAutoGenerateColumns( )
         {
             IsEnableGenerateColumns = true;
             return this;

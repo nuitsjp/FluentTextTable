@@ -14,19 +14,19 @@ namespace FluentTextTable
 
         public IReadOnlyList<IColumn> Columns { get; }
         
-        public void Write(TextWriter writer, ITableLayout tableLayout)
+        public void Write(TextWriter writer, ITextTableLayout textTableLayout)
         {
-            tableLayout.Borders.Left.Write(writer);
+            textTableLayout.Borders.Left.Write(writer);
         
-            Columns[0].WriteHeader(writer, tableLayout);
+            Columns[0].WriteHeader(writer, textTableLayout);
         
             for (var i = 1; i < Columns.Count; i++)
             {
-                tableLayout.Borders.InsideVertical.Write(writer);
-                Columns[i].WriteHeader(writer, tableLayout);
+                textTableLayout.Borders.InsideVertical.Write(writer);
+                Columns[i].WriteHeader(writer, textTableLayout);
             }
             
-            tableLayout.Borders.Right.Write(writer);
+            textTableLayout.Borders.Right.Write(writer);
         
             writer.WriteLine();
         }

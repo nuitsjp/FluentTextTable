@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using EastAsianWidthDotNet;
 
 namespace FluentTextTable
@@ -28,13 +29,29 @@ namespace FluentTextTable
         public VerticalAlignment VerticalAlignment { get; }
         public string Format { get; }
 
-        public object GetValue(TItem item) => _accessor.GetValue(item);
-        
-        public void WriteHeader(TextWriter writer, ITableLayout tableLayout)
+        public IEnumerable<object> GetValues(TItem item)
         {
-            writer.Write(new string(' ', tableLayout.Padding));
+            var value = _accessor.GetValue(item);
+            
+            IEnumerable<object> objects;
+            if (value is string stringValue)
+            {
+                return stringValue.SplitOnNewLine();
+            }
+            
+            if (value is IEnumerable<object> enumerable)
+            {
+                return enumerable;
+            }
+
+            return new[] {value};
+        }
+        
+        public void WriteHeader(TextWriter writer, ITextTableLayout textTableLayout)
+        {
+            writer.Write(new string(' ', textTableLayout.Padding));
             writer.Write(Name);
-            writer.Write(new string(' ', tableLayout.GetColumnWidth(this) - HeaderWidth - tableLayout.Padding));
+            writer.Write(new string(' ', textTableLayout.GetColumnWidth(this) - HeaderWidth - textTableLayout.Padding));
         }
 
     }

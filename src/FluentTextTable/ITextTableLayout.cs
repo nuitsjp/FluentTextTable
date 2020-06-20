@@ -2,7 +2,7 @@
 
 namespace FluentTextTable
 {
-    public interface ITableLayout
+    public interface ITextTableLayout
     {
         Borders Borders { get; }
         int Padding { get; }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace FluentTextTable
 {
@@ -10,10 +11,10 @@ namespace FluentTextTable
         HorizontalAlignment HorizontalAlignment { get; }
         VerticalAlignment VerticalAlignment { get; }
 
-        void WriteHeader(TextWriter writer, ITableLayout tableLayout);
+        void WriteHeader(TextWriter writer, ITextTableLayout textTableLayout);
     }
     public interface IColumn<in TItem> : IColumn
     {
-        object GetValue(TItem item);
+        IEnumerable<object> GetValues(TItem item);
     }
 }

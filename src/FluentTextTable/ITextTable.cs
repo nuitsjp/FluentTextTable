@@ -1,6 +1,11 @@
-﻿namespace FluentTextTable
+﻿using System.Collections.Generic;
+using System.IO;
+
+namespace FluentTextTable
 {
-    public interface ITextTable<in TItem> : ITable<TItem>
+    public interface ITextTable<in TItem>
     {
+        string ToString(IEnumerable<TItem> items);
+        void Write(TextWriter writer, IEnumerable<TItem> items);
     }
 }

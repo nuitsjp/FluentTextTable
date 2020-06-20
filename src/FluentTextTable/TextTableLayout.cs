@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    public class TableLayout : ITableLayout
+    public class TextTableLayout : ITextTableLayout
     {
         private readonly Dictionary<IColumn, int> _columnWidths = new Dictionary<IColumn, int>();
         
-        internal TableLayout(IReadOnlyList<IColumn> columns, Borders borders, int padding, IRowSet rowSet)
+        internal TextTableLayout(IReadOnlyList<IColumn> columns, Borders borders, int padding, IRowSet rowSet)
         {
             Borders = borders;
             Columns = columns;

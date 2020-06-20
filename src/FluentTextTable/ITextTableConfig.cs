@@ -1,7 +1,12 @@
-﻿namespace FluentTextTable
+﻿using System;
+using System.Linq.Expressions;
+
+namespace FluentTextTable
 {
-    public interface ITextTableConfig<TItem> : ITableConfig<TItem>
+    public interface ITextTableConfig<TItem>
     {
-        IBordersConfig Borders { get; }
+        ITextTableConfig<TItem> HasPadding(int padding);
+        ITextTableConfig<TItem> EnableAutoGenerateColumns();
+        IColumnConfig AddColumn(Expression<Func<TItem, object>> expression);
     }
 }

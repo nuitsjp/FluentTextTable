@@ -38,16 +38,16 @@ namespace FluentTextTable
         private bool IsEnable { get; }
         private char LineStyle { get; }
         
-        internal virtual void Write(TextWriter textWriter, ITableLayout tableLayout)
+        internal virtual void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
         {
             if(!IsEnable) return;
             
             if(LeftVerticalBorder.IsEnable) textWriter.Write(LeftStyle);
             
             var items = new List<string>();
-            foreach (var column in tableLayout.Columns)
+            foreach (var column in textTableLayout.Columns)
             {
-                items.Add(new string(LineStyle, tableLayout.GetColumnWidth(column)));
+                items.Add(new string(LineStyle, textTableLayout.GetColumnWidth(column)));
             }
 
             textWriter.Write(InsideVerticalBorder.IsEnable
