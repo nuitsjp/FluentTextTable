@@ -3,7 +3,7 @@
 namespace FluentTextTable
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-    public sealed class ColumnFormatAttribute : Attribute
+    public sealed class ColumnAttribute : Attribute
     {
         public int Index { get; set; }
         public string Header { get; set; }

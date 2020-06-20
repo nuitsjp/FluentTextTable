@@ -203,19 +203,19 @@ namespace FluentTextTable.Test
 
             private class UserWithAttribute
             {
-                [ColumnFormat(Index = 1, Header = "ID", HorizontalAlignment = HorizontalAlignment.Right)]
+                [Column(Index = 1, Header = "ID", HorizontalAlignment = HorizontalAlignment.Right)]
                 public int Id { get; set; }
 
-                [ColumnFormat(Index = 2, VerticalAlignment = VerticalAlignment.Center)]
+                [Column(Index = 2, VerticalAlignment = VerticalAlignment.Center)]
                 public string Name { get; set; }
 
-                [ColumnFormat(Index = 3, VerticalAlignment = VerticalAlignment.Bottom, Format = "{0:yyyy/MM/dd}")]
+                [Column(Index = 3, VerticalAlignment = VerticalAlignment.Bottom, Format = "{0:yyyy/MM/dd}")]
                 public DateTime Birthday;
 
-                [ColumnFormat(Index = 4, VerticalAlignment = VerticalAlignment.Center, Format = "- {0}")]
+                [Column(Index = 4, VerticalAlignment = VerticalAlignment.Center, Format = "- {0}")]
                 public string Parents { get; set; }
 
-                [ColumnFormat(Index = 5, HorizontalAlignment = HorizontalAlignment.Center)]
+                [Column(Index = 5, HorizontalAlignment = HorizontalAlignment.Center)]
                 public string[] Occupations { get; set; }
 
             }

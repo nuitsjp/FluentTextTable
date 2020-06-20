@@ -51,10 +51,10 @@ namespace FluentTextTable
             var memberInfos =
                 typeof(TItem).GetMembers(BindingFlags.Public | BindingFlags.Instance)
                     .Where(x => x.MemberType == MemberTypes.Field || x.MemberType == MemberTypes.Property);
-            var members = new List<(int index, MemberInfo memberInfo, ColumnFormatAttribute columnFormat)>();
+            var members = new List<(int index, MemberInfo memberInfo, ColumnAttribute columnFormat)>();
             foreach (var memberInfo in memberInfos)
             {
-                var columnFormat = memberInfo.GetCustomAttribute<ColumnFormatAttribute>();
+                var columnFormat = memberInfo.GetCustomAttribute<ColumnAttribute>();
                 if (columnFormat is null)
                 {
                     members.Add((0, memberInfo, null));
