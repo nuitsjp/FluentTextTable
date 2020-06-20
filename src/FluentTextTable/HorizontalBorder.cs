@@ -47,7 +47,7 @@ namespace FluentTextTable
             var items = new List<string>();
             foreach (var column in textTableLayout.Columns)
             {
-                items.Add(new string(LineStyle, textTableLayout.GetColumnWidth(column)));
+                items.Add(new string(LineStyle, textTableLayout.GetWidthOf(column)));
             }
 
             textWriter.Write(InsideVerticalBorder.IsEnable

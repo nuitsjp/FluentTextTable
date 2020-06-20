@@ -18,7 +18,7 @@ namespace FluentTextTable
                 _columnWidths[column] = 
                     Math.Max(
                         column.HeaderWidth, 
-                        rowSet.GetColumnWidth(column))
+                        rowSet.GetWidthOf(column))
                     + Padding * 2;
             }
         }
@@ -27,6 +27,6 @@ namespace FluentTextTable
         public IReadOnlyList<IColumn> Columns { get; }
         public Borders Borders { get; }
         public int Padding { get; }
-        public int GetColumnWidth(IColumn column) => _columnWidths[column];
+        public int GetWidthOf(IColumn column) => _columnWidths[column];
     }
 }

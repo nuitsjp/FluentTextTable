@@ -13,19 +13,19 @@ namespace FluentTextTable
                 switch (column.HorizontalAlignment)
                 {
                     case HorizontalAlignment.Default:
-                        writer.Write(new string('-', textTableLayout.GetColumnWidth(column)));
+                        writer.Write(new string('-', textTableLayout.GetWidthOf(column)));
                         break;
                     case HorizontalAlignment.Left:
                         writer.Write(':');
-                        writer.Write(new string('-', textTableLayout.GetColumnWidth(column) - 1));
+                        writer.Write(new string('-', textTableLayout.GetWidthOf(column) - 1));
                         break;
                     case HorizontalAlignment.Center:
                         writer.Write(':');
-                        writer.Write(new string('-', textTableLayout.GetColumnWidth(column) - 2));
+                        writer.Write(new string('-', textTableLayout.GetWidthOf(column) - 2));
                         writer.Write(':');
                         break;
                     case HorizontalAlignment.Right:
-                        writer.Write(new string('-', textTableLayout.GetColumnWidth(column) - 1));
+                        writer.Write(new string('-', textTableLayout.GetWidthOf(column) - 1));
                         writer.Write(':');
                         break;
                     default:

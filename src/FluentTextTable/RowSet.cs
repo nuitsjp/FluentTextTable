@@ -10,7 +10,7 @@ namespace FluentTextTable
 
         public RowSet(IReadOnlyList<IRow> rows) => _rows = rows;
 
-        public int GetColumnWidth(IColumn column) => _rows.Max(x => x.GetColumnWidth(column));
+        public int GetWidthOf(IColumn column) => _rows.Max(x => x.GetWidthOf(column));
 
         public void WriteRows(TextWriter writer, ITextTableLayout textTableLayout)
         {

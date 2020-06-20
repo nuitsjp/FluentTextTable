@@ -51,7 +51,7 @@ namespace FluentTextTable
         {
             writer.Write(new string(' ', textTableLayout.Padding));
             writer.Write(Name);
-            writer.Write(new string(' ', textTableLayout.GetColumnWidth(this) - HeaderWidth - textTableLayout.Padding));
+            writer.Write(new string(' ', textTableLayout.GetWidthOf(this) - HeaderWidth - textTableLayout.Padding));
         }
 
     }

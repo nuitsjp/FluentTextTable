@@ -17,7 +17,7 @@ namespace FluentTextTable
         }
 
 
-        public int GetColumnWidth(IColumn column) => _cells[column].Width;
+        public int GetWidthOf(IColumn column) => _cells[column].Width;
         
         public void Write(TextWriter writer, ITextTableLayout textTableLayout)
         {
@@ -25,13 +25,13 @@ namespace FluentTextTable
             {
                 textTableLayout.Borders.Left.Write(writer);
 
-                _cells[textTableLayout.Columns[0]].Write(writer, _height, lineNumber, textTableLayout.GetColumnWidth(textTableLayout.Columns[0]), textTableLayout.Padding);
+                _cells[textTableLayout.Columns[0]].Write(writer, _height, lineNumber, textTableLayout.GetWidthOf(textTableLayout.Columns[0]), textTableLayout.Padding);
 
                 for (int i = 1; i < textTableLayout.Columns.Count; i++)
                 {
                     var column = textTableLayout.Columns[i];
                     textTableLayout.Borders.InsideVertical.Write(writer);
-                    _cells[column].Write(writer, _height, lineNumber, textTableLayout.GetColumnWidth(column), textTableLayout.Padding);
+                    _cells[column].Write(writer, _height, lineNumber, textTableLayout.GetWidthOf(column), textTableLayout.Padding);
                 }
 
                 textTableLayout.Borders.Right.Write(writer);
