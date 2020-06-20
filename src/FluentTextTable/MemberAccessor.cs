@@ -38,6 +38,7 @@ namespace FluentTextTable
             Expression expr = lambda;
             while (true)
             {
+                // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                 switch (expr.NodeType)
                 {
                     case ExpressionType.Lambda:

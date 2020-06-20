@@ -27,7 +27,7 @@ namespace FluentTextTable
 
                 _cells[textTableLayout.Columns[0]].Write(writer, _height, lineNumber, textTableLayout.GetWidthOf(textTableLayout.Columns[0]), textTableLayout.Padding);
 
-                for (int i = 1; i < textTableLayout.Columns.Count; i++)
+                for (var i = 1; i < textTableLayout.Columns.Count; i++)
                 {
                     var column = textTableLayout.Columns[i];
                     textTableLayout.Borders.InsideVertical.Write(writer);

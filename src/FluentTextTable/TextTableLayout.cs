@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FluentTextTable
 {
@@ -17,7 +16,7 @@ namespace FluentTextTable
             {
                 _columnWidths[column] = 
                     Math.Max(
-                        column.HeaderWidth, 
+                        column.Width, 
                         rowSet.GetWidthOf(column))
                     + Padding * 2;
             }

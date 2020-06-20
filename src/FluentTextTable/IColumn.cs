@@ -5,13 +5,12 @@ namespace FluentTextTable
 {
     public interface IColumn
     {
-        string Name { get; }
         string Format { get; }
-        int HeaderWidth { get; }
+        int Width { get; }
         HorizontalAlignment HorizontalAlignment { get; }
         VerticalAlignment VerticalAlignment { get; }
 
-        void WriteHeader(TextWriter writer, ITextTableLayout textTableLayout);
+        void Write(TextWriter writer, ITextTableLayout textTableLayout);
     }
     public interface IColumn<in TItem> : IColumn
     {

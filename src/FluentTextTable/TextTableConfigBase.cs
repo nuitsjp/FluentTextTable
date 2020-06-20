@@ -66,17 +66,17 @@ namespace FluentTextTable
                 }
             }
 
-            foreach (var member in members.OrderBy(x => x.index))
+            foreach (var (_, memberInfo, columnFormat) in members.OrderBy(x => x.index))
             {
-                var column = AddColumn(member.memberInfo);
-                if (member.columnFormat != null)
-                {
-                    if (member.columnFormat.Header != null) column.HasName(member.columnFormat.Header);
-                    column
-                        .AlignHorizontal(member.columnFormat.HorizontalAlignment)
-                        .AlignVertical(member.columnFormat.VerticalAlignment)
-                        .HasFormat(member.columnFormat.Format);
-                }
+                var column = AddColumn(memberInfo);
+                if (columnFormat == null) continue;
+                
+                if (columnFormat.Header != null) column.HasName(columnFormat.Header);
+                
+                column
+                    .AlignHorizontal(columnFormat.HorizontalAlignment)
+                    .AlignVertical(columnFormat.VerticalAlignment)
+                    .HasFormat(columnFormat.Format);
             }
         }
         

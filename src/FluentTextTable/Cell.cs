@@ -27,21 +27,13 @@ namespace FluentTextTable
             int columnWidth,
             int padding)
         {
-            CellLine cellLine;
-            switch (Column.VerticalAlignment)
+            var cellLine = Column.VerticalAlignment switch
             {
-                case VerticalAlignment.Top:
-                    cellLine = GetTopCellLine();
-                    break;
-                case VerticalAlignment.Center:
-                    cellLine = GetCenterCellLine();
-                    break;
-                case VerticalAlignment.Bottom:
-                    cellLine = GetBottomCellLine();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                VerticalAlignment.Top => GetTopCellLine(),
+                VerticalAlignment.Center => GetCenterCellLine(),
+                VerticalAlignment.Bottom => GetBottomCellLine(),
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
             cellLine.Write(writer, Column, columnWidth, padding);
 
@@ -61,24 +53,18 @@ namespace FluentTextTable
                     return CellLine.BlankCellLine;
                 }
 
-                if (Height <= localLineNumber)
-                {
-                    return CellLine.BlankCellLine;
-                }
-
-                return _cellLines[localLineNumber];
+                return Height <= localLineNumber 
+                    ? CellLine.BlankCellLine 
+                    : _cellLines[localLineNumber];
             }
 
             CellLine GetBottomCellLine()
             {
                 var indent = rowHeight - Height;
                 var localLineNumber = lineNumber - indent;
-                if (localLineNumber < 0)
-                {
-                    return CellLine.BlankCellLine;
-                }
-
-                return _cellLines[localLineNumber];
+                return localLineNumber < 0 
+                    ? CellLine.BlankCellLine 
+                    : _cellLines[localLineNumber];
             }
         }
     }

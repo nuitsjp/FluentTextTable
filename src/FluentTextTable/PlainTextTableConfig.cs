@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace FluentTextTable
+﻿namespace FluentTextTable
 {
     public class PlainTextTableConfig<TItem> : TextTableConfigBase<TItem>, IPlainTextTableConfig<TItem>
     {

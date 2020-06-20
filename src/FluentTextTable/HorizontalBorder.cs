@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
+using System.Linq;
 
 namespace FluentTextTable
 {
@@ -44,11 +44,10 @@ namespace FluentTextTable
             
             if(LeftVerticalBorder.IsEnable) textWriter.Write(LeftStyle);
             
-            var items = new List<string>();
-            foreach (var column in textTableLayout.Columns)
-            {
-                items.Add(new string(LineStyle, textTableLayout.GetWidthOf(column)));
-            }
+            var items = textTableLayout
+                .Columns
+                .Select(column => new string(LineStyle, textTableLayout.GetWidthOf(column)))
+                .ToList();
 
             textWriter.Write(InsideVerticalBorder.IsEnable
                 ? string.Join(IntersectionStyle.ToString(), items)

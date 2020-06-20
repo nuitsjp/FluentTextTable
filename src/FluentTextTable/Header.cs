@@ -18,12 +18,12 @@ namespace FluentTextTable
         {
             textTableLayout.Borders.Left.Write(writer);
         
-            Columns[0].WriteHeader(writer, textTableLayout);
+            Columns[0].Write(writer, textTableLayout);
         
             for (var i = 1; i < Columns.Count; i++)
             {
                 textTableLayout.Borders.InsideVertical.Write(writer);
-                Columns[i].WriteHeader(writer, textTableLayout);
+                Columns[i].Write(writer, textTableLayout);
             }
             
             textTableLayout.Borders.Right.Write(writer);

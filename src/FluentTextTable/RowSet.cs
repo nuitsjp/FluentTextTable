@@ -14,14 +14,13 @@ namespace FluentTextTable
 
         public void WriteRows(TextWriter writer, ITextTableLayout textTableLayout)
         {
-            if (_rows.Any())
+            if (!_rows.Any()) return;
+            
+            _rows[0].Write(writer, textTableLayout);
+            for (var i = 1; i < _rows.Count; i++)
             {
-                _rows[0].Write(writer, textTableLayout);
-                for (var i = 1; i < _rows.Count; i++)
-                {
-                    textTableLayout.Borders.InsideHorizontal.Write(writer, textTableLayout);
-                    _rows[i].Write(writer, textTableLayout);
-                }
+                textTableLayout.Borders.InsideHorizontal.Write(writer, textTableLayout);
+                _rows[i].Write(writer, textTableLayout);
             }
         }
     }

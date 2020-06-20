@@ -4,18 +4,19 @@ namespace FluentTextTable
 {
     public class VerticalBorder
     {
+        private readonly char _lineStyle;
+        
         internal VerticalBorder(bool isEnable, char lineStyle)
         {
             IsEnable = isEnable;
-            LineStyle = lineStyle;
+            _lineStyle = lineStyle;
         }
 
         public bool IsEnable { get; }
-        public char LineStyle { get; }
 
         internal void Write(TextWriter writer)
         {
-            if(IsEnable) writer.Write(LineStyle);
+            if(IsEnable) writer.Write(_lineStyle);
         }
     }
 }

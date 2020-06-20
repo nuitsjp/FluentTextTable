@@ -3,9 +3,6 @@ using System.IO;
 using Xunit;
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable NotAccessedField.Local
-// ReSharper disable HeapView.ObjectAllocation.Evident
-// ReSharper disable HeapView.BoxingAllocation
-// ReSharper disable HeapView.ObjectAllocation
 
 namespace FluentTextTable.Test
 {

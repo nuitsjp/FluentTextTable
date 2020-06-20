@@ -6,6 +6,7 @@ namespace FluentTextTable
 {
     public class Column<TItem> : IColumn<TItem>
     {
+        private readonly string _name;
         private readonly MemberAccessor<TItem> _accessor;
 
         internal Column(
@@ -15,16 +16,15 @@ namespace FluentTextTable
             string format,
             MemberAccessor<TItem> accessor)
         {
-            Name = name;
-            HeaderWidth = name.GetWidth();
+            _name = name;
+            Width = name.GetWidth();
             HorizontalAlignment = horizontalAlignment;
             VerticalAlignment = verticalAlignment;
             Format = format;
             _accessor = accessor;
         }
 
-        public string Name { get; }
-        public int HeaderWidth { get; }
+        public int Width { get; }
         public HorizontalAlignment HorizontalAlignment { get; }
         public VerticalAlignment VerticalAlignment { get; }
         public string Format { get; }
@@ -32,26 +32,20 @@ namespace FluentTextTable
         public IEnumerable<object> GetValues(TItem item)
         {
             var value = _accessor.GetValue(item);
-            
-            IEnumerable<object> objects;
-            if (value is string stringValue)
-            {
-                return stringValue.SplitOnNewLine();
-            }
-            
-            if (value is IEnumerable<object> enumerable)
-            {
-                return enumerable;
-            }
 
-            return new[] {value};
+            return value switch
+            {
+                string stringValue => stringValue.SplitOnNewLine(),
+                IEnumerable<object> enumerable => enumerable,
+                _ => new[] {value}
+            };
         }
         
-        public void WriteHeader(TextWriter writer, ITextTableLayout textTableLayout)
+        public void Write(TextWriter writer, ITextTableLayout textTableLayout)
         {
             writer.Write(new string(' ', textTableLayout.Padding));
-            writer.Write(Name);
-            writer.Write(new string(' ', textTableLayout.GetWidthOf(this) - HeaderWidth - textTableLayout.Padding));
+            writer.Write(_name);
+            writer.Write(new string(' ', textTableLayout.GetWidthOf(this) - Width - textTableLayout.Padding));
         }
 
     }
