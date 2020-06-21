@@ -75,12 +75,16 @@ namespace FluentTextTable
         public IVerticalBorderConfig InsideVertical => _insideVertical;
 
         public IVerticalBorderConfig Right => _right;
+        
         public IBordersConfig IsFullWidth()
         {
-            // Top.LineIs('─')
-            //     .LeftEndIs('┌')
-            //     .IntersectionIs('─')
-            //     .RightEndIs('┐');
+            Top.LeftEndIs("┌").LineIs("─").IntersectionIs("┬").RightEndIs("┐");
+            HeaderHorizontal.LeftEndIs("├").LineIs("─").IntersectionIs("┼").RightEndIs("┤");
+            InsideHorizontal.LeftEndIs("├").LineIs("─").IntersectionIs("┼").RightEndIs("┤");
+            Bottom.LeftEndIs("└").LineIs("─").IntersectionIs("┴").RightEndIs("┘");
+            Left.LineIs("│");
+            InsideVertical.LineIs("│");
+            Right.LineIs("│");
             return this;
         }
 
