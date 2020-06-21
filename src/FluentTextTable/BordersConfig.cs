@@ -38,30 +38,6 @@ namespace FluentTextTable
                 throw new InvalidOperationException("The widths of the vertical elements must match.");
         }
 
-        private int LeftWidth =>
-            MathEx.Lcm(
-                _left.LineWidth,
-                _top.LeftEndWidth,
-                _headerHorizontal.LeftEndWidth,
-                _insideHorizontal.LeftEndWidth,
-                _bottom.LeftEndWidth);
-        
-        private int InsideWidth =>
-            MathEx.Lcm(
-                _insideVertical.LineWidth,
-                _top.IntersectionWidth,
-                _headerHorizontal.IntersectionWidth,
-                _insideHorizontal.IntersectionWidth,
-                _bottom.IntersectionWidth);
-        
-        private int RightWidth =>
-            MathEx.Lcm(
-                _right.LineWidth,
-                _top.IntersectionWidth,
-                _headerHorizontal.IntersectionWidth,
-                _insideHorizontal.IntersectionWidth,
-                _bottom.IntersectionWidth);
-        
         public IHorizontalBorderConfig Top => _top;
 
         public IHorizontalBorderConfig HeaderHorizontal => _headerHorizontal;
