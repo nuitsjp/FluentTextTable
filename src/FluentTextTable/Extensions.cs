@@ -21,5 +21,8 @@ namespace FluentTextTable
                     : value.ToString()
                 : string.Format(format, value);
 
+        internal static int GetWidth(this string value) =>
+            EastAsianWidthDotNet.StringExtensions.GetWidth(value);
+
     }
 }

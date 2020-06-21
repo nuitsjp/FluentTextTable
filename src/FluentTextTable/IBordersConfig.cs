@@ -9,5 +9,6 @@
         IVerticalBorderConfig Left { get; }
         IVerticalBorderConfig InsideVertical { get; }
         IVerticalBorderConfig Right { get; }
+        IBordersConfig IsFullWidth();
     }
 }

@@ -2,9 +2,9 @@
 {
     public interface IHorizontalBorderConfig : IBorderConfig
     {
-        IHorizontalBorderConfig LeftEndIs(char c);
-        IHorizontalBorderConfig LineIs(char c);
-        IHorizontalBorderConfig IntersectionIs(char c);
-        IHorizontalBorderConfig RightEndIs(char c);
+        IHorizontalBorderConfig LeftEndIs(string s);
+        IHorizontalBorderConfig LineIs(string s);
+        IHorizontalBorderConfig IntersectionIs(string s);
+        IHorizontalBorderConfig RightEndIs(string s);
     }
 }

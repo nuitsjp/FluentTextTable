@@ -14,11 +14,13 @@ namespace FluentTextTable
             Padding = padding;
             foreach (var column in Columns)
             {
-                _columnWidths[column] = 
+                var maxColumnWidth =
                     Math.Max(
-                        column.Width, 
+                        column.Width,
                         rowSet.GetWidthOf(column))
                     + Padding * 2;
+                _columnWidths[column] = 
+                    borders.HorizontalLineStyleLcd * (int)Math.Ceiling((float) maxColumnWidth / (float) borders.HorizontalLineStyleLcd);
             }
         }
 

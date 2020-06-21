@@ -1,4 +1,7 @@
-﻿namespace FluentTextTable
+﻿using System;
+using System.Linq;
+
+namespace FluentTextTable
 {
     public class BordersConfig : IBordersConfig
     {
@@ -12,6 +15,10 @@
 
         internal Borders Build()
         {
+            ValidateAllWidthMatch(_top.LeftEndWidth, _headerHorizontal.LeftEndWidth, _insideHorizontal.LeftEndWidth, _bottom.LeftEndWidth, _left.LineWidth);
+            ValidateAllWidthMatch(_top.IntersectionWidth, _headerHorizontal.IntersectionWidth, _insideHorizontal.IntersectionWidth, _bottom.IntersectionWidth, _insideVertical.LineWidth);
+            ValidateAllWidthMatch(_top.RightEndWidth, _headerHorizontal.RightEndWidth, _insideHorizontal.RightEndWidth, _bottom.RightEndWidth, _right.LineWidth);
+            
             var left = _left.Build();
             var insideVertical = _insideVertical.Build();
             var right = _right.Build();
@@ -25,6 +32,36 @@
                 right);
         }
 
+        private void ValidateAllWidthMatch(params int[] widths)
+        {
+            if(1 < widths.Distinct().Count())
+                throw new InvalidOperationException("The widths of the vertical elements must match.");
+        }
+
+        private int LeftWidth =>
+            MathEx.Lcm(
+                _left.LineWidth,
+                _top.LeftEndWidth,
+                _headerHorizontal.LeftEndWidth,
+                _insideHorizontal.LeftEndWidth,
+                _bottom.LeftEndWidth);
+        
+        private int InsideWidth =>
+            MathEx.Lcm(
+                _insideVertical.LineWidth,
+                _top.IntersectionWidth,
+                _headerHorizontal.IntersectionWidth,
+                _insideHorizontal.IntersectionWidth,
+                _bottom.IntersectionWidth);
+        
+        private int RightWidth =>
+            MathEx.Lcm(
+                _right.LineWidth,
+                _top.IntersectionWidth,
+                _headerHorizontal.IntersectionWidth,
+                _insideHorizontal.IntersectionWidth,
+                _bottom.IntersectionWidth);
+        
         public IHorizontalBorderConfig Top => _top;
 
         public IHorizontalBorderConfig HeaderHorizontal => _headerHorizontal;
@@ -38,6 +75,14 @@
         public IVerticalBorderConfig InsideVertical => _insideVertical;
 
         public IVerticalBorderConfig Right => _right;
+        public IBordersConfig IsFullWidth()
+        {
+            // Top.LineIs('─')
+            //     .LeftEndIs('┌')
+            //     .IntersectionIs('─')
+            //     .RightEndIs('┐');
+            return this;
+        }
 
         public void Disable()
         {

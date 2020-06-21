@@ -1,20 +1,24 @@
-﻿namespace FluentTextTable
+﻿using System;
+
+namespace FluentTextTable
 {
     public class VerticalBorderConfig : IVerticalBorderConfig
     {
         private bool _isEnable  = true;
-        private char _line  = '|';
+        private string _line  = "|";
 
         public void Disable()
         {
             _isEnable = false;
         }
 
-        public IVerticalBorderConfig LineIs(char c)
+        public IVerticalBorderConfig LineIs(string c)
         {
             _line = c;
             return this;
         }
+
+        internal int LineWidth => _line.GetWidth();
 
         internal VerticalBorder Build()
         {

@@ -5,6 +5,10 @@ namespace FluentTextTable
 {
     internal class MarkdownHeaderHorizontalBorder : HorizontalBorder
     {
+        internal MarkdownHeaderHorizontalBorder() : base("-")
+        {
+        }
+
         internal override void Write(TextWriter writer, ITextTableLayout textTableLayout)
         {
             writer.Write("|");

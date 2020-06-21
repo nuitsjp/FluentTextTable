@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 
 namespace FluentTextTable
@@ -7,10 +8,10 @@ namespace FluentTextTable
     {
         internal HorizontalBorder(
             bool isEnable, 
-            char lineStyle,
-            char leftStyle,
-            char intersectionStyle,
-            char rightStyle,
+            string lineStyle,
+            string leftStyle,
+            string intersectionStyle,
+            string rightStyle,
             VerticalBorder leftVerticalBorder,
             VerticalBorder insideVerticalBorder,
             VerticalBorder rightVerticalBorder)
@@ -25,18 +26,19 @@ namespace FluentTextTable
             RightVerticalBorder = rightVerticalBorder;
         }
 
-        protected HorizontalBorder()
+        protected HorizontalBorder(string lineStyle)
         {
+            LineStyle = lineStyle;
         }
 
-        private char LeftStyle { get; }
-        private char IntersectionStyle { get; }
-        private char RightStyle { get; }
+        private string LeftStyle { get; }
+        private string IntersectionStyle { get; }
+        private string RightStyle { get; }
         private VerticalBorder LeftVerticalBorder { get; }
         private VerticalBorder InsideVerticalBorder { get; }
         private VerticalBorder RightVerticalBorder { get; }
         private bool IsEnable { get; }
-        private char LineStyle { get; }
+        internal string LineStyle { get; }
         
         internal virtual void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
         {
@@ -46,17 +48,16 @@ namespace FluentTextTable
             
             var items = textTableLayout
                 .Columns
-                .Select(column => new string(LineStyle, textTableLayout.GetWidthOf(column)))
+                .Select(column => string.Concat(Enumerable.Repeat(LineStyle, textTableLayout.GetWidthOf(column) / LineStyle.GetWidth())))
                 .ToList();
 
             textWriter.Write(InsideVerticalBorder.IsEnable
-                ? string.Join(IntersectionStyle.ToString(), items)
+                ? string.Join(IntersectionStyle, items)
                 : string.Join(string.Empty, items));
 
             if(RightVerticalBorder.IsEnable) textWriter.Write(RightStyle);
             
             textWriter.WriteLine();
         }
-
     }
 }

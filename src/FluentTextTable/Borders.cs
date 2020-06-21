@@ -1,10 +1,14 @@
-﻿namespace FluentTextTable
+﻿using System;
+
+namespace FluentTextTable
 {
     public class Borders
     {
-        private static readonly VerticalBorder MarkdownVerticalBorder = new VerticalBorder(true, '|');
+        private static readonly VerticalBorder MarkdownVerticalBorder = new VerticalBorder(true, "|");
+
         private static readonly HorizontalBorder DisableHorizontalBorder =
-            new HorizontalBorder(false, '-', '-', '|', '-', MarkdownVerticalBorder, MarkdownVerticalBorder, MarkdownVerticalBorder);
+            new HorizontalBorder(false, "-", "-", "|", "-", MarkdownVerticalBorder, MarkdownVerticalBorder,
+                MarkdownVerticalBorder);
 
         internal static readonly Borders MarkdownTableBorders = new Borders(
             DisableHorizontalBorder,
@@ -16,12 +20,12 @@
             MarkdownVerticalBorder);
 
         internal Borders(
-            HorizontalBorder top, 
-            HorizontalBorder headerHorizontal, 
-            HorizontalBorder insideHorizontal, 
-            HorizontalBorder bottom, 
-            VerticalBorder left, 
-            VerticalBorder insideVertical, 
+            HorizontalBorder top,
+            HorizontalBorder headerHorizontal,
+            HorizontalBorder insideHorizontal,
+            HorizontalBorder bottom,
+            VerticalBorder left,
+            VerticalBorder insideVertical,
             VerticalBorder right)
         {
             Top = top;
@@ -31,6 +35,11 @@
             Left = left;
             InsideVertical = insideVertical;
             Right = right;
+            HorizontalLineStyleLcd =
+                MathEx.Lcm(top.LineStyle.GetWidth(), 
+                    headerHorizontal.LineStyle.GetWidth(),
+                    insideHorizontal.LineStyle.GetWidth(),
+                    bottom.LineStyle.GetWidth());
         }
 
         public HorizontalBorder Top { get; }
@@ -40,5 +49,7 @@
         public VerticalBorder Left { get; }
         public VerticalBorder InsideVertical { get; }
         public VerticalBorder Right { get; }
-    }
+
+        public int HorizontalLineStyleLcd { get; }
+   }
 }

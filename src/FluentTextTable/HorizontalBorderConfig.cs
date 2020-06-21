@@ -4,37 +4,41 @@
     {
         private bool _isEnable  = true;
 
-        private char _leftEnd = '+';
-        private char _line = '-';
-        private char _intersection = '+';
-        private char _rightEnd = '+';
+        private string _leftEnd = "+";
+        private string _line = "-";
+        private string _intersection = "+";
+        private string _rightEnd = "+";
+
+        internal int LeftEndWidth => _leftEnd.GetWidth();
+        internal int IntersectionWidth => _intersection.GetWidth();
+        internal int RightEndWidth => _rightEnd.GetWidth();
 
         public void Disable()
         {
             _isEnable = false;
         }
 
-        public IHorizontalBorderConfig LeftEndIs(char c)
+        public IHorizontalBorderConfig LeftEndIs(string s)
         {
-            _leftEnd = c;
+            _leftEnd = s;
             return this;
         }
 
-        public IHorizontalBorderConfig LineIs(char c)
+        public IHorizontalBorderConfig LineIs(string s)
         {
-            _line = c;
+            _line = s;
             return this;
         }
 
-        public IHorizontalBorderConfig IntersectionIs(char c)
+        public IHorizontalBorderConfig IntersectionIs(string s)
         {
-            _intersection = c;
+            _intersection = s;
             return this;
         }
 
-        public IHorizontalBorderConfig RightEndIs(char c)
+        public IHorizontalBorderConfig RightEndIs(string s)
         {
-            _rightEnd = c;
+            _rightEnd = s;
             return this;
         }
 

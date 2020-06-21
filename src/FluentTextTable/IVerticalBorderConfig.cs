@@ -2,6 +2,6 @@
 {
     public interface IVerticalBorderConfig : IBorderConfig
     {
-        IVerticalBorderConfig LineIs(char c);
+        IVerticalBorderConfig LineIs(string s);
     }
 }

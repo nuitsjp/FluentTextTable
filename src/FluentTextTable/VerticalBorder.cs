@@ -4,9 +4,9 @@ namespace FluentTextTable
 {
     public class VerticalBorder
     {
-        private readonly char _lineStyle;
+        private readonly string _lineStyle;
         
-        internal VerticalBorder(bool isEnable, char lineStyle)
+        internal VerticalBorder(bool isEnable, string lineStyle)
         {
             IsEnable = isEnable;
             _lineStyle = lineStyle;
