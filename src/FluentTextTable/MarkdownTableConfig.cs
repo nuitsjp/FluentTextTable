@@ -4,6 +4,6 @@
     {
 
         public ITextTable<TItem> Build()
-            => TextTable<TItem>.NewMarkdownTable(Padding, BuildHeader(), Borders.MarkdownTableBorders);
+            => TextTable<TItem>.CreateMarkdownTable(BuildHeader(), Borders.MarkdownTableBorders, Padding);
     }
 }

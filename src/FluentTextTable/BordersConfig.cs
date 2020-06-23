@@ -13,7 +13,7 @@ namespace FluentTextTable
         private readonly VerticalBorderConfig _insideVertical = new VerticalBorderConfig();
         private readonly VerticalBorderConfig _right = new VerticalBorderConfig();
 
-        internal Borders Build()
+        internal IBorders Build()
         {
             ValidateAllWidthMatch(_top.LeftEndWidth, _headerHorizontal.LeftEndWidth, _insideHorizontal.LeftEndWidth, _bottom.LeftEndWidth, _left.LineWidth);
             ValidateAllWidthMatch(_top.IntersectionWidth, _headerHorizontal.IntersectionWidth, _insideHorizontal.IntersectionWidth, _bottom.IntersectionWidth, _insideVertical.LineWidth);

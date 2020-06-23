@@ -2,7 +2,7 @@
 
 namespace FluentTextTable
 {
-    public static class MathEx
+    internal static class MathEx
     {
         private static readonly int IntSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(int));
 

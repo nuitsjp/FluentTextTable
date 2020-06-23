@@ -9,35 +9,35 @@ namespace FluentTextTable
         {
         }
 
-        internal override void Write(TextWriter writer, ITextTableLayout textTableLayout)
+        public override void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
         {
-            writer.Write("|");
+            textWriter.Write("|");
             foreach (var column in textTableLayout.Columns)
             {
                 switch (column.HorizontalAlignment)
                 {
                     case HorizontalAlignment.Default:
-                        writer.Write(new string('-', textTableLayout.GetWidthOf(column)));
+                        textWriter.Write(new string('-', textTableLayout.GetColumnWidth(column)));
                         break;
                     case HorizontalAlignment.Left:
-                        writer.Write(':');
-                        writer.Write(new string('-', textTableLayout.GetWidthOf(column) - 1));
+                        textWriter.Write(':');
+                        textWriter.Write(new string('-', textTableLayout.GetColumnWidth(column) - 1));
                         break;
                     case HorizontalAlignment.Center:
-                        writer.Write(':');
-                        writer.Write(new string('-', textTableLayout.GetWidthOf(column) - 2));
-                        writer.Write(':');
+                        textWriter.Write(':');
+                        textWriter.Write(new string('-', textTableLayout.GetColumnWidth(column) - 2));
+                        textWriter.Write(':');
                         break;
                     case HorizontalAlignment.Right:
-                        writer.Write(new string('-', textTableLayout.GetWidthOf(column) - 1));
-                        writer.Write(':');
+                        textWriter.Write(new string('-', textTableLayout.GetColumnWidth(column) - 1));
+                        textWriter.Write(':');
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                writer.Write("|");
+                textWriter.Write("|");
             }
-            writer.WriteLine();
+            textWriter.WriteLine();
         }
     }
 }

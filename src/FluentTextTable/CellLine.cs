@@ -3,7 +3,7 @@ using System.IO;
 
 namespace FluentTextTable
 {
-    public class CellLine
+    public class CellLine : ICellLine
     {
         internal static readonly CellLine BlankCellLine = new CellLine(string.Empty); 
 
@@ -17,8 +17,8 @@ namespace FluentTextTable
 
         public int Width { get; }
 
-        internal void Write(
-            TextWriter writer,
+        public void Write(
+            TextWriter textWriter,
             IColumn column,
             int columnWidth,
             int padding)
@@ -44,9 +44,9 @@ namespace FluentTextTable
                     throw new ArgumentOutOfRangeException();
             }
 
-            writer.Write(new string(' ', leftPadding));
-            writer.Write(_value);
-            writer.Write(new string(' ', rightPadding));
+            textWriter.Write(new string(' ', leftPadding));
+            textWriter.Write(_value);
+            textWriter.Write(new string(' ', rightPadding));
         }
     }
 }

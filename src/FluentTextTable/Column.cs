@@ -40,11 +40,11 @@ namespace FluentTextTable
             };
         }
         
-        public void Write(TextWriter writer, ITextTableLayout textTableLayout)
+        public void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
         {
-            writer.Write(new string(' ', textTableLayout.Padding));
-            writer.Write(_name);
-            writer.Write(new string(' ', textTableLayout.GetWidthOf(this) - Width - textTableLayout.Padding));
+            textWriter.Write(new string(' ', textTableLayout.Padding));
+            textWriter.Write(_name);
+            textWriter.Write(new string(' ', textTableLayout.GetColumnWidth(this) - Width - textTableLayout.Padding));
         }
 
     }

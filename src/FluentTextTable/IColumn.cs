@@ -10,7 +10,7 @@ namespace FluentTextTable
         HorizontalAlignment HorizontalAlignment { get; }
         VerticalAlignment VerticalAlignment { get; }
 
-        void Write(TextWriter writer, ITextTableLayout textTableLayout);
+        void Write(TextWriter textWriter, ITextTableLayout textTableLayout);
     }
     public interface IColumn<in TItem> : IColumn
     {

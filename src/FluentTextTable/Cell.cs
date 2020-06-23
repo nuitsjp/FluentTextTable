@@ -5,29 +5,29 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    public class Cell
+    public class Cell : ICell
     {
-        private readonly CellLine[] _cellLines;
+        private readonly IColumn _column;
+        private readonly ICellLine[] _cellLines;
        
-        internal Cell(IColumn column, IEnumerable<CellLine> cellLines)
+        internal Cell(IColumn column, IEnumerable<ICellLine> cellLines)
         {
-            Column = column;
+            _column = column;
             _cellLines = cellLines.ToArray();
             Width = _cellLines.Max(x =>x.Width);
         }
 
-        public IColumn Column { get; }
         public int Width { get; }
         public int Height => _cellLines.Length;
 
-        internal void Write(
-            TextWriter writer,
+        public void Write(
+            TextWriter textWriter,
             int rowHeight,
             int lineNumber,
             int columnWidth,
             int padding)
         {
-            var cellLine = Column.VerticalAlignment switch
+            var cellLine = _column.VerticalAlignment switch
             {
                 VerticalAlignment.Top => GetTopCellLine(),
                 VerticalAlignment.Center => GetCenterCellLine(),
@@ -35,16 +35,16 @@ namespace FluentTextTable
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            cellLine.Write(writer, Column, columnWidth, padding);
+            cellLine.Write(textWriter, _column, columnWidth, padding);
 
-            CellLine GetTopCellLine()
+            ICellLine GetTopCellLine()
             {
                 return lineNumber < Height
                     ? _cellLines[lineNumber]
                     : CellLine.BlankCellLine;
             }
 
-            CellLine GetCenterCellLine()
+            ICellLine GetCenterCellLine()
             {
                 var indent = (rowHeight - Height) / 2;
                 var localLineNumber = lineNumber - indent;
@@ -58,7 +58,7 @@ namespace FluentTextTable
                     : _cellLines[localLineNumber];
             }
 
-            CellLine GetBottomCellLine()
+            ICellLine GetBottomCellLine()
             {
                 var indent = rowHeight - Height;
                 var localLineNumber = lineNumber - indent;

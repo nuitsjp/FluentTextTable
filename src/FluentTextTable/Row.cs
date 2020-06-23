@@ -8,35 +8,35 @@ namespace FluentTextTable
     {
         private readonly int _height;
 
-        private readonly IReadOnlyDictionary<IColumn, Cell> _cells;
+        private readonly IReadOnlyDictionary<IColumn, ICell> _cells;
 
-        internal Row(IEnumerable<Cell> cells)
+        internal Row(IReadOnlyDictionary<IColumn, ICell> cells)
         {
-            _cells = cells.ToDictionary(x => x.Column);
+            _cells = cells;
             _height = _cells.Values.Max(x => x.Height);
         }
 
 
-        public int GetWidthOf(IColumn column) => _cells[column].Width;
+        public int GetCellWidth(IColumn column) => _cells[column].Width;
         
-        public void Write(TextWriter writer, ITextTableLayout textTableLayout)
+        public void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
         {
             for (var lineNumber = 0; lineNumber < _height; lineNumber++)
             {
-                textTableLayout.Borders.Left.Write(writer);
+                textTableLayout.Borders.Left.Write(textWriter);
 
-                _cells[textTableLayout.Columns[0]].Write(writer, _height, lineNumber, textTableLayout.GetWidthOf(textTableLayout.Columns[0]), textTableLayout.Padding);
+                _cells[textTableLayout.Columns[0]].Write(textWriter, _height, lineNumber, textTableLayout.GetColumnWidth(textTableLayout.Columns[0]), textTableLayout.Padding);
 
                 for (var i = 1; i < textTableLayout.Columns.Count; i++)
                 {
                     var column = textTableLayout.Columns[i];
-                    textTableLayout.Borders.InsideVertical.Write(writer);
-                    _cells[column].Write(writer, _height, lineNumber, textTableLayout.GetWidthOf(column), textTableLayout.Padding);
+                    textTableLayout.Borders.InsideVertical.Write(textWriter);
+                    _cells[column].Write(textWriter, _height, lineNumber, textTableLayout.GetColumnWidth(column), textTableLayout.Padding);
                 }
 
-                textTableLayout.Borders.Right.Write(writer);
+                textTableLayout.Borders.Right.Write(textWriter);
                 
-                writer.WriteLine();
+                textWriter.WriteLine();
             }
         }
 

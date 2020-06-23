@@ -68,7 +68,6 @@ namespace FluentTextTable.Test
 
             var table = TextTable.Build<User>(config =>
             {
-                config.EnableAutoGenerateColumns();
             });
             var text = table.ToString(new[]
             {

@@ -11,7 +11,6 @@ namespace FluentTextTable.Test.Borders
 
             var table = TextTable.Build<User>(config =>
             {
-                config.EnableAutoGenerateColumns();
                 config.Borders.Right.Disable();
             });
             var text = table.ToString(new[]
@@ -38,7 +37,6 @@ namespace FluentTextTable.Test.Borders
 
             var table = TextTable.Build<User>(config =>
             {
-                config.EnableAutoGenerateColumns();
                 config.Borders.Right.LineIs("\\\\");
                 config.Borders.Top.RightEndIs("12");
                 config.Borders.HeaderHorizontal.RightEndIs("34");
@@ -69,7 +67,6 @@ namespace FluentTextTable.Test.Borders
             Assert.Throws<InvalidOperationException>(() => 
                 TextTable.Build<User>(config =>
                 {
-                    config.EnableAutoGenerateColumns();
                     config.Borders.Right.LineIs("12");
                 }));
         }
@@ -80,7 +77,6 @@ namespace FluentTextTable.Test.Borders
             Assert.Throws<InvalidOperationException>(() => 
                 TextTable.Build<User>(config =>
                 {
-                    config.EnableAutoGenerateColumns();
                     config.Borders.Top.RightEndIs("12");
                 }));
         }
@@ -91,7 +87,6 @@ namespace FluentTextTable.Test.Borders
             Assert.Throws<InvalidOperationException>(() => 
                 TextTable.Build<User>(config =>
                 {
-                    config.EnableAutoGenerateColumns();
                     config.Borders.HeaderHorizontal.RightEndIs("12");
                 }));
         }
@@ -102,7 +97,6 @@ namespace FluentTextTable.Test.Borders
             Assert.Throws<InvalidOperationException>(() => 
                 TextTable.Build<User>(config =>
                 {
-                    config.EnableAutoGenerateColumns();
                     config.Borders.InsideHorizontal.RightEndIs("12");
                 }));
         }
@@ -113,7 +107,6 @@ namespace FluentTextTable.Test.Borders
             Assert.Throws<InvalidOperationException>(() => 
                 TextTable.Build<User>(config =>
                 {
-                    config.EnableAutoGenerateColumns();
                     config.Borders.Bottom.RightEndIs("12");
                 }));
         }

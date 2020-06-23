@@ -2,9 +2,9 @@
 
 namespace FluentTextTable
 {
-    public interface IRow
+    public interface IHorizontalBorder
     {
-        int GetCellWidth(IColumn column);
+        int LineStyleWidth { get; }
         void Write(TextWriter textWriter, ITextTableLayout textTableLayout);
     }
 }

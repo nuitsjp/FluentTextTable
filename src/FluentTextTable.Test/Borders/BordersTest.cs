@@ -14,7 +14,6 @@ namespace FluentTextTable.Test.Borders
 
             var table = TextTable.Build<User>(config =>
             {
-                config.EnableAutoGenerateColumns();
                 config.Borders.Disable();
             });
             var text = table.ToString(new[]
@@ -36,7 +35,6 @@ namespace FluentTextTable.Test.Borders
             {
                 var table = TextTable.Build<User>(config =>
                 {
-                    config.EnableAutoGenerateColumns();
                     config.Borders.IsFullWidth();
                 });
                 var text = table.ToString(new[]

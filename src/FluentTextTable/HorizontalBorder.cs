@@ -4,58 +4,60 @@ using System.Linq;
 
 namespace FluentTextTable
 {
-    public class HorizontalBorder
+    public class HorizontalBorder : IHorizontalBorder
     {
+        private readonly bool _isEnable;
+        private readonly string _lineStyle;
+        private readonly string _leftStyle;
+        private readonly string _intersectionStyle;
+        private readonly string _rightStyle;
+        private readonly IVerticalBorder _leftVerticalBorder;
+        private readonly IVerticalBorder _insideVerticalBorder;
+        private readonly IVerticalBorder _rightVerticalBorder;
+
         internal HorizontalBorder(
             bool isEnable, 
             string lineStyle,
             string leftStyle,
             string intersectionStyle,
             string rightStyle,
-            VerticalBorder leftVerticalBorder,
-            VerticalBorder insideVerticalBorder,
-            VerticalBorder rightVerticalBorder)
+            IVerticalBorder leftVerticalBorder,
+            IVerticalBorder insideVerticalBorder,
+            IVerticalBorder rightVerticalBorder)
         {
-            IsEnable = isEnable;
-            LineStyle = lineStyle;
-            LeftStyle = leftStyle;
-            IntersectionStyle = intersectionStyle;
-            RightStyle = rightStyle;
-            LeftVerticalBorder = leftVerticalBorder;
-            InsideVerticalBorder = insideVerticalBorder;
-            RightVerticalBorder = rightVerticalBorder;
+            _isEnable = isEnable;
+            _lineStyle = lineStyle;
+            _leftStyle = leftStyle;
+            _intersectionStyle = intersectionStyle;
+            _rightStyle = rightStyle;
+            _leftVerticalBorder = leftVerticalBorder;
+            _insideVerticalBorder = insideVerticalBorder;
+            _rightVerticalBorder = rightVerticalBorder;
         }
 
         protected HorizontalBorder(string lineStyle)
         {
-            LineStyle = lineStyle;
+            _lineStyle = lineStyle;
         }
 
-        private string LeftStyle { get; }
-        private string IntersectionStyle { get; }
-        private string RightStyle { get; }
-        private VerticalBorder LeftVerticalBorder { get; }
-        private VerticalBorder InsideVerticalBorder { get; }
-        private VerticalBorder RightVerticalBorder { get; }
-        private bool IsEnable { get; }
-        internal string LineStyle { get; }
+        public int LineStyleWidth => _lineStyle.GetWidth();
         
-        internal virtual void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
+        public virtual void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
         {
-            if(!IsEnable) return;
+            if(!_isEnable) return;
             
-            if(LeftVerticalBorder.IsEnable) textWriter.Write(LeftStyle);
+            if(_leftVerticalBorder.IsEnable) textWriter.Write(_leftStyle);
             
             var items = textTableLayout
                 .Columns
-                .Select(column => string.Concat(Enumerable.Repeat(LineStyle, textTableLayout.GetWidthOf(column) / LineStyle.GetWidth())))
+                .Select(column => string.Concat(Enumerable.Repeat(_lineStyle, textTableLayout.GetColumnWidth(column) / _lineStyle.GetWidth())))
                 .ToList();
 
-            textWriter.Write(InsideVerticalBorder.IsEnable
-                ? string.Join(IntersectionStyle, items)
+            textWriter.Write(_insideVerticalBorder.IsEnable
+                ? string.Join(_intersectionStyle, items)
                 : string.Join(string.Empty, items));
 
-            if(RightVerticalBorder.IsEnable) textWriter.Write(RightStyle);
+            if(_rightVerticalBorder.IsEnable) textWriter.Write(_rightStyle);
             
             textWriter.WriteLine();
         }

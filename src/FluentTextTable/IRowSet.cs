@@ -4,7 +4,7 @@ namespace FluentTextTable
 {
     public interface IRowSet
     {
-        int GetWidthOf(IColumn column);
-        void WriteRows(TextWriter writer, ITextTableLayout textTableLayout);
+        int GetMaxCellWidth(IColumn column);
+        void WriteRows(TextWriter textWriter, ITextTableLayout textTableLayout);
     }
 }

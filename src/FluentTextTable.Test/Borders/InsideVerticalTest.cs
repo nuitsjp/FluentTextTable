@@ -11,7 +11,6 @@ namespace FluentTextTable.Test.Borders
 
             var table = TextTable.Build<User>(config =>
             {
-                config.EnableAutoGenerateColumns();
                 config.Borders.InsideVertical.Disable();
             });
             var text = table.ToString(new[]
@@ -38,7 +37,6 @@ namespace FluentTextTable.Test.Borders
 
             var table = TextTable.Build<User>(config =>
             {
-                config.EnableAutoGenerateColumns();
                 config.Borders.InsideVertical.LineIs("\\\\");
                 config.Borders.Top.IntersectionIs("12");
                 config.Borders.HeaderHorizontal.IntersectionIs("34");
@@ -69,7 +67,6 @@ namespace FluentTextTable.Test.Borders
             Assert.Throws<InvalidOperationException>(() => 
                 TextTable.Build<User>(config =>
                 {
-                    config.EnableAutoGenerateColumns();
                     config.Borders.InsideVertical.LineIs("12");
                 }));
         }
@@ -80,7 +77,6 @@ namespace FluentTextTable.Test.Borders
             Assert.Throws<InvalidOperationException>(() => 
                 TextTable.Build<User>(config =>
                 {
-                    config.EnableAutoGenerateColumns();
                     config.Borders.Top.IntersectionIs("12");
                 }));
         }
@@ -91,7 +87,6 @@ namespace FluentTextTable.Test.Borders
             Assert.Throws<InvalidOperationException>(() => 
                 TextTable.Build<User>(config =>
                 {
-                    config.EnableAutoGenerateColumns();
                     config.Borders.HeaderHorizontal.IntersectionIs("12");
                 }));
         }
@@ -102,7 +97,6 @@ namespace FluentTextTable.Test.Borders
             Assert.Throws<InvalidOperationException>(() => 
                 TextTable.Build<User>(config =>
                 {
-                    config.EnableAutoGenerateColumns();
                     config.Borders.InsideHorizontal.IntersectionIs("12");
                 }));
         }
@@ -113,7 +107,6 @@ namespace FluentTextTable.Test.Borders
             Assert.Throws<InvalidOperationException>(() => 
                 TextTable.Build<User>(config =>
                 {
-                    config.EnableAutoGenerateColumns();
                     config.Borders.Bottom.IntersectionIs("12");
                 }));
         }

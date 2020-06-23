@@ -2,7 +2,7 @@
 
 namespace FluentTextTable
 {
-    public class VerticalBorder
+    public class VerticalBorder : IVerticalBorder
     {
         private readonly string _lineStyle;
         
@@ -14,9 +14,9 @@ namespace FluentTextTable
 
         public bool IsEnable { get; }
 
-        internal void Write(TextWriter writer)
+        public void Write(TextWriter textWriter)
         {
-            if(IsEnable) writer.Write(_lineStyle);
+            if(IsEnable) textWriter.Write(_lineStyle);
         }
     }
 }

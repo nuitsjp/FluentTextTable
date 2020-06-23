@@ -20,7 +20,7 @@ namespace FluentTextTable
 
         internal int LineWidth => _line.GetWidth();
 
-        internal VerticalBorder Build()
+        internal IVerticalBorder Build()
         {
             return new VerticalBorder(_isEnable, _line);
         }

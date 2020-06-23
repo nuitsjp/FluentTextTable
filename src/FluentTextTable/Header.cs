@@ -14,21 +14,21 @@ namespace FluentTextTable
 
         public IReadOnlyList<IColumn> Columns { get; }
         
-        public void Write(TextWriter writer, ITextTableLayout textTableLayout)
+        public void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
         {
-            textTableLayout.Borders.Left.Write(writer);
+            textTableLayout.Borders.Left.Write(textWriter);
         
-            Columns[0].Write(writer, textTableLayout);
+            Columns[0].Write(textWriter, textTableLayout);
         
             for (var i = 1; i < Columns.Count; i++)
             {
-                textTableLayout.Borders.InsideVertical.Write(writer);
-                Columns[i].Write(writer, textTableLayout);
+                textTableLayout.Borders.InsideVertical.Write(textWriter);
+                Columns[i].Write(textWriter, textTableLayout);
             }
             
-            textTableLayout.Borders.Right.Write(writer);
+            textTableLayout.Borders.Right.Write(textWriter);
         
-            writer.WriteLine();
+            textWriter.WriteLine();
         }
     }
 }

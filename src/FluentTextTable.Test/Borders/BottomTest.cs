@@ -11,7 +11,6 @@ namespace FluentTextTable.Test.Borders
 
             var table = TextTable.Build<User>(config =>
             {
-                config.EnableAutoGenerateColumns();
                 config.Borders.Bottom.Disable();
             });
             var text = table.ToString(new[]
@@ -37,7 +36,6 @@ namespace FluentTextTable.Test.Borders
 
             var table = TextTable.Build<User>(config =>
             {
-                config.EnableAutoGenerateColumns();
                 config.Borders.Bottom
                     .LeftEndIs("#")
                     .LineIs("abc")

@@ -8,23 +8,15 @@ namespace FluentTextTable
 {
     public abstract class TextTableConfigBase<TItem> : ITextTableConfig<TItem>
     {
-        private const int DefaultPadding = 1;
-        
         private readonly List<ColumnConfig<TItem>> _columns  = new List<ColumnConfig<TItem>>();
 
-        internal int Padding { get; private set; } = DefaultPadding;
+        internal int Padding { get; private set; } = TextTable.DefaultPadding;
 
-        internal bool IsEnableGenerateColumns { get; private set; }
+        public bool HasColumns => _columns.Any();
 
         public ITextTableConfig<TItem> HasPadding(int padding)
         {
             Padding = padding;
-            return this;
-        }
-
-        public ITextTableConfig<TItem> EnableAutoGenerateColumns( )
-        {
-            IsEnableGenerateColumns = true;
             return this;
         }
 

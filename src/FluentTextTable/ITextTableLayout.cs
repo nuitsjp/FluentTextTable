@@ -4,9 +4,9 @@ namespace FluentTextTable
 {
     public interface ITextTableLayout
     {
-        Borders Borders { get; }
+        IBorders Borders { get; }
         int Padding { get; }
         IReadOnlyList<IColumn> Columns { get; }
-        int GetWidthOf(IColumn column);
+        int GetColumnWidth(IColumn column);
     }
 }

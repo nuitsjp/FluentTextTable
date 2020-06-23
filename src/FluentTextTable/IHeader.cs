@@ -7,6 +7,6 @@ namespace FluentTextTable
     {
         IReadOnlyList<IColumn> Columns { get; }
 
-        void Write(TextWriter writer, ITextTableLayout textTableLayout);
+        void Write(TextWriter textWriter, ITextTableLayout textTableLayout);
     }
 }

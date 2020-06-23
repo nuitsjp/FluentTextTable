@@ -42,10 +42,10 @@
             return this;
         }
 
-        internal HorizontalBorder Build(
-            VerticalBorder leftVerticalBorder,
-            VerticalBorder insideVerticalBorder,
-            VerticalBorder rightVerticalBorder)
+        internal IHorizontalBorder Build(
+            IVerticalBorder leftVerticalBorder,
+            IVerticalBorder insideVerticalBorder,
+            IVerticalBorder rightVerticalBorder)
         {
             return new HorizontalBorder(
                 _isEnable,
