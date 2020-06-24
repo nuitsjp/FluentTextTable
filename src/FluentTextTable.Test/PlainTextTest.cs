@@ -11,15 +11,12 @@ namespace FluentTextTable.Test
         [Fact]
         public void WhenBasic()
         {
-            var table = TextTable.Build<User>(config =>
+            var table = Build.TextTable<User>(builder =>
             {
-                config.AddColumn(x => x.Id)
-                    .HasName("ID")
-                    .AlignHorizontal(HorizontalAlignment.Right);
-                config.AddColumn(x => x.Name)
-                    .HasName("氏名");
-                config.AddColumn(x => x.Birthday)
-                    .HasFormat("{0:yyyy/MM/dd}");
+                builder
+                    .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+                    .AddColumn(x => x.Name).NameAs("氏名")
+                    .AddColumn(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
             });
             var text = table.ToString(new[]
             {
@@ -43,7 +40,7 @@ namespace FluentTextTable.Test
         public void WhenAutoFormat()
         {
             using var writer = new StringWriter();
-            var table = TextTable.Build<User>();
+            var table = Build.TextTable<User>();
             table.Write(writer, new[]
             {
                 new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
@@ -66,7 +63,7 @@ namespace FluentTextTable.Test
         public void WhenAutoGenerateColumnsIsTrue()
         {
 
-            var table = TextTable.Build<User>(config =>
+            var table = Build.TextTable<User>(builder =>
             {
             });
             var text = table.ToString(new[]
@@ -90,16 +87,13 @@ namespace FluentTextTable.Test
         [Fact]
         public void WhenSpecifyPadding()
         {
-            var table = TextTable.Build<User>(config =>
+            var table = Build.TextTable<User>(builder =>
             {
-                config.HasPadding(2);
-                config.AddColumn(x => x.Id)
-                    .HasName("ID")
-                    .AlignHorizontal(HorizontalAlignment.Right);
-                config.AddColumn(x => x.Name)
-                    .HasName("氏名");
-                config.AddColumn(x => x.Birthday)
-                    .HasFormat("{0:yyyy/MM/dd}");
+                builder
+                    .PaddingAs(2)
+                    .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+                    .AddColumn(x => x.Name).NameAs("氏名")
+                    .AddColumn(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
             });
             var text = table.ToString(new[]
             {
@@ -123,22 +117,14 @@ namespace FluentTextTable.Test
         public void WhenMultipleLines()
         {
 
-            var table = TextTable.Build<User>(config =>
+            var table = Build.TextTable<User>(builder =>
             {
-                config.AddColumn(x => x.Id)
-                    .HasName("ID")
-                    .AlignHorizontal(HorizontalAlignment.Right);
-                config.AddColumn(x => x.Name)
-                    .AlignVertical(VerticalAlignment.Center);
-                config.AddColumn(x => x.Birthday)
-                    .AlignVertical(VerticalAlignment.Center)
-                    .HasFormat("{0:yyyy/MM/dd}")
-                    .AlignVertical(VerticalAlignment.Bottom);
-                config.AddColumn(x => x.Parents)
-                    .AlignVertical(VerticalAlignment.Center)
-                    .HasFormat("- {0}");
-                config.AddColumn(x => x.Occupations)
-                    .AlignHorizontal(HorizontalAlignment.Center);
+                builder
+                    .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+                    .AddColumn(x => x.Name).VerticalAlignmentAs(VerticalAlignment.Center)
+                    .AddColumn(x => x.Birthday).VerticalAlignmentAs(VerticalAlignment.Bottom).FormatAs("{0:yyyy/MM/dd}")
+                    .AddColumn(x => x.Parents).VerticalAlignmentAs(VerticalAlignment.Center).FormatAs("- {0}")
+                    .AddColumn(x => x.Occupations).HorizontalAlignmentAs(HorizontalAlignment.Center);
             });
             var text = table.ToString(new[]
             {
@@ -169,7 +155,7 @@ namespace FluentTextTable.Test
         public void WithAttribute()
         {
 
-            var table = TextTable.Build<UserWithAttribute>();
+            var table = Build.TextTable<UserWithAttribute>();
             var text = table.ToString(new[]
             {
                 new UserWithAttribute

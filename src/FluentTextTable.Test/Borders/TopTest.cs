@@ -1,5 +1,6 @@
 ﻿using System;
 using Xunit;
+// ReSharper disable UnusedAutoPropertyAccessor.Local
 
 namespace FluentTextTable.Test.Borders
 {
@@ -9,9 +10,9 @@ namespace FluentTextTable.Test.Borders
         public void WhenDisable()
         {
 
-            var table = TextTable.Build<User>(config =>
+            var table = Build.TextTable<User>(builder =>
             {
-                config.Borders.Top.Disable();
+                builder.Borders.Top.AsDisable();
             });
             var text = table.ToString(new[]
             {
@@ -34,13 +35,13 @@ namespace FluentTextTable.Test.Borders
         public void WhenChangeDecorations()
         {
 
-            var table = TextTable.Build<User>(config =>
+            var table = Build.TextTable<User>(builder =>
             {
-                config.Borders.Top
-                    .LeftEndIs("#")
-                    .LineIs("abc")
-                    .IntersectionIs("$")
-                    .RightEndIs("%");
+                builder.Borders.Top
+                    .LeftStyleAs("#")
+                    .LineStyleAs("abc")
+                    .IntersectionStyleAs("$")
+                    .RightStyleAs("%");
             });
             var text = table.ToString(new[]
             {
@@ -58,6 +59,16 @@ namespace FluentTextTable.Test.Borders
 | 2    | Steven Jobs   |         |               | 1955/02/24 0:00:00  |
 +------+---------------+---------+---------------+---------------------+
 ", $"{Environment.NewLine}{text}");
+        }
+        
+        private class User
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public DateTime Birthday;
+            public string Parents { get; set; }
+            public string[] Occupations { get; set; }
+
         }
    }
 }

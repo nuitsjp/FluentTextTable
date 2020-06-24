@@ -6,39 +6,52 @@ using System.Reflection;
 
 namespace FluentTextTable
 {
-    public abstract class TextTableConfigBase<TItem> : ITextTableConfig<TItem>
+    public abstract class TextTableBuilderBase<TItem> : ITextTableBuilder<TItem>
     {
-        private readonly List<ColumnConfig<TItem>> _columns  = new List<ColumnConfig<TItem>>();
+        private int _padding  = TextTable.DefaultPadding;
+        private readonly List<ColumnBuilder<TItem>> _columns  = new List<ColumnBuilder<TItem>>();
+        private readonly Func<TItem, IColumn<TItem>, IEnumerable<ICellLine>> _createCellLines;
 
-        internal int Padding { get; private set; } = TextTable.DefaultPadding;
 
-        public bool HasColumns => _columns.Any();
-
-        public ITextTableConfig<TItem> HasPadding(int padding)
+        protected TextTableBuilderBase(Func<TItem, IColumn<TItem>, IEnumerable<ICellLine>> createCellLines)
         {
-            Padding = padding;
+            _createCellLines = createCellLines;
+        }
+        
+        public ITextTableBuilder<TItem> PaddingAs(int padding)
+        {
+            _padding = padding;
             return this;
         }
 
-        public IColumnConfig AddColumn(Expression<Func<TItem, object>> getMemberExpression)
+        public IColumnBuilder<TItem> AddColumn(Expression<Func<TItem, object>> getMemberExpression)
         {
             var memberAccessor = new MemberAccessor<TItem>(getMemberExpression);
-            var column = new ColumnConfig<TItem>(memberAccessor);
+            var column = new ColumnBuilder<TItem>(this, memberAccessor);
             _columns.Add(column);
 
             return column;
         }
 
-        private IColumnConfig AddColumn(MemberInfo memberInfo)
+        private IColumnBuilder<TItem> AddColumn(MemberInfo memberInfo)
         {
             var memberAccessor = new MemberAccessor<TItem>(memberInfo);
-            var column = new ColumnConfig<TItem>(memberAccessor);
+            var column = new ColumnBuilder<TItem>(this, memberAccessor);
             _columns.Add(column);
 
             return column;
         }
 
-        internal  void GenerateColumns()
+        protected abstract IBorders BuildBorders();
+
+        internal ITextTable<TItem> Build()
+        {
+            if (!_columns.Any()) GenerateColumns();
+            return new TextTable<TItem>(BuildHeader(), BuildBorders(), _padding, _createCellLines);
+        }
+
+
+        private  void GenerateColumns()
         {
             var memberInfos =
                 typeof(TItem).GetMembers(BindingFlags.Public | BindingFlags.Instance)
@@ -63,12 +76,12 @@ namespace FluentTextTable
                 var column = AddColumn(memberInfo);
                 if (columnFormat == null) continue;
                 
-                if (columnFormat.Header != null) column.HasName(columnFormat.Header);
+                if (columnFormat.Header != null) column.NameAs(columnFormat.Header);
                 
                 column
-                    .AlignHorizontal(columnFormat.HorizontalAlignment)
-                    .AlignVertical(columnFormat.VerticalAlignment)
-                    .HasFormat(columnFormat.Format);
+                    .HorizontalAlignmentAs(columnFormat.HorizontalAlignment)
+                    .VerticalAlignmentAs(columnFormat.VerticalAlignment)
+                    .FormatAs(columnFormat.Format);
             }
         }
         

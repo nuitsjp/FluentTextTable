@@ -10,16 +10,12 @@ namespace FluentTextTable.Test
         public void WhenBasic()
         {
 
-            var table = TextTable.BuildMarkdown<User>(config =>
+            var table = Build.MarkdownTable<User>(builder =>
             {
-                config.AddColumn(x => x.Id)
-                    .HasName("ID")
-                    .AlignHorizontal(HorizontalAlignment.Center);
-                config.AddColumn(x => x.Name)
-                    .HasName("氏名")
-                    .AlignHorizontal(HorizontalAlignment.Left);
-                config.AddColumn(x => x.Birthday)
-                    .HasFormat("{0:yyyy/MM/dd}");
+                builder
+                    .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Center)
+                    .AddColumn(x => x.Name).NameAs("氏名").HorizontalAlignmentAs(HorizontalAlignment.Left)
+                    .AddColumn(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
             });
             var text = table.ToString(new[]
                 {
@@ -39,9 +35,9 @@ namespace FluentTextTable.Test
         [Fact]
         public void WhenAutoFormat()
         {
-            using var writer = new StringWriter();
-            var table = TextTable.BuildMarkdown<User>();
-            table.Write(writer,new[]
+            using var textWriter = new StringWriter();
+            var table = Build.MarkdownTable<User>();
+            table.Write(textWriter,new[]
                 {
                     new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                     new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
@@ -53,29 +49,21 @@ namespace FluentTextTable.Test
 |----|-------------|---------|-------------|--------------------|
 | 1  | ビル ゲイツ |         |             | 1955/10/28 0:00:00 |
 | 2  | Steven Jobs |         |             | 1955/02/24 0:00:00 |
-", $"{Environment.NewLine}{writer}");
+", $"{Environment.NewLine}{textWriter}");
         }
 
         [Fact]
         public void WhenMultipleLines()
         {
 
-            var table = TextTable.BuildMarkdown<User>(config =>
+            var table = Build.MarkdownTable<User>(builder =>
             {
-                config.AddColumn(x => x.Id)
-                    .HasName("ID")
-                    .AlignHorizontal(HorizontalAlignment.Right);
-                config.AddColumn(x => x.Name)
-                    .AlignVertical(VerticalAlignment.Center);
-                config.AddColumn(x => x.Birthday)
-                    .AlignVertical(VerticalAlignment.Center)
-                    .HasFormat("{0:yyyy/MM/dd}")
-                    .AlignVertical(VerticalAlignment.Bottom);
-                config.AddColumn(x => x.Parents)
-                    .AlignVertical(VerticalAlignment.Center)
-                    .HasFormat("- {0}");
-                config.AddColumn(x => x.Occupations)
-                    .AlignHorizontal(HorizontalAlignment.Center);
+                builder
+                    .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+                    .AddColumn(x => x.Name).VerticalAlignmentAs(VerticalAlignment.Center)
+                    .AddColumn(x => x.Birthday).VerticalAlignmentAs(VerticalAlignment.Bottom).FormatAs("{0:yyyy/MM/dd}")
+                    .AddColumn(x => x.Parents).VerticalAlignmentAs(VerticalAlignment.Center).FormatAs("- {0}")
+                    .AddColumn(x => x.Occupations).HorizontalAlignmentAs(HorizontalAlignment.Center);
             });
             var text = table.ToString(new[]
             {

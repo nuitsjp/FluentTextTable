@@ -1,5 +1,6 @@
 ﻿using System;
 using Xunit;
+// ReSharper disable UnusedAutoPropertyAccessor.Local
 
 namespace FluentTextTable.Test.Borders
 {
@@ -9,9 +10,9 @@ namespace FluentTextTable.Test.Borders
         public void WhenDisable()
         {
 
-            var table = TextTable.Build<User>(config =>
+            var table = Build.TextTable<User>(builder =>
             {
-                config.Borders.InsideVertical.Disable();
+                builder.Borders.InsideVertical.AsDisable();
             });
             var text = table.ToString(new[]
             {
@@ -35,13 +36,13 @@ namespace FluentTextTable.Test.Borders
         public void WhenChangeDecorations()
         {
 
-            var table = TextTable.Build<User>(config =>
+            var table = Build.TextTable<User>(builder =>
             {
-                config.Borders.InsideVertical.LineIs("\\\\");
-                config.Borders.Top.IntersectionIs("12");
-                config.Borders.HeaderHorizontal.IntersectionIs("34");
-                config.Borders.InsideHorizontal.IntersectionIs("56");
-                config.Borders.Bottom.IntersectionIs("78");
+                builder.Borders.InsideVertical.LeftStyleAs("\\\\");
+                builder.Borders.Top.IntersectionStyleAs("12");
+                builder.Borders.HeaderHorizontal.IntersectionStyleAs("34");
+                builder.Borders.InsideHorizontal.IntersectionStyleAs("56");
+                builder.Borders.Bottom.IntersectionStyleAs("78");
             });
             var text = table.ToString(new[]
             {
@@ -65,9 +66,9 @@ namespace FluentTextTable.Test.Borders
         public void WhenVerticalLineStyleWidthIsUnmatched()
         {
             Assert.Throws<InvalidOperationException>(() => 
-                TextTable.Build<User>(config =>
+                Build.TextTable<User>(builder =>
                 {
-                    config.Borders.InsideVertical.LineIs("12");
+                    builder.Borders.InsideVertical.LeftStyleAs("12");
                 }));
         }
 
@@ -75,9 +76,9 @@ namespace FluentTextTable.Test.Borders
         public void WhenTopInsideVerticalWidthIsUnmatched()
         {
             Assert.Throws<InvalidOperationException>(() => 
-                TextTable.Build<User>(config =>
+                Build.TextTable<User>(builder =>
                 {
-                    config.Borders.Top.IntersectionIs("12");
+                    builder.Borders.Top.IntersectionStyleAs("12");
                 }));
         }
             
@@ -85,9 +86,9 @@ namespace FluentTextTable.Test.Borders
         public void WhenHeaderHorizontalInsideVerticalWidthIsUnmatched()
         {
             Assert.Throws<InvalidOperationException>(() => 
-                TextTable.Build<User>(config =>
+                Build.TextTable<User>(builder =>
                 {
-                    config.Borders.HeaderHorizontal.IntersectionIs("12");
+                    builder.Borders.HeaderHorizontal.IntersectionStyleAs("12");
                 }));
         }
             
@@ -95,9 +96,9 @@ namespace FluentTextTable.Test.Borders
         public void WhenInsideHorizontalInsideVerticalWidthIsUnmatched()
         {
             Assert.Throws<InvalidOperationException>(() => 
-                TextTable.Build<User>(config =>
+                Build.TextTable<User>(builder =>
                 {
-                    config.Borders.InsideHorizontal.IntersectionIs("12");
+                    builder.Borders.InsideHorizontal.IntersectionStyleAs("12");
                 }));
         }
             
@@ -105,10 +106,20 @@ namespace FluentTextTable.Test.Borders
         public void WhenBottomInsideVerticalWidthIsUnmatched()
         {
             Assert.Throws<InvalidOperationException>(() => 
-                TextTable.Build<User>(config =>
+                Build.TextTable<User>(builder =>
                 {
-                    config.Borders.Bottom.IntersectionIs("12");
+                    builder.Borders.Bottom.IntersectionStyleAs("12");
                 }));
+        }
+        
+        private class User
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public DateTime Birthday;
+            public string Parents { get; set; }
+            public string[] Occupations { get; set; }
+
         }
     }
 }

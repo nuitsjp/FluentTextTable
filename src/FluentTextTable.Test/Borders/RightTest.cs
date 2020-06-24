@@ -1,5 +1,6 @@
 ﻿using System;
 using Xunit;
+// ReSharper disable UnusedAutoPropertyAccessor.Local
 
 namespace FluentTextTable.Test.Borders
 {
@@ -9,9 +10,9 @@ namespace FluentTextTable.Test.Borders
         public void WhenDisable()
         {
 
-            var table = TextTable.Build<User>(config =>
+            var table = Build.TextTable<User>(builder =>
             {
-                config.Borders.Right.Disable();
+                builder.Borders.Right.AsDisable();
             });
             var text = table.ToString(new[]
             {
@@ -35,13 +36,13 @@ namespace FluentTextTable.Test.Borders
         public void WhenChangeDecorations()
         {
 
-            var table = TextTable.Build<User>(config =>
+            var table = Build.TextTable<User>(builder =>
             {
-                config.Borders.Right.LineIs("\\\\");
-                config.Borders.Top.RightEndIs("12");
-                config.Borders.HeaderHorizontal.RightEndIs("34");
-                config.Borders.InsideHorizontal.RightEndIs("56");
-                config.Borders.Bottom.RightEndIs("78");
+                builder.Borders.Right.LeftStyleAs("\\\\");
+                builder.Borders.Top.RightStyleAs("12");
+                builder.Borders.HeaderHorizontal.RightStyleAs("34");
+                builder.Borders.InsideHorizontal.RightStyleAs("56");
+                builder.Borders.Bottom.RightStyleAs("78");
             });
             var text = table.ToString(new[]
             {
@@ -65,9 +66,9 @@ namespace FluentTextTable.Test.Borders
         public void WhenVerticalLineStyleWidthIsUnmatched()
         {
             Assert.Throws<InvalidOperationException>(() => 
-                TextTable.Build<User>(config =>
+                Build.TextTable<User>(builder =>
                 {
-                    config.Borders.Right.LineIs("12");
+                    builder.Borders.Right.LeftStyleAs("12");
                 }));
         }
 
@@ -75,9 +76,9 @@ namespace FluentTextTable.Test.Borders
         public void WhenTopRightWidthIsUnmatched()
         {
             Assert.Throws<InvalidOperationException>(() => 
-                TextTable.Build<User>(config =>
+                Build.TextTable<User>(builder =>
                 {
-                    config.Borders.Top.RightEndIs("12");
+                    builder.Borders.Top.RightStyleAs("12");
                 }));
         }
             
@@ -85,9 +86,9 @@ namespace FluentTextTable.Test.Borders
         public void WhenHeaderHorizontalRightWidthIsUnmatched()
         {
             Assert.Throws<InvalidOperationException>(() => 
-                TextTable.Build<User>(config =>
+                Build.TextTable<User>(builder =>
                 {
-                    config.Borders.HeaderHorizontal.RightEndIs("12");
+                    builder.Borders.HeaderHorizontal.RightStyleAs("12");
                 }));
         }
             
@@ -95,9 +96,9 @@ namespace FluentTextTable.Test.Borders
         public void WhenInsideHorizontalRightWidthIsUnmatched()
         {
             Assert.Throws<InvalidOperationException>(() => 
-                TextTable.Build<User>(config =>
+                Build.TextTable<User>(builder =>
                 {
-                    config.Borders.InsideHorizontal.RightEndIs("12");
+                    builder.Borders.InsideHorizontal.RightStyleAs("12");
                 }));
         }
             
@@ -105,10 +106,20 @@ namespace FluentTextTable.Test.Borders
         public void WhenBottomRightWidthIsUnmatched()
         {
             Assert.Throws<InvalidOperationException>(() => 
-                TextTable.Build<User>(config =>
+                Build.TextTable<User>(builder =>
                 {
-                    config.Borders.Bottom.RightEndIs("12");
+                    builder.Borders.Bottom.RightStyleAs("12");
                 }));
+        }
+        
+        private class User
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public DateTime Birthday;
+            public string Parents { get; set; }
+            public string[] Occupations { get; set; }
+
         }
     }
 }

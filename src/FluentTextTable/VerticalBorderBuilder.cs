@@ -2,17 +2,21 @@
 
 namespace FluentTextTable
 {
-    public class VerticalBorderConfig : IVerticalBorderConfig
+    public class VerticalBorderBuilder<TItem> : CompositeTextTableBuilder<TItem>, IVerticalBorderBuilder<TItem>
     {
         private bool _isEnable  = true;
         private string _line  = "|";
 
-        public void Disable()
+        public VerticalBorderBuilder(ITextTableBuilder<TItem> textTableBuilder) : base(textTableBuilder)
+        {
+        }
+
+        public void AsDisable()
         {
             _isEnable = false;
         }
 
-        public IVerticalBorderConfig LineIs(string c)
+        public IVerticalBorderBuilder<TItem>  LeftStyleAs(string c)
         {
             _line = c;
             return this;

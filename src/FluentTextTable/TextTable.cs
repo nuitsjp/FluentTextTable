@@ -8,36 +8,8 @@ namespace FluentTextTable
     public abstract class TextTable
     {
         public const int DefaultPadding = 1;
-        
-        public static ITextTable<TItem> Build<TItem>()
-            => Build<TItem>(_ => { });
-        
-        public static ITextTable<TItem> Build<TItem>(Action<IPlainTextTableConfig<TItem>> configure)
-        {
-            var config = new PlainTextTableConfig<TItem>();
-            configure(config);
-            if (!config.HasColumns)
-            {
-                config.GenerateColumns();
-            }
-            return config.Build();
-        }
 
-        public static ITextTable<TItem> BuildMarkdown<TItem>()
-            => BuildMarkdown<TItem>(_ => { });
-
-        public static ITextTable<TItem> BuildMarkdown<TItem>(Action<IMarkdownTableConfig<TItem>> configure)
-        {
-            var config = new MarkdownTableConfig<TItem>();
-            configure(config);
-            if (!config.HasColumns)
-            {
-                config.GenerateColumns();
-            }
-            return config.Build();
-        }
-
-        protected static IEnumerable<ICellLine> CreatePlainTextCellLines<TItem>(TItem item, IColumn<TItem> column)
+        internal static IEnumerable<ICellLine> CreatePlainTextCellLines<TItem>(TItem item, IColumn<TItem> column)
         {
             return column
                 .GetValues(item)
@@ -45,7 +17,7 @@ namespace FluentTextTable
                 .Select(x => new CellLine(x));
         }
         
-        protected static IEnumerable<ICellLine> CreateMarkdownCellLines<TItem>(TItem item, IColumn<TItem> column)
+        internal static IEnumerable<ICellLine> CreateMarkdownCellLines<TItem>(TItem item, IColumn<TItem> column)
         {
             var strings = column
                 .GetValues(item)
@@ -60,19 +32,13 @@ namespace FluentTextTable
         private readonly IBorders _borders;
         private readonly int _padding;
         private readonly Func<TItem, IColumn<TItem>, IEnumerable<ICellLine>> _createCellLines;
-        private TextTable(IHeader header, IBorders borders, int padding, Func<TItem, IColumn<TItem>, IEnumerable<ICellLine>> createCellLines)
+        internal TextTable(IHeader header, IBorders borders, int padding, Func<TItem, IColumn<TItem>, IEnumerable<ICellLine>> createCellLines)
         {
             _header = header;
             _borders = borders;
             _padding = padding;
             _createCellLines = createCellLines;
         }
-
-        internal static ITextTable<TItem> CreatePlainTextTable(IHeader header, IBorders borders, int padding)
-            => new TextTable<TItem>(header, borders, padding, CreatePlainTextCellLines);
-
-        internal static ITextTable<TItem> CreateMarkdownTable(IHeader header, IBorders borders, int padding)
-            => new TextTable<TItem>(header, borders, padding, CreateMarkdownCellLines);
 
         public string ToString(IEnumerable<TItem> items)
         {
