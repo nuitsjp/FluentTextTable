@@ -23,6 +23,7 @@ namespace FluentTextTable
         {
             for (var lineNumber = 0; lineNumber < _height; lineNumber++)
             {
+                textTableLayout.Margins.Left.Write(textWriter);
                 textTableLayout.Borders.Left.Write(textWriter);
 
                 _cells[textTableLayout.Columns[0]].Write(textWriter, _height, lineNumber, textTableLayout.GetColumnWidth(textTableLayout.Columns[0]), textTableLayout.Padding);
@@ -35,6 +36,7 @@ namespace FluentTextTable
                 }
 
                 textTableLayout.Borders.Right.Write(textWriter);
+                textTableLayout.Margins.Right.Write(textWriter);
                 
                 textWriter.WriteLine();
             }

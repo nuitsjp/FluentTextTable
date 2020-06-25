@@ -3,9 +3,8 @@ using System.Linq.Expressions;
 
 namespace FluentTextTable
 {
-    public class ColumnBuilder<TItem> : IColumnBuilder<TItem>
+    public class ColumnBuilder<TItem> : CompositeTextTableBuilder<TItem>, IColumnBuilder<TItem>
     {
-        private readonly ITextTableBuilder<TItem> _tableBuilder;
         private string _name;
         private HorizontalAlignment _horizontalAlignment= HorizontalAlignment.Default;
         private VerticalAlignment _verticalAlignment = VerticalAlignment.Top;
@@ -13,9 +12,8 @@ namespace FluentTextTable
 
         private readonly MemberAccessor<TItem> _accessor;
 
-        internal ColumnBuilder(ITextTableBuilder<TItem> tableBuilder, MemberAccessor<TItem> accessor)
+        internal ColumnBuilder(ITextTableBuilder<TItem> textTableBuilder, MemberAccessor<TItem> accessor) : base(textTableBuilder)
         {
-            _tableBuilder = tableBuilder;
             _accessor = accessor;
             NameAs(_accessor.Name);
         }
@@ -43,12 +41,6 @@ namespace FluentTextTable
             _format = format;
             return this;
         }
-
-        public ITextTableBuilder<TItem> PaddingAs(int padding) => _tableBuilder.PaddingAs(padding);
-
-        public IColumnBuilder<TItem> AddColumn(Expression<Func<TItem, object>> expression) =>
-            _tableBuilder.AddColumn(expression);
-        
 
         internal IColumn<TItem> Build() 
             => new Column<TItem>(_name, _horizontalAlignment,  _verticalAlignment, _format, _accessor);

@@ -10,6 +10,7 @@ namespace FluentTextTable
 
         public MarkdownTableBuilder() : base(TextTable.CreateMarkdownCellLines)
         {
+            Margins.As(0);
         }
     }
 }

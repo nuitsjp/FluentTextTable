@@ -63,10 +63,10 @@ namespace FluentTextTable
                 throw new InvalidOperationException("The widths of the vertical elements must match.");
         }
 
-        public IBordersBuilder<TItem> AsFullWidth()
+        public IBordersBuilder<TItem> AsFullWidthStyle()
         {
             Top.LeftStyleAs("┌").LineStyleAs("─").IntersectionStyleAs("┬").RightStyleAs("┐");
-            HeaderHorizontal.LeftStyleAs("├").LineStyleAs("─").IntersectionStyleAs("┼").RightStyleAs("┤");
+            HeaderHorizontal.LeftStyleAs("┝").LineStyleAs("━").IntersectionStyleAs("┿").RightStyleAs("┥");
             InsideHorizontal.LeftStyleAs("├").LineStyleAs("─").IntersectionStyleAs("┼").RightStyleAs("┤");
             Bottom.LeftStyleAs("└").LineStyleAs("─").IntersectionStyleAs("┴").RightStyleAs("┘");
             Left.LeftStyleAs("│");

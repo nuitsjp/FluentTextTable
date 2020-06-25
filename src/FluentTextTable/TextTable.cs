@@ -7,6 +7,7 @@ namespace FluentTextTable
 {
     public abstract class TextTable
     {
+        public const int DefaultMargin = 1;
         public const int DefaultPadding = 1;
 
         internal static IEnumerable<ICellLine> CreatePlainTextCellLines<TItem>(TItem item, IColumn<TItem> column)
@@ -30,12 +31,14 @@ namespace FluentTextTable
     {
         private readonly IHeader _header;
         private readonly IBorders _borders;
+        private readonly IMargins _margins;
         private readonly int _padding;
         private readonly Func<TItem, IColumn<TItem>, IEnumerable<ICellLine>> _createCellLines;
-        internal TextTable(IHeader header, IBorders borders, int padding, Func<TItem, IColumn<TItem>, IEnumerable<ICellLine>> createCellLines)
+        internal TextTable(IHeader header, IBorders borders, IMargins margins, int padding, Func<TItem, IColumn<TItem>, IEnumerable<ICellLine>> createCellLines)
         {
             _header = header;
             _borders = borders;
+            _margins = margins;
             _padding = padding;
             _createCellLines = createCellLines;
         }
@@ -50,7 +53,7 @@ namespace FluentTextTable
         public void Write(TextWriter textWriter, IEnumerable<TItem> items)
         {
             var rowSet = CreateRowSet(items);
-            var tableLayout = new TextTableLayout(_header.Columns, _borders, _padding, rowSet);
+            var tableLayout = new TextTableLayout(_header.Columns, _borders, _margins, _padding, rowSet);
 
             _borders.Top.Write(textWriter, tableLayout);
             _header.Write(textWriter, tableLayout);

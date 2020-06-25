@@ -24,9 +24,9 @@ namespace FluentTextTable.Test.Borders
 
             Assert.Equal(
                 @"
- Id  Name         Parents  Occupations  Birthday           
- 1   ビル ゲイツ                        1955/10/28 0:00:00 
- 2   Steven Jobs                        1955/02/24 0:00:00 
+  Id  Name         Parents  Occupations  Birthday           
+  1   ビル ゲイツ                        1955/10/28 0:00:00 
+  2   Steven Jobs                        1955/02/24 0:00:00 
 ", $"{Environment.NewLine}{text}");
         }
         
@@ -36,7 +36,7 @@ namespace FluentTextTable.Test.Borders
             var table = Build.TextTable<User>(builder =>
             {
                 builder
-                    .Borders.AsFullWidth()
+                    .Borders.AsFullWidthStyle()
                     .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
                     .AddColumn(x => x.Name).NameAs("氏名")
                     .AddColumn(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
@@ -49,13 +49,13 @@ namespace FluentTextTable.Test.Borders
 
             Assert.Equal(
                 @"
-┌──┬───────┬──────┐
-│ ID │ 氏名         │ Birthday   │
-├──┼───────┼──────┤
-│  1 │ ビル ゲイツ  │ 1955/10/28 │
-├──┼───────┼──────┤
-│  2 │ Steven Jobs  │ 1955/02/24 │
-└──┴───────┴──────┘
+ ┌──┬───────┬──────┐
+ │ ID │ 氏名         │ Birthday   │
+ ┝━━┿━━━━━━━┿━━━━━━┥
+ │  1 │ ビル ゲイツ  │ 1955/10/28 │
+ ├──┼───────┼──────┤
+ │  2 │ Steven Jobs  │ 1955/02/24 │
+ └──┴───────┴──────┘
 ", $"{Environment.NewLine}{text}");
         }
 

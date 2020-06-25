@@ -16,6 +16,7 @@ namespace FluentTextTable
         
         public void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
         {
+            textTableLayout.Margins.Left.Write(textWriter);
             textTableLayout.Borders.Left.Write(textWriter);
         
             Columns[0].Write(textWriter, textTableLayout);
@@ -27,7 +28,8 @@ namespace FluentTextTable
             }
             
             textTableLayout.Borders.Right.Write(textWriter);
-        
+            textTableLayout.Margins.Right.Write(textWriter);
+
             textWriter.WriteLine();
         }
     }

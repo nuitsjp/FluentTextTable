@@ -45,6 +45,8 @@ namespace FluentTextTable
         public virtual void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
         {
             if(!_isEnable) return;
+
+            textTableLayout.Margins.Left.Write(textWriter);
             
             if(_leftVerticalBorder.IsEnable) textWriter.Write(_leftStyle);
             
@@ -58,7 +60,9 @@ namespace FluentTextTable
                 : string.Join(string.Empty, items));
 
             if(_rightVerticalBorder.IsEnable) textWriter.Write(_rightStyle);
-            
+
+            textTableLayout.Margins.Right.Write(textWriter);
+
             textWriter.WriteLine();
         }
     }

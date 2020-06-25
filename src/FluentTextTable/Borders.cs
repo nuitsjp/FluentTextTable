@@ -2,6 +2,9 @@
 
 namespace FluentTextTable
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Borders : IBorders
     {
         private static readonly VerticalBorder MarkdownVerticalBorder = new VerticalBorder(true, "|");

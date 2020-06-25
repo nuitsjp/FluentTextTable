@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentTextTable", "FluentTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentTextTable.Test", "FluentTextTable.Test\FluentTextTable.Test.csproj", "{4D5FB3FA-2343-415F-B088-84C60FED824F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentTextTable.Sample", "FluentTextTable.Sample\FluentTextTable.Sample.csproj", "{3C108027-8A25-411C-A9E9-46E2655E9251}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4D5FB3FA-2343-415F-B088-84C60FED824F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D5FB3FA-2343-415F-B088-84C60FED824F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D5FB3FA-2343-415F-B088-84C60FED824F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C108027-8A25-411C-A9E9-46E2655E9251}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C108027-8A25-411C-A9E9-46E2655E9251}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C108027-8A25-411C-A9E9-46E2655E9251}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C108027-8A25-411C-A9E9-46E2655E9251}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

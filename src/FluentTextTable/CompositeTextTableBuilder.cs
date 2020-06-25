@@ -12,6 +12,8 @@ namespace FluentTextTable
 
         protected ITextTableBuilder<TItem> TextTableBuilder { get; }
 
+        public IMarginsBuilder<TItem> Margins => TextTableBuilder.Margins;
+        
         public ITextTableBuilder<TItem> PaddingAs(int padding) => TextTableBuilder.PaddingAs(padding);
 
         public IColumnBuilder<TItem> AddColumn(Expression<Func<TItem, object>> expression) =>
