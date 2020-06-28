@@ -6,7 +6,7 @@ namespace FluentTextTable
     {
         IBorders Borders { get; }
         IMargins Margins { get; }
-        int Padding { get; }
+        IPaddings Paddings { get; }
         IReadOnlyList<IColumn> Columns { get; }
         int GetColumnWidth(IColumn column);
     }

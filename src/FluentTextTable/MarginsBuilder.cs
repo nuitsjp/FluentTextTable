@@ -7,14 +7,14 @@
 
         public MarginsBuilder(ITextTableBuilder<TItem> textTableBuilder) : base(textTableBuilder)
         {
-            _left = new MarginBuilder<TItem>(this, 1);
-            _right = new MarginBuilder<TItem>(this, 0);
+            _left = new MarginBuilder<TItem>(this, Margin.LeftDefaultWidth);
+            _right = new MarginBuilder<TItem>(this, Margin.RightDefaultWidth);
         }
 
-        public IMarginsBuilder<TItem> As(int margin)
+        public IMarginsBuilder<TItem> As(int width)
         {
-            _left.As(margin);
-            _right.As(margin);
+            _left.As(width);
+            _right.As(width);
             return this;
         }
 

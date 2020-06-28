@@ -11,7 +11,6 @@ namespace FluentTextTable
             TextWriter textWriter,
             int rowHeight,
             int lineNumber,
-            int columnWidth,
-            int padding);
+            ITextTableLayout textTableLayout);
     }
 }

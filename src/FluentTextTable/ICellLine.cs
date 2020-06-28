@@ -8,8 +8,7 @@ namespace FluentTextTable
 
         void Write(
             TextWriter textWriter,
-            IColumn column,
-            int columnWidth,
-            int padding);
+            ITextTableLayout textTableLayout,
+            IColumn column);
     }
 }

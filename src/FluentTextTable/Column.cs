@@ -42,9 +42,9 @@ namespace FluentTextTable
         
         public void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
         {
-            textWriter.Write(new string(' ', textTableLayout.Padding));
+            textWriter.Write(new string(' ', textTableLayout.Paddings.Left.Width));
             textWriter.Write(_name);
-            textWriter.Write(new string(' ', textTableLayout.GetColumnWidth(this) - Width - textTableLayout.Padding));
+            textWriter.Write(new string(' ', textTableLayout.GetColumnWidth(this) - Width - textTableLayout.Paddings.Left.Width));
         }
 
     }

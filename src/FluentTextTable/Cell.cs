@@ -24,8 +24,7 @@ namespace FluentTextTable
             TextWriter textWriter,
             int rowHeight,
             int lineNumber,
-            int columnWidth,
-            int padding)
+            ITextTableLayout textTableLayout)
         {
             var cellLine = _column.VerticalAlignment switch
             {
@@ -35,7 +34,7 @@ namespace FluentTextTable
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            cellLine.Write(textWriter, _column, columnWidth, padding);
+            cellLine.Write(textWriter, textTableLayout, _column);
 
             ICellLine GetTopCellLine()
             {

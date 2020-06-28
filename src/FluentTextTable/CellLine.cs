@@ -19,17 +19,17 @@ namespace FluentTextTable
 
         public void Write(
             TextWriter textWriter,
-            IColumn column,
-            int columnWidth,
-            int padding)
+            ITextTableLayout textTableLayout,
+            IColumn column)
         {
+            int columnWidth = textTableLayout.GetColumnWidth(column);
             int leftPadding;
             int rightPadding;
             switch (column.HorizontalAlignment)
             {
                 case HorizontalAlignment.Default:
                 case HorizontalAlignment.Left:
-                    leftPadding = padding;
+                    leftPadding = textTableLayout.Paddings.Left.Width;
                     rightPadding = columnWidth - Width - leftPadding;
                     break;
                 case HorizontalAlignment.Center:
@@ -37,8 +37,8 @@ namespace FluentTextTable
                     rightPadding = columnWidth - Width - leftPadding;
                     break;
                 case HorizontalAlignment.Right:
-                    leftPadding = columnWidth - Width - padding;
-                    rightPadding = padding;
+                    rightPadding = textTableLayout.Paddings.Right.Width;
+                    leftPadding = columnWidth - Width - rightPadding;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

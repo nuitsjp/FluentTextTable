@@ -26,13 +26,13 @@ namespace FluentTextTable
                 textTableLayout.Margins.Left.Write(textWriter);
                 textTableLayout.Borders.Left.Write(textWriter);
 
-                _cells[textTableLayout.Columns[0]].Write(textWriter, _height, lineNumber, textTableLayout.GetColumnWidth(textTableLayout.Columns[0]), textTableLayout.Padding);
+                _cells[textTableLayout.Columns[0]].Write(textWriter, _height, lineNumber, textTableLayout);
 
                 for (var i = 1; i < textTableLayout.Columns.Count; i++)
                 {
                     var column = textTableLayout.Columns[i];
                     textTableLayout.Borders.InsideVertical.Write(textWriter);
-                    _cells[column].Write(textWriter, _height, lineNumber, textTableLayout.GetColumnWidth(column), textTableLayout.Padding);
+                    _cells[column].Write(textWriter, _height, lineNumber, textTableLayout);
                 }
 
                 textTableLayout.Borders.Right.Write(textWriter);

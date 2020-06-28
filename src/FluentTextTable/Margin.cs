@@ -4,13 +4,17 @@ namespace FluentTextTable
 {
     public class Margin : IMargin
     {
-        private readonly int _value;
+        public const int LeftDefaultWidth = 1;
 
-        public Margin(int value)
+        public const int RightDefaultWidth = 0;
+
+        private readonly int _width;
+
+        public Margin(int width)
         {
-            _value = value;
+            _width = width;
         }
 
-        public void Write(TextWriter textWriter) => textWriter.Write(new string(' ', _value));
+        public void Write(TextWriter textWriter) => textWriter.Write(new string(' ', _width));
     }
 }

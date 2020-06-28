@@ -2,22 +2,22 @@
 {
     public class MarginBuilder<TItem> : CompositeTextTableBuilder<TItem>, IMarginBuilder<TItem>
     {
-        private int _margin;
+        private int _width;
 
         private readonly IMarginsBuilder<TItem> _marginsBuilder;
 
-        public MarginBuilder(IMarginsBuilder<TItem> marginsBuilder, int defaultValue) : base(marginsBuilder)
+        public MarginBuilder(IMarginsBuilder<TItem> marginsBuilder, int width) : base(marginsBuilder)
         {
-            _margin = defaultValue;
+            _width = width;
             _marginsBuilder = marginsBuilder;
         }
 
-        public IMarginsBuilder<TItem> As(int margin)
+        public IMarginsBuilder<TItem> As(int width)
         {
-            _margin = margin;
+            _width = width;
             return _marginsBuilder;
         }
 
-        internal IMargin Build() => new Margin(_margin);
+        internal IMargin Build() => new Margin(_width);
     }
 }

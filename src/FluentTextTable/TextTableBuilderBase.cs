@@ -8,25 +8,22 @@ namespace FluentTextTable
 {
     public abstract class TextTableBuilderBase<TItem> : ITextTableBuilder<TItem>
     {
-        private int _padding  = TextTable.DefaultPadding;
         private readonly List<ColumnBuilder<TItem>> _columns  = new List<ColumnBuilder<TItem>>();
         private readonly Func<TItem, IColumn<TItem>, IEnumerable<ICellLine>> _createCellLines;
         private readonly MarginsBuilder<TItem> _margins;
+        private readonly PaddingsBuilder<TItem> _paddings;
 
 
         protected TextTableBuilderBase(Func<TItem, IColumn<TItem>, IEnumerable<ICellLine>> createCellLines)
         {
             _createCellLines = createCellLines;
             _margins = new MarginsBuilder<TItem>(this);
+            _paddings = new PaddingsBuilder<TItem>(this);
         }
 
         public IMarginsBuilder<TItem> Margins => _margins;
 
-        public ITextTableBuilder<TItem> PaddingAs(int padding)
-        {
-            _padding = padding;
-            return this;
-        }
+        public IPaddingsBuilder<TItem> Paddings => _paddings;
 
         public IColumnBuilder<TItem> AddColumn(Expression<Func<TItem, object>> getMemberExpression)
         {
@@ -51,7 +48,7 @@ namespace FluentTextTable
         internal ITextTable<TItem> Build()
         {
             if (!_columns.Any()) GenerateColumns();
-            return new TextTable<TItem>(BuildHeader(), BuildBorders(), _margins.Build(), _padding, _createCellLines);
+            return new TextTable<TItem>(BuildHeader(), BuildBorders(), _margins.Build(), _paddings.Build(), _createCellLines);
         }
 
 
