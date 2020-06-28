@@ -8,6 +8,6 @@ namespace FluentTextTable
     {
         IMarginsBuilder<TItem> Margins { get; }
         IPaddingsBuilder<TItem> Paddings { get; }
-        IColumnBuilder<TItem> AddColumn(Expression<Func<TItem, object>> expression);
+        IColumnsBuilder<TItem> Columns { get; }
     }
 }

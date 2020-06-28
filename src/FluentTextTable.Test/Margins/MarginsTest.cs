@@ -15,9 +15,9 @@ namespace FluentTextTable.Test.Margins
                 builder
                     .Margins.Left.As(0)
                     .Margins.Right.As(2)
-                    .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
-                    .AddColumn(x => x.Name).NameAs("氏名")
-                    .AddColumn(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
+                    .Columns.Add(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+                    .Columns.Add(x => x.Name).NameAs("氏名")
+                    .Columns.Add(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
             });
             var text = table.ToString(new[]
             {
@@ -44,9 +44,9 @@ namespace FluentTextTable.Test.Margins
             {
                 builder
                     .Margins.As(2)
-                    .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
-                    .AddColumn(x => x.Name).NameAs("氏名")
-                    .AddColumn(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
+                    .Columns.Add(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+                    .Columns.Add(x => x.Name).NameAs("氏名")
+                    .Columns.Add(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
             });
             var text = table.ToString(new[]
             {

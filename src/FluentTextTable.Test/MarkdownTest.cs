@@ -13,9 +13,9 @@ namespace FluentTextTable.Test
             var table = Build.MarkdownTable<User>(builder =>
             {
                 builder
-                    .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Center)
-                    .AddColumn(x => x.Name).NameAs("氏名").HorizontalAlignmentAs(HorizontalAlignment.Left)
-                    .AddColumn(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
+                    .Columns.Add(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Center)
+                    .Columns.Add(x => x.Name).NameAs("氏名").HorizontalAlignmentAs(HorizontalAlignment.Left)
+                    .Columns.Add(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
             });
             var text = table.ToString(new[]
                 {
@@ -59,11 +59,11 @@ namespace FluentTextTable.Test
             var table = Build.MarkdownTable<User>(builder =>
             {
                 builder
-                    .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
-                    .AddColumn(x => x.Name).VerticalAlignmentAs(VerticalAlignment.Center)
-                    .AddColumn(x => x.Birthday).VerticalAlignmentAs(VerticalAlignment.Bottom).FormatAs("{0:yyyy/MM/dd}")
-                    .AddColumn(x => x.Parents).VerticalAlignmentAs(VerticalAlignment.Center).FormatAs("- {0}")
-                    .AddColumn(x => x.Occupations).HorizontalAlignmentAs(HorizontalAlignment.Center);
+                    .Columns.Add(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+                    .Columns.Add(x => x.Name).VerticalAlignmentAs(VerticalAlignment.Center)
+                    .Columns.Add(x => x.Birthday).VerticalAlignmentAs(VerticalAlignment.Bottom).FormatAs("{0:yyyy/MM/dd}")
+                    .Columns.Add(x => x.Parents).VerticalAlignmentAs(VerticalAlignment.Center).FormatAs("- {0}")
+                    .Columns.Add(x => x.Occupations).HorizontalAlignmentAs(HorizontalAlignment.Center);
             });
             var text = table.ToString(new[]
             {

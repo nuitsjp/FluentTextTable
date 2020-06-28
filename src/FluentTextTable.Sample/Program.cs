@@ -10,9 +10,9 @@ namespace FluentTextTable.Sample
             {
                 builder
                     .Borders.HeaderHorizontal.LineStyleAs("=")
-                    .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
-                    .AddColumn(x => x.Name).NameAs("氏名")
-                    .AddColumn(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
+                    .Columns.Add(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+                    .Columns.Add(x => x.Name).NameAs("氏名")
+                    .Columns.Add(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
             });
             table.Write(Console.Out, new[]
             {

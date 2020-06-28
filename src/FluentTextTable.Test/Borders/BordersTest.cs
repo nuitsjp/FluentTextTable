@@ -37,9 +37,9 @@ namespace FluentTextTable.Test.Borders
             {
                 builder
                     .Borders.AsFullWidthStyle()
-                    .AddColumn(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
-                    .AddColumn(x => x.Name).NameAs("氏名")
-                    .AddColumn(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
+                    .Columns.Add(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+                    .Columns.Add(x => x.Name).NameAs("氏名")
+                    .Columns.Add(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
             });
             var text = table.ToString(new[]
             {
