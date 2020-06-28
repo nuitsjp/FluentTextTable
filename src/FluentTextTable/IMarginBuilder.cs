@@ -1,7 +1,7 @@
 ﻿namespace FluentTextTable
 {
-    public interface IMarginBuilder<TItem> : IMarginsBuilder<TItem>
+    public interface IMarginBuilder<TItem> : ITextTableBuilder<TItem>
     {
-        
+        IMarginsBuilder<TItem> As(int margin);
     }
 }

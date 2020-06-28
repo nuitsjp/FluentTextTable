@@ -4,16 +4,13 @@
     {
         private int _margin;
 
-        private IMarginsBuilder<TItem> _marginsBuilder;
+        private readonly IMarginsBuilder<TItem> _marginsBuilder;
 
         public MarginBuilder(IMarginsBuilder<TItem> marginsBuilder, int defaultValue) : base(marginsBuilder)
         {
             _margin = defaultValue;
             _marginsBuilder = marginsBuilder;
         }
-
-        public IMarginBuilder<TItem> Left => _marginsBuilder.Left;
-        public IMarginBuilder<TItem> Right => _marginsBuilder.Right;
 
         public IMarginsBuilder<TItem> As(int margin)
         {
