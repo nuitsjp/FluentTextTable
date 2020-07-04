@@ -37,6 +37,34 @@ namespace FluentTextTable.Test
         }
 
         [Fact]
+        public void WhenTuple()
+        {
+            var table = Build.TextTable<(int, string, DateTime)>(builder =>
+            {
+                builder
+                    .Columns.Add(x => x.Item1).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+                    .Columns.Add(x => x.Item2).NameAs("氏名")
+                    .Columns.Add(x => x.Item3).FormatAs("{0:yyyy/MM/dd}");
+            });
+            var text = table.ToString(new[]
+            {
+                (1, "ビル ゲイツ", DateTime.Parse("1955/10/28")),
+                (2, "Steven Jobs", DateTime.Parse("1955/2/24"))
+            });
+
+            Assert.Equal(
+                @"
+ +----+-------------+------------+
+ | ID | 氏名        | Item3      |
+ +----+-------------+------------+
+ |  1 | ビル ゲイツ | 1955/10/28 |
+ +----+-------------+------------+
+ |  2 | Steven Jobs | 1955/02/24 |
+ +----+-------------+------------+
+", $"{Environment.NewLine}{text}");
+        }
+
+        [Fact]
         public void WhenValueTuple()
         {
             var table = Build.TextTable<(int Id, string Name, DateTime Birthday)>(builder =>
