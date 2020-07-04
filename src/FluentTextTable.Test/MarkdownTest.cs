@@ -33,6 +33,31 @@ namespace FluentTextTable.Test
         }
 
         [Fact]
+        public void WhenValueTuple()
+        {
+            var table = Build.MarkdownTable<(int Id, string Name, DateTime Birthday)>(builder =>
+            {
+                builder
+                    .Columns.Add(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Center)
+                    .Columns.Add(x => x.Name).NameAs("氏名").HorizontalAlignmentAs(HorizontalAlignment.Left)
+                    .Columns.Add(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
+            });
+            var text = table.ToString(new[]
+            {
+                (Id:1, Name:"ビル ゲイツ", Birthday:DateTime.Parse("1955/10/28")),
+                (Id:123, Name:"Steven Paul Jobs", Birthday:DateTime.Parse("1955/2/24"))
+            });
+
+            Assert.Equal(
+                @"
+| ID  | 氏名             | Item3      |
+|:---:|:-----------------|------------|
+|  1  | ビル ゲイツ      | 1955/10/28 |
+| 123 | Steven Paul Jobs | 1955/02/24 |
+", $"{Environment.NewLine}{text}");
+        }
+
+        [Fact]
         public void WhenAutoFormat()
         {
             using var textWriter = new StringWriter();
