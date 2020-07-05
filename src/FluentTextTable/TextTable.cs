@@ -47,6 +47,11 @@ namespace FluentTextTable
             return writer.ToString();
         }
 
+        public void WriteLine(IEnumerable<TItem> items)
+        {
+            Console.Write(ToString(items));
+        }
+
         public void Write(TextWriter textWriter, IEnumerable<TItem> items)
         {
             var rowSet = CreateRowSet(items);

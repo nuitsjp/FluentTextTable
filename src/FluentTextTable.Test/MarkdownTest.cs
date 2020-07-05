@@ -135,14 +135,13 @@ namespace FluentTextTable.Test
 ", $"{Environment.NewLine}{text}");
         }
 
-         private class User
-         {
-             public int Id { get; set; }
-             public string Name { get; set; }
-             public DateTime Birthday;
-             public string Parents { get; set; }
-             public string[] Occupations { get; set; }
-
-         }
+        private class User
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public DateTime Birthday;
+            public string Parents { get; set; }
+            public string[] Occupations { get; set; }
+        }
     }
 }
