@@ -26,13 +26,21 @@ namespace FluentTextTable
             int lineNumber,
             ITextTableLayout textTableLayout)
         {
-            var cellLine = _column.VerticalAlignment switch
+            ICellLine cellLine;
+            switch (_column.VerticalAlignment)
             {
-                VerticalAlignment.Top => GetTopCellLine(),
-                VerticalAlignment.Center => GetCenterCellLine(),
-                VerticalAlignment.Bottom => GetBottomCellLine(),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                case VerticalAlignment.Top:
+                    cellLine = GetTopCellLine();
+                    break;
+                case VerticalAlignment.Center:
+                    cellLine = GetCenterCellLine();
+                    break;
+                case VerticalAlignment.Bottom:
+                    cellLine = GetBottomCellLine();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             cellLine.Write(textWriter, textTableLayout, _column);
 

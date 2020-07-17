@@ -93,6 +93,27 @@ namespace FluentTextTable.Test
         }
 
         [Fact]
+        public void WhenEmpty()
+        {
+            var table = Build.TextTable<User>(builder =>
+            {
+                builder
+                    .Columns.Add(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+                    .Columns.Add(x => x.Name).NameAs("氏名")
+                    .Columns.Add(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
+            });
+            var text = table.ToString(new User[0]);
+
+            Assert.Equal(
+                @"
+ +----+------+----------+
+ | ID | 氏名 | Birthday |
+ +----+------+----------+
+ +----+------+----------+
+", $"{Environment.NewLine}{text}");
+        }
+
+        [Fact]
         public void WhenAutoFormat()
         {
             using var writer = new StringWriter();

@@ -32,12 +32,15 @@ namespace FluentTextTable
         {
             var value = _accessor.GetValue(item);
 
-            return value switch
+            switch (value)
             {
-                string stringValue => stringValue.SplitOnNewLine(),
-                IEnumerable<object> enumerable => enumerable,
-                _ => new[] {value}
-            };
+                case string stringValue:
+                    return stringValue.SplitOnNewLine();
+                case IEnumerable<object> enumerable:
+                    return enumerable;
+                default:
+                    return new[] {value};
+            }
         }
         
         public void Write(TextWriter textWriter, ITextTableLayout textTableLayout)

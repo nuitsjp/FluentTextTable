@@ -32,8 +32,6 @@ namespace FluentTextTable
                         textWriter.Write(new string('-', textTableLayout.GetColumnWidth(column) - 1));
                         textWriter.Write(':');
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
                 }
                 textWriter.Write("|");
             }
