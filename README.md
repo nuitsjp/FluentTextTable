@@ -1,8 +1,8 @@
 # TextTableDotNet
 
-![](images/borders.jpg)
+![](images/borders.JPG)
 
 
-![](images/horizontalBorder.jpg)
+![](images/horizontalBorder.JPG)
 
-![](images/verticalBorder.jpg)
+![](images/verticalBorder.JPG)
