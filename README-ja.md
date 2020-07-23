@@ -43,7 +43,9 @@ Build
 # 目次
 
 - [Quick Start](#quick-start)
-- スタイル
+- [Markdown形式](#Markdown形式)
+- 書式
+  - [列](#列)
   - [罫線](#罫線)
 
 
@@ -88,17 +90,102 @@ table.WriteLine(users);
 
 ![](images/sample1.jpg)
 
+# Markdown形式
+
+# 書式
+
+## 列
+
+デフォルトではすべてのpublicなプロパティとフィールドが出力されます。
+
+```cs
+static void Main()
+{
+    var users = new[]
+    {
+        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
+    };
+
+    Build
+        .TextTable<User>()
+        .WriteLine(users);
+}
+```
+
+出力する列を指定することも可能です。
+
+```cs
+Build
+    .TextTable<User>(builder =>
+    {
+        builder
+            .Columns.Add(x => x.Name)
+            .Columns.Add(x => x.Birthday);
+    })
+    .WriteLine(users);
+```
+
+![](images/column1.jpg)
+
+列には、つぎの書式を設定できます。
+
+- 列名
+- 水平方向アライメント
+- 垂直方向アライメント
+- フォーマット
+
+```cs
+
+```
 
 
+## 罫線
 
+すべての罫線は任意のスタイルに変更できます。
 
+```cs
+var table = Build.TextTable<User>(builder =>
+{
+    builder
+        .Borders.Top
+            .LeftStyleAs("-")
+            .IntersectionStyleAs("-")
+            .RightStyleAs("-")
+        .Borders.HeaderHorizontal
+            .LineStyleAs("=")
+        .Borders.InsideHorizontal
+            .AsDisable()
+        .Borders.Bottom
+            .LeftStyleAs("*")
+            .IntersectionStyleAs("*")
+            .RightStyleAs("*");
+});
+```
 
+![](images/borders1.jpg)
 
+罫線には、つぎのような領域が定義されています。
 
+- Top
+- HeaderHorizontal
+- InsideHorizontal
+- Bottom
+- Left
+- InsideVertical
+- Right
 
 ![](images/borders.JPG)
 
+水平方向のボーダーは、つぎのスタイルが変更可能です。
+
+- LeftStyle
+- IntersectionStyle
+- RightStyle
+- LineStyle
 
 ![](images/horizontalBorder.JPG)
+
+垂直方向のボーダーは、LineStyleのみ変更可能です。交点は水平方向のボーダーによって決定されます。
 
 ![](images/verticalBorder.JPG)

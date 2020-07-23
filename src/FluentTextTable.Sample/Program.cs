@@ -8,28 +8,36 @@ namespace FluentTextTable.Sample
         {
             //var table = Build.TextTable<User>();
             //    .WriteLine(users);
-            var table = Build.TextTable<User>(builder =>
-            {
-                builder
-                    .Borders.Top
-                        .LeftStyleAs("-")
-                        .IntersectionStyleAs("-")
-                        .RightStyleAs("-")
-                    .Borders.HeaderHorizontal
-                        .LineStyleAs("=")
-                    .Borders.InsideHorizontal
-                        .AsDisable()
-                    .Borders.Bottom
-                        .LeftStyleAs("*")
-                        .IntersectionStyleAs("*")
-                        .RightStyleAs("*");
-            });
+            //var table = Build.TextTable<User>(builder =>
+            //{
+            //    builder
+            //        .Borders.Top
+            //            .LeftStyleAs("-")
+            //            .IntersectionStyleAs("-")
+            //            .RightStyleAs("-")
+            //        .Borders.HeaderHorizontal
+            //            .LineStyleAs("=")
+            //        .Borders.InsideHorizontal
+            //            .AsDisable()
+            //        .Borders.Bottom
+            //            .LeftStyleAs("*")
+            //            .IntersectionStyleAs("*")
+            //            .RightStyleAs("*");
+            //});
             var users = new[]
             {
                 new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                 new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
             };
-            table.WriteLine(users);
+            //table.WriteLine(users);
+            Build
+                .TextTable<User>(builder =>
+                {
+                    builder
+                        .Columns.Add(x => x.Name)
+                        .Columns.Add(x => x.Birthday);
+                })
+                .WriteLine(users);
             //Build
             //    .TextTable<User>(builder =>
             //    {
