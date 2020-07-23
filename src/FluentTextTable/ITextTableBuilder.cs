@@ -24,5 +24,10 @@ namespace FluentTextTable
         /// Get the Columns Builder.
         /// </summary>
         IColumnsBuilder<TItem> Columns { get; }
+
+        /// <summary>
+        /// Get the Borders Builder.
+        /// </summary>
+        IBordersBuilder<TItem> Borders { get; }
     }
 }

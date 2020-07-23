@@ -7,7 +7,7 @@ namespace FluentTextTable
     {
         private readonly BordersBuilder<TItem> _borders;
 
-        public IBordersBuilder<TItem> Borders => _borders;
+        public override IBordersBuilder<TItem> Borders => _borders;
 
         public PlainTextTableBuilder() : base(TextTable.CreatePlainTextCellLines)
         {

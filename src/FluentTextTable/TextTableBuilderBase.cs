@@ -26,6 +26,7 @@ namespace FluentTextTable
 
         public IPaddingsBuilder<TItem> Paddings => _paddings;
         public IColumnsBuilder<TItem> Columns => _columns;
+        public abstract IBordersBuilder<TItem> Borders { get; }
 
         protected abstract IBorders BuildBorders();
 

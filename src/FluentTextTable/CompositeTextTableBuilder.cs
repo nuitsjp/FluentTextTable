@@ -15,5 +15,6 @@ namespace FluentTextTable
         public IMarginsBuilder<TItem> Margins => TextTableBuilder.Margins;
         public IPaddingsBuilder<TItem> Paddings => TextTableBuilder.Paddings;
         public IColumnsBuilder<TItem> Columns => TextTableBuilder.Columns;
+        public IBordersBuilder<TItem> Borders => TextTableBuilder.Borders;
     }
 }
