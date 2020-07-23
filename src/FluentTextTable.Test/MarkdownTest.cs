@@ -32,6 +32,7 @@ namespace FluentTextTable.Test
 ", $"{Environment.NewLine}{text}");
         }
 
+#if NETCOREAPP3_1
         [Fact]
         public void WhenTuple()
         {
@@ -81,6 +82,8 @@ namespace FluentTextTable.Test
 | 123 | Steven Paul Jobs | 1955/02/24 |
 ", $"{Environment.NewLine}{text}");
         }
+
+#endif
 
         [Fact]
         public void WhenAutoFormat()

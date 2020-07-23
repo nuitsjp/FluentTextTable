@@ -6,9 +6,17 @@ namespace FluentTextTable
 {
     public class RowSet : IRowSet
     {
+#if NET40
+        private readonly IList<IRow> _rows;
+#else
         private readonly IReadOnlyList<IRow> _rows;
+#endif
 
+#if NET40
+        public RowSet(IList<IRow> rows) => _rows = rows;
+#else
         public RowSet(IReadOnlyList<IRow> rows) => _rows = rows;
+#endif
 
         public int GetMaxCellWidth(IColumn column) =>
             _rows.Any() 

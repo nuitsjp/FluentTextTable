@@ -8,9 +8,17 @@ namespace FluentTextTable
     {
         private readonly int _height;
 
+#if NET40
+        private readonly IDictionary<IColumn, ICell> _cells;
+#else
         private readonly IReadOnlyDictionary<IColumn, ICell> _cells;
+#endif
 
+#if NET40
+        internal Row(IDictionary<IColumn, ICell> cells)
+#else
         internal Row(IReadOnlyDictionary<IColumn, ICell> cells)
+#endif
         {
             _cells = cells;
             _height = _cells.Values.Max(x => x.Height);

@@ -12,8 +12,12 @@ namespace FluentTextTable
             Columns = columns.ToList();
         }
 
+#if NET40
+        public IList<IColumn> Columns { get; }
+#else
         public IReadOnlyList<IColumn> Columns { get; }
-        
+#endif
+
         public void Write(TextWriter textWriter, ITextTableLayout textTableLayout)
         {
             textTableLayout.Margins.Left.Write(textWriter);

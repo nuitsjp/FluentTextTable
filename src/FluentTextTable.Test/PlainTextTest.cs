@@ -36,6 +36,7 @@ namespace FluentTextTable.Test
 ", $"{Environment.NewLine}{text}");
         }
 
+#if NETCOREAPP3_1
         [Fact]
         public void WhenTuple()
         {
@@ -91,6 +92,7 @@ namespace FluentTextTable.Test
  +----+-------------+------------+
 ", $"{Environment.NewLine}{text}");
         }
+#endif
 
         [Fact]
         public void WhenEmpty()

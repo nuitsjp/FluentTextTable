@@ -67,12 +67,14 @@ namespace FluentTextTable
         private IRowSet CreateRowSet(IEnumerable<TItem> items) =>
             new RowSet(items.Select(CreateRow).ToList());
         
-        private Row CreateRow(TItem item)
+        private IRow CreateRow(TItem item)
         {
-            return new Row(
-                _header.Columns
-                    .Select(column =>(column, cell:CreateCell(item, (IColumn<TItem>)column)))
-                    .ToDictionary(x => x.column, x => x.cell));
+            var cells = new Dictionary<IColumn, ICell>();
+            foreach (var column in _header.Columns)
+            {
+                cells[column] = CreateCell(item, (IColumn<TItem>) column);
+            }
+            return new Row(cells);
         }
 
         private ICell CreateCell(TItem item, IColumn<TItem> column)

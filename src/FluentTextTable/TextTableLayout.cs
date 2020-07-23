@@ -6,8 +6,12 @@ namespace FluentTextTable
     public class TextTableLayout : ITextTableLayout
     {
         private readonly Dictionary<IColumn, int> _columnWidths = new Dictionary<IColumn, int>();
-        
+
+#if NET40
+        internal TextTableLayout(IList<IColumn> columns, IBorders borders, IMargins margins, IPaddings paddings, IRowSet rowSet)
+#else
         internal TextTableLayout(IReadOnlyList<IColumn> columns, IBorders borders, IMargins margins, IPaddings paddings, IRowSet rowSet)
+#endif
         {
             Columns = columns;
             Borders = borders;
@@ -27,7 +31,11 @@ namespace FluentTextTable
         }
 
 
+#if NET40
+        public IList<IColumn> Columns { get; }
+#else
         public IReadOnlyList<IColumn> Columns { get; }
+#endif
         public IBorders Borders { get; }
         public IMargins Margins { get; }
         public IPaddings Paddings { get; }

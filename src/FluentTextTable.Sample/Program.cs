@@ -14,13 +14,16 @@ namespace FluentTextTable.Sample
             //Build
             //    .TextTable<User>()
             //    .WriteLine(users);
-            Build
-                .TextTable<User>(builder =>
-                {
-                    builder
-                        .Borders.InsideHorizontal.AsDisable();
-                })
-                .WriteLine(users);
+Build
+    .TextTable<User>(builder =>
+    {
+        builder
+            .Borders.InsideHorizontal.AsDisable()
+            .Columns.Add(x => x.Id).HorizontalAlignmentAs(HorizontalAlignment.Right)
+            .Columns.Add(x => x.Name).NameAs("氏名")
+            .Columns.Add(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
+    })
+    .WriteLine(users);
 
             //var table = Build.TextTable<User>(builder =>
             //{

@@ -35,37 +35,45 @@ namespace FluentTextTable
             var memberInfos =
                 typeof(TItem).GetMembers(BindingFlags.Public | BindingFlags.Instance)
                     .Where(x => x.MemberType == MemberTypes.Field || x.MemberType == MemberTypes.Property);
-            var members = new List<(int index, MemberInfo memberInfo, ColumnAttribute columnFormat)>();
+            var members = new List<Member>();
             foreach (var memberInfo in memberInfos)
             {
-                var columnFormat = memberInfo.GetCustomAttribute<ColumnAttribute>();
+                var columnFormat = memberInfo
+                    .GetCustomAttributes(true)
+                    .SingleOrDefault(x => x is ColumnAttribute) as ColumnAttribute;
                 if (columnFormat is null)
                 {
-                    members.Add((0, memberInfo, null));
+                    members.Add(new Member{Index = 0, MemberInfo = memberInfo, ColumnAttribute = null});
                 }
 
                 if (columnFormat != null)
                 {
-                    members.Add((columnFormat.Index, memberInfo, columnFormat));
+                    members.Add(new Member{Index = columnFormat.Index, MemberInfo = memberInfo, ColumnAttribute = columnFormat});
                 }
             }
 
-            foreach (var (_, memberInfo, columnFormat) in members.OrderBy(x => x.index))
+            foreach (var member in members.OrderBy(x => x.Index))
             {
-                var memberAccessor = new MemberAccessor<TItem>(memberInfo);
+                var memberAccessor = new MemberAccessor<TItem>(member.MemberInfo);
                 var column = new ColumnBuilder<TItem>(this, memberAccessor);
                 _columns.Add(column);
 
-                if (columnFormat == null) continue;
+                if (member.ColumnAttribute == null) continue;
 
-                if (columnFormat.Header != null) column.NameAs(columnFormat.Header);
+                if (member.ColumnAttribute.Header != null) column.NameAs(member.ColumnAttribute.Header);
 
                 column
-                    .HorizontalAlignmentAs(columnFormat.HorizontalAlignment)
-                    .VerticalAlignmentAs(columnFormat.VerticalAlignment)
-                    .FormatAs(columnFormat.Format);
+                    .HorizontalAlignmentAs(member.ColumnAttribute.HorizontalAlignment)
+                    .VerticalAlignmentAs(member.ColumnAttribute.VerticalAlignment)
+                    .FormatAs(member.ColumnAttribute.Format);
             }
         }
 
+        private class Member
+        {
+            public int Index { get; set; }
+            public MemberInfo MemberInfo { get; set; }
+            public ColumnAttribute ColumnAttribute { get; set; }
+        }
     }
 }
