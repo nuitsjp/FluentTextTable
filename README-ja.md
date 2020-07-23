@@ -44,8 +44,9 @@ Build
 
 - [Quick Start](#quick-start)
 - [Markdown形式](#Markdown形式)
+- [複数行セルのサポート](#複数行セルのサポート)
 - 書式
-  - [列](#列)
+  - [列書式](#列書式)
   - [罫線](#罫線)
 
 
@@ -92,9 +93,94 @@ table.WriteLine(users);
 
 # Markdown形式
 
+FluentTextTableでは一般的なMarkdown形式で出力することもできます。
+
+```cs
+Build
+    .MarkdownTable<User>()
+    .WriteLine(users);
+```
+
+![](images/markdown1.jpg)
+
+中央寄せ・右寄せも可能です。詳細は[列書式](#列書式)をご覧ください。
+
+# 複数行セルのサポート
+
+ひとつのセルの中での改行をサポートします。
+
+つぎのいずれかの場合、改行して出力されます。
+
+- 改行コードの含まれるstringプロパティ・フィールド
+- 配列やListなどIEnumerable<object>で定義されたプロパティ・フィールド
+
+```cs
+private class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public DateTime Birthday;
+    public string Parents { get; set; }
+    public string[] Occupations { get; set; }
+}
+
+var users = new[]
+{
+    new User
+    {
+        Id = 1, 
+        Name = "Bill Gates", 
+        Birthday = DateTime.Parse("1955/10/28"),
+        Parents = $"Bill Gates Sr.{Environment.NewLine}Mary Maxwell Gates",
+        Occupations = new []{"Software developer", "Investor", "Entrepreneur", "Philanthropist"}
+    }
+};
+
+var table = Build.TextTable<User>(builder =>
+{
+    builder
+        .Columns.Add(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+        .Columns.Add(x => x.Name).VerticalAlignmentAs(VerticalAlignment.Center)
+        .Columns.Add(x => x.Birthday).VerticalAlignmentAs(VerticalAlignment.Bottom).FormatAs("{0:yyyy/MM/dd}")
+        .Columns.Add(x => x.Parents).VerticalAlignmentAs(VerticalAlignment.Center).FormatAs("- {0}")
+        .Columns.Add(x => x.Occupations).HorizontalAlignmentAs(HorizontalAlignment.Center);
+});
+table.WriteLine(users);
+```
+
+![](images/multiRows.jpg)
+
+書式の詳細は[列書式](#列書式)をご覧ください。
+
+マークダウンの場合、改行タグで出力されます。
+
+```cs
+var table = Build.MarkdownTable<User>(builder =>
+{
+    builder
+        .Columns.Add(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+        .Columns.Add(x => x.Name).VerticalAlignmentAs(VerticalAlignment.Center)
+        .Columns.Add(x => x.Birthday).VerticalAlignmentAs(VerticalAlignment.Bottom).FormatAs("{0:yyyy/MM/dd}")
+        .Columns.Add(x => x.Parents).VerticalAlignmentAs(VerticalAlignment.Center).FormatAs("- {0}")
+        .Columns.Add(x => x.Occupations).HorizontalAlignmentAs(HorizontalAlignment.Center);
+});
+table.WriteLine(users);
+```
+
+![](images/markdownMultiRows.jpg)
+
+これを表示するとつぎのようになります。
+
+| ID | Name       | Birthday   | Parents                                  | Occupations                                                      |
+|---:|------------|------------|------------------------------------------|:----------------------------------------------------------------:|
+|  1 | Bill Gates | 1955/10/28 | - Bill Gates Sr.<br>- Mary Maxwell Gates | Software developer<br>Investor<br>Entrepreneur<br>Philanthropist |
+
+Markdownの場合、垂直方向のアライメントは有効になりません。
+
+
 # 書式
 
-## 列
+## 列書式
 
 デフォルトではすべてのpublicなプロパティとフィールドが出力されます。
 
@@ -130,19 +216,30 @@ Build
 
 列には、つぎの書式を設定できます。
 
-- 列名
 - 水平方向アライメント
 - 垂直方向アライメント
+- 列名
 - フォーマット
 
 ```cs
-
+var table = Build.TextTable<User>(builder =>
+{
+    builder
+        .Columns.Add(x => x.Id).NameAs("ID").HorizontalAlignmentAs(HorizontalAlignment.Right)
+        .Columns.Add(x => x.Name).VerticalAlignmentAs(VerticalAlignment.Center)
+        .Columns.Add(x => x.Birthday).VerticalAlignmentAs(VerticalAlignment.Bottom).FormatAs("{0:yyyy/MM/dd}")
+        .Columns.Add(x => x.Parents).VerticalAlignmentAs(VerticalAlignment.Center).FormatAs("- {0}")
+        .Columns.Add(x => x.Occupations).HorizontalAlignmentAs(HorizontalAlignment.Center);
+});
+table.WriteLine(users);
 ```
+
+![](images/multiRows.jpg)
 
 
 ## 罫線
 
-すべての罫線は任意のスタイルに変更できます。
+すべての罫線は任意のスタイルに変更できます（Markdown形式では未サポート）。
 
 ```cs
 var table = Build.TextTable<User>(builder =>
