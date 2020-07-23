@@ -11,12 +11,13 @@ namespace FluentTextTable
         {
         }
 
-        public void AsDisable()
+        public IVerticalBorderBuilder<TItem> AsDisable()
         {
             _isEnable = false;
+            return this;
         }
 
-        public IVerticalBorderBuilder<TItem>  LeftStyleAs(string c)
+        public IVerticalBorderBuilder<TItem>  LineStyleAs(string c)
         {
             _line = c;
             return this;

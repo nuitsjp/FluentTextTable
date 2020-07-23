@@ -2,6 +2,7 @@
 {
     public interface IVerticalBorderBuilder<TItem> : IBorderBuilder<TItem>
     {
-        IVerticalBorderBuilder<TItem> LeftStyleAs(string s);
+        IVerticalBorderBuilder<TItem> LineStyleAs(string s);
+        IVerticalBorderBuilder<TItem> AsDisable();
     }
 }

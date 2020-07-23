@@ -69,13 +69,13 @@ namespace FluentTextTable
             HeaderHorizontal.LeftStyleAs("┝").LineStyleAs("━").IntersectionStyleAs("┿").RightStyleAs("┥");
             InsideHorizontal.LeftStyleAs("├").LineStyleAs("─").IntersectionStyleAs("┼").RightStyleAs("┤");
             Bottom.LeftStyleAs("└").LineStyleAs("─").IntersectionStyleAs("┴").RightStyleAs("┘");
-            Left.LeftStyleAs("│");
-            InsideVertical.LeftStyleAs("│");
-            Right.LeftStyleAs("│");
+            Left.LineStyleAs("│");
+            InsideVertical.LineStyleAs("│");
+            Right.LineStyleAs("│");
             return this;
         }
 
-        public void AsDisable()
+        public IBordersBuilder<TItem> AsDisable()
         {
             _top.AsDisable();
             _headerHorizontal.AsDisable();
@@ -84,6 +84,7 @@ namespace FluentTextTable
             _left.AsDisable();
             _insideVertical.AsDisable();
             _right.AsDisable();
+            return this;
         }
     }
 }

@@ -38,7 +38,7 @@ namespace FluentTextTable.Test.Borders
 
             var table = Build.TextTable<User>(builder =>
             {
-                builder.Borders.Left.LeftStyleAs("\\\\");
+                builder.Borders.Left.LineStyleAs("\\\\");
                 builder.Borders.Top.LeftStyleAs("12");
                 builder.Borders.HeaderHorizontal.LeftStyleAs("34");
                 builder.Borders.InsideHorizontal.LeftStyleAs("56");
@@ -68,7 +68,7 @@ namespace FluentTextTable.Test.Borders
             Assert.Throws<InvalidOperationException>(() => 
                 Build.TextTable<User>(builder =>
                 {
-                    builder.Borders.Left.LeftStyleAs("12");
+                    builder.Borders.Left.LineStyleAs("12");
                 }));
         }
 

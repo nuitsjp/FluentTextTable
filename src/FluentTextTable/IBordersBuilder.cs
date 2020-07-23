@@ -10,5 +10,6 @@
         IVerticalBorderBuilder<TItem> InsideVertical { get; }
         IVerticalBorderBuilder<TItem> Right { get; }
         IBordersBuilder<TItem> AsFullWidthStyle();
+        IBordersBuilder<TItem> AsDisable();
     }
 }

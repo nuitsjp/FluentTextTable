@@ -11,8 +11,15 @@ namespace FluentTextTable.Sample
                 new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
                 new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
             };
+            //Build
+            //    .TextTable<User>()
+            //    .WriteLine(users);
             Build
-                .TextTable<User>()
+                .TextTable<User>(builder =>
+                {
+                    builder
+                        .Borders.InsideHorizontal.AsDisable();
+                })
                 .WriteLine(users);
 
             //var table = Build.TextTable<User>(builder =>

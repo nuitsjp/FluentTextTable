@@ -17,9 +17,10 @@
         internal int IntersectionWidth => _intersection.GetWidth();
         internal int RightEndWidth => _rightEnd.GetWidth();
 
-        public void AsDisable()
+        public IHorizontalBorderBuilder<TItem> AsDisable()
         {
             _isEnable = false;
+            return this;
         }
 
         public IHorizontalBorderBuilder<TItem> LeftStyleAs(string s)
