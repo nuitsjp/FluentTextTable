@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentTextTable", "FluentTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentTextTable.Test", "FluentTextTable.Test\FluentTextTable.Test.csproj", "{4D5FB3FA-2343-415F-B088-84C60FED824F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentTextTable.Sample", "FluentTextTable.Sample\FluentTextTable.Sample.csproj", "{3C108027-8A25-411C-A9E9-46E2655E9251}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentTextTable.Sample", "FluentTextTable.Sample\FluentTextTable.Sample.csproj", "{3C108027-8A25-411C-A9E9-46E2655E9251}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{45BDC307-E1CA-4D21-8EC2-33BA2ED30F6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +32,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3C108027-8A25-411C-A9E9-46E2655E9251} = {45BDC307-E1CA-4D21-8EC2-33BA2ED30F6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2621A242-2E06-4472-9BBE-742D99B5385F}

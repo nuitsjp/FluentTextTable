@@ -209,7 +209,9 @@ static void Main()
 }
 ```
 
-You can also specify the columns to be output.
+![](images/columnformat.png)
+
+Output columns can also be specified.
 
 ```cs
 Build
@@ -222,9 +224,7 @@ Build
     .WriteLine(users);
 ```
 
-![](images/column1.jpg)
-
-The columns can be formatted as follows
+![](images/columnformatspecifyproperties.png)
 
 The columns can be formatted as follows
 
@@ -246,7 +246,9 @@ var table = Build.TextTable<User>(builder =>
 table.WriteLine(users);
 ```
 
-![](images/multiRows.jpg)
+Note that the cells are formatted row by row.
+
+![](images/columnformatdetail.png)
 
 
 ## Borders
@@ -272,7 +274,23 @@ var table = Build.TextTable<User>(builder =>
 });
 ```
 
-![](images/borders1.jpg)
+![](images/borders.png)
+
+Borders can also be applied collectively as a style.
+
+```cs
+Build
+    .TextTable<User>(builder =>
+    {
+        builder
+            .Borders.Horizontals.AllStylesAs("-")
+            .Borders.InsideHorizontal.AllStylesAs("=")
+            .Borders.Verticals.LineStyleAs("$");
+    })
+    .WriteLine(users);
+```
+
+![](images/borderapplyall.png)
 
 The following areas are defined for the borders
 
