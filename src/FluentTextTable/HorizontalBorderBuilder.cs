@@ -23,6 +23,15 @@
             return this;
         }
 
+        public IHorizontalBorderBuilder<TItem> AllStylesAs(string s)
+        {
+            LeftStyleAs(s);
+            LineStyleAs(s);
+            IntersectionStyleAs(s);
+            RightStyleAs(s);
+            return this;
+        }
+
         public IHorizontalBorderBuilder<TItem> LeftStyleAs(string s)
         {
             _leftEnd = s;

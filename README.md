@@ -5,21 +5,17 @@ Have you ever just wanted to output .NET object out to console?
 FluentTextTable makes it easy to use a text table that also supports full-width characters!
 
 ```cs
-static void Main()
+var users = new[]
 {
-    var users = new[]
-    {
-        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
-        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
-    };
-
-    Build
-        .TextTable<User>()
-        .WriteLine(users);
-}
+    new User {Id = 1, EnglishName = "Bill Gates", JapaneseName = "ビル・ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+    new User {Id = 2, EnglishName = "Steven Jobs", JapaneseName = "スティーブ・ジョブズ", Birthday = DateTime.Parse("1955/2/24")}
+};
+Build
+    .TextTable<User>()
+    .WriteLine(users);
 ```
 
-![](images/sample1.jpg)
+![](images/basic.png)
 
 You can change the format of the table easily and fluently.
 
@@ -30,15 +26,17 @@ Build
     .TextTable<User>(builder =>
     {
         builder
-            .Borders.InsideHorizontal.AsDisable()
+            .Borders.Horizontals.AllStylesAs("-")
+            .Borders.HeaderHorizontal.AllStylesAs("=")
             .Columns.Add(x => x.Id).HorizontalAlignmentAs(HorizontalAlignment.Right)
-            .Columns.Add(x => x.Name).NameAs("氏名")
-            .Columns.Add(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
+            .Columns.Add(x => x.Name).VerticalAlignmentAs(VerticalAlignment.Center)
+            .Columns.Add(x => x.Birthday).VerticalAlignmentAs(VerticalAlignment.Bottom).FormatAs("{0:yyyy/MM/dd}")
+            .Columns.Add(x => x.Occupations).FormatAs("- {0}");
     })
     .WriteLine(users);
 ```
 
-![](images/sample2.jpg)
+![](images/formatted.png)
 
 # Table of Contents
 

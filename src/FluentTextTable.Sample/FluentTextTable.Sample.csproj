@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -7,6 +7,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\FluentTextTable\FluentTextTable.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="新しいフォルダー\" />
     </ItemGroup>
 
 </Project>

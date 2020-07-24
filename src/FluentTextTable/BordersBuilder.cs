@@ -5,10 +5,12 @@ namespace FluentTextTable
 {
     public class BordersBuilder<TItem> : CompositeTextTableBuilder<TItem>, IBordersBuilder<TItem>
     {
+        private readonly IHorizontalBorderBuilder<TItem> _horizontals;
         private readonly HorizontalBorderBuilder<TItem> _top;
         private readonly HorizontalBorderBuilder<TItem> _headerHorizontal;
         private readonly HorizontalBorderBuilder<TItem> _insideHorizontal;
         private readonly HorizontalBorderBuilder<TItem> _bottom;
+        private readonly IVerticalBorderBuilder<TItem> _verticals;
         private readonly VerticalBorderBuilder<TItem>  _left;
         private readonly VerticalBorderBuilder<TItem>  _insideVertical;
         private readonly VerticalBorderBuilder<TItem>  _right;
@@ -19,10 +21,14 @@ namespace FluentTextTable
             _headerHorizontal = new HorizontalBorderBuilder<TItem>(TextTableBuilder);
             _insideHorizontal = new HorizontalBorderBuilder<TItem>(TextTableBuilder);
             _bottom = new HorizontalBorderBuilder<TItem>(TextTableBuilder);
+            _horizontals = new HorizontalsBorderBuilder<TItem>(TextTableBuilder, _top, _headerHorizontal, _insideHorizontal, _bottom);
             _left = new VerticalBorderBuilder<TItem>(TextTableBuilder);
             _insideVertical = new VerticalBorderBuilder<TItem>(TextTableBuilder);
             _right = new VerticalBorderBuilder<TItem>(TextTableBuilder);
+            _verticals = new VerticalsBorderBuilder<TItem>(TextTableBuilder, _left, _insideVertical, _right);
         }
+
+        public IHorizontalBorderBuilder<TItem> Horizontals => _horizontals;
 
         public IHorizontalBorderBuilder<TItem> Top => _top;
 
@@ -31,6 +37,8 @@ namespace FluentTextTable
         public IHorizontalBorderBuilder<TItem> InsideHorizontal => _insideHorizontal;
 
         public IHorizontalBorderBuilder<TItem> Bottom => _bottom;
+
+        public IVerticalBorderBuilder<TItem> Verticals => _verticals;
 
         public IVerticalBorderBuilder<TItem>  Left => _left;
 
