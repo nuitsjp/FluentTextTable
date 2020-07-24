@@ -5,40 +5,45 @@
 FluentTextTableを利用すると、全角にも対応したテキストテーブルを簡単に利用できます！
 
 ```cs
-static void Main()
 {
-    var users = new[]
-    {
-        new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
-        new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
-    };
-
-    Build
-        .TextTable<User>()
-        .WriteLine(users);
-}
+    new User {Id = 1, EnglishName = "Bill Gates", JapaneseName = "ビル・ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+    new User {Id = 2, EnglishName = "Steven Jobs", JapaneseName = "スティーブ・ジョブズ", Birthday = DateTime.Parse("1955/2/24")}
+};
+Build
+    .TextTable<User>()
+    .WriteLine(users);
 ```
 
-![](images/sample1.jpg)
+![](images/basic.png)
 
-テーブルの書式は簡単かつ流暢（Fluent）に変更できます。
-
-行間の罫線を非表示にし、項目値の書式を指定します。
+複雑なテーブルの書式を、簡単かつ流暢（Fluent）に変更できます。
 
 ```cs
 Build
     .TextTable<User>(builder =>
     {
         builder
-            .Borders.InsideHorizontal.AsDisable()
+            .Borders.Horizontals.AllStylesAs("-")
+            .Borders.HeaderHorizontal.AllStylesAs("=")
             .Columns.Add(x => x.Id).HorizontalAlignmentAs(HorizontalAlignment.Right)
-            .Columns.Add(x => x.Name).NameAs("氏名")
-            .Columns.Add(x => x.Birthday).FormatAs("{0:yyyy/MM/dd}");
+            .Columns.Add(x => x.Name).VerticalAlignmentAs(VerticalAlignment.Center)
+            .Columns.Add(x => x.Birthday).VerticalAlignmentAs(VerticalAlignment.Bottom).FormatAs("{0:yyyy/MM/dd}")
+            .Columns.Add(x => x.Occupations).FormatAs("- {0}");
     })
     .WriteLine(users);
 ```
 
-![](images/sample2.jpg)
+![](images/formatted.png)
+
+そしてマークダウンもサポートします。
+
+```cs
+Build
+    .MarkdownTable<User>()
+    .WriteLine(users);
+```
+
+![](images/markdown.png)
 
 # 目次
 
@@ -62,10 +67,11 @@ Build
 出力対象となるクラスを定義します。
 
 ```cs
-private class User
+public class User
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string EnglishName { get; set; }
+    public string JapaneseName { get; set; }
     public DateTime Birthday;
 }
 ```
@@ -83,10 +89,12 @@ var table = Build.TextTable<User>();
 ```cs
 var users = new[]
 {
-    new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
-    new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
+    new User {Id = 1, EnglishName = "Bill Gates", JapaneseName = "ビル・ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+    new User {Id = 2, EnglishName = "Steven Jobs", JapaneseName = "スティーブ・ジョブズ", Birthday = DateTime.Parse("1955/2/24")}
 };
-table.WriteLine(users);
+Build
+    .TextTable<User>()
+    .WriteLine(users);
 ```
 
 ![](images/sample1.jpg)

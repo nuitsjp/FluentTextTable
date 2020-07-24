@@ -17,9 +17,7 @@ Build
 
 ![](images/basic.png)
 
-You can change the format of the table easily and fluently.
-
-Hides the borders between lines and specifies the format of the item values.
+The complex formatting of tables can be changed flexibly and fluently.
 
 ```cs
 Build
@@ -36,7 +34,19 @@ Build
     .WriteLine(users);
 ```
 
+Horizontal and vertical alignment, multi-line cells, string formatting, border styles, margins, etc.
+
 ![](images/formatted.png)
+
+And this supports markdowns as well.
+
+```cs
+Build
+    .MarkdownTable<User>()
+    .WriteLine(users);
+```
+
+![](images/markdown.png)
 
 # Table of Contents
 
@@ -51,7 +61,7 @@ Build
 
 # Quick Start
 
-NET Framework 4.0 and higher and .NET Standard 2.0 and higher are supported.Install and use it from [NuGet](https://www.nuget.org/packages/FluentTextTable).
+NET Framework 4.0 (or higher) and .NET Standard 2.0 (or higher) are supported. Install and use it from [NuGet](https://www.nuget.org/packages/FluentTextTable).
 
 ```console
 > Install-Package FluentTextTable
@@ -60,10 +70,11 @@ NET Framework 4.0 and higher and .NET Standard 2.0 and higher are supported.Inst
 Define the class to be output.
 
 ```cs
-private class User
+public class User
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string EnglishName { get; set; }
+    public string JapaneseName { get; set; }
     public DateTime Birthday;
 }
 ```
@@ -81,13 +92,15 @@ Create and output an object corresponding to a row.
 ```cs
 var users = new[]
 {
-    new User {Id = 1, Name = "ビル ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
-    new User {Id = 2, Name = "Steven Jobs", Birthday = DateTime.Parse("1955/2/24")}
+    new User {Id = 1, EnglishName = "Bill Gates", JapaneseName = "ビル・ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
+    new User {Id = 2, EnglishName = "Steven Jobs", JapaneseName = "スティーブ・ジョブズ", Birthday = DateTime.Parse("1955/2/24")}
 };
-table.WriteLine(users);
+Build
+    .TextTable<User>()
+    .WriteLine(users);
 ```
 
-![](images/sample1.jpg)
+![](images/basic.png)
 
 # Markdown format
 

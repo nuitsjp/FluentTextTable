@@ -6,7 +6,7 @@ namespace FluentTextTable.Sample
     {
         static void Main()
         {
-            _02.Formatted.Sample.WriteConsole();
+            _03.Markdown.Sample.WriteConsole();
         }
     }
 }
