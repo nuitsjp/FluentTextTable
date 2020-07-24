@@ -5,6 +5,7 @@
 FluentTextTableを利用すると、全角にも対応したテキストテーブルを簡単に利用できます！
 
 ```cs
+var users = new[]
 {
     new User {Id = 1, EnglishName = "Bill Gates", JapaneseName = "ビル・ゲイツ", Birthday = DateTime.Parse("1955/10/28")},
     new User {Id = 2, EnglishName = "Steven Jobs", JapaneseName = "スティーブ・ジョブズ", Birthday = DateTime.Parse("1955/2/24")}
