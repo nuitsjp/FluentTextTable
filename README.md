@@ -159,7 +159,7 @@ var table = Build.TextTable<User>(builder =>
 table.WriteLine(users);
 ```
 
-![](images/multiRows.jpg)
+![](images/multilinecell.png)
 
 See [Column Format](#Column-Format) for details of the format.
 
@@ -173,18 +173,17 @@ var table = Build.MarkdownTable<User>(builder =>
         .Columns.Add(x => x.Name).VerticalAlignmentAs(VerticalAlignment.Center)
         .Columns.Add(x => x.Birthday).VerticalAlignmentAs(VerticalAlignment.Bottom).FormatAs("{0:yyyy/MM/dd}")
         .Columns.Add(x => x.Parents).VerticalAlignmentAs(VerticalAlignment.Center).FormatAs("- {0}")
-        .Columns.Add(x => x.Occupations).HorizontalAlignmentAs(HorizontalAlignment.Center);
 });
 table.WriteLine(users);
 ```
 
-![](images/markdownMultiRows.jpg)
+![](images/multilinecellmarkdown.png)
 
 Here's how it would look like
 
-| ID | Name       | Birthday   | Parents                                  | Occupations                                                      |
-|---:|------------|------------|------------------------------------------|:----------------------------------------------------------------:|
-|  1 | Bill Gates | 1955/10/28 | - Bill Gates Sr.<br>- Mary Maxwell Gates | Software developer<br>Investor<br>Entrepreneur<br>Philanthropist |
+| ID | Name       | Birthday   | Parents                                  |
+|---:|------------|------------|------------------------------------------|
+|  1 | Bill Gates | 1955/10/28 | - Bill Gates Sr.<br>- Mary Maxwell Gates |
 
 In Markdown, vertical alignment is not enabled.
 
