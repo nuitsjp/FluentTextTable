@@ -71,6 +71,13 @@ namespace FluentTextTable
                 throw new InvalidOperationException("The widths of the vertical elements must match.");
         }
 
+        public IBordersBuilder<TItem> AllStylesAs(string s)
+        {
+            _horizontals.AllStylesAs(s);
+            _verticals.LineStyleAs(s);
+            return this;
+        }
+
         public IBordersBuilder<TItem> AsFullWidthStyle()
         {
             Top.LeftStyleAs("┌").LineStyleAs("─").IntersectionStyleAs("┬").RightStyleAs("┐");
