@@ -53,9 +53,11 @@ Build
 - [Quick Start](#quick-start)
 - [Markdown format](#markdown-format)
 - [Multi-line cell support](#multi-line-cell-support)
-- Format
+- Styles
   - [Column format](#Column-format)
   - [Borders](#borders)
+  - [Margins](#margins)
+  - [Paddings](#paddings)
 
 
 
@@ -112,7 +114,7 @@ Build
     .WriteLine(users);
 ```
 
-![](images/markdown1.jpg)
+![](images/markdown.png)
 
 You can also align to the center or right. See [Column format](#Column-Format) for details.
 
@@ -188,7 +190,7 @@ Here's how it would look like
 In Markdown, vertical alignment is not enabled.
 
 
-# Format
+# Styles
 
 ## Column format
 
@@ -316,3 +318,50 @@ The horizontal border can be changed in the following styles
 The vertical border can only be changed by LineStyle. Intersections are determined by the horizontal border.
 
 ![](images/verticalBorder.JPG)
+
+## Margins
+
+You can specify the left and right margins of the table.
+
+```cs
+Build
+    .TextTable<User>(builder =>
+    {
+        builder
+            .Margins.Left.As(4)
+            .Margins.Right.As(2);
+    })
+    .WriteLine(users);
+```
+
+![](images/margins.png)
+
+The right margin is not needed in the console, but is useful for text.
+
+```cs
+var text = Build
+    .TextTable<User>(builder =>
+    {
+        builder
+            .Margins.Left.As(4)
+            .Margins.Right.As(2);
+    })
+    .ToString(users);
+```
+
+## Paddings
+
+You can set the left and right padding on the inside of the cell to any width.
+
+```cs
+Build
+    .TextTable<User>(builder =>
+    {
+        builder
+            .Paddings.Left.As(4)
+            .Paddings.Right.As(2);
+    })
+    .WriteLine(users);
+```
+
+![](images/paddings.png)

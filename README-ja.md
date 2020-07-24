@@ -53,6 +53,8 @@ Build
 - 書式
   - [列書式](#列書式)
   - [罫線](#罫線)
+  - [マージン](#マージン)
+  - [パディング](#パディング)
 
 
 
@@ -97,7 +99,7 @@ Build
     .WriteLine(users);
 ```
 
-![](images/sample1.jpg)
+![](images/basic.png)
 
 # Markdown形式
 
@@ -109,7 +111,7 @@ Build
     .WriteLine(users);
 ```
 
-![](images/markdown1.jpg)
+![](images/markdown.png)
 
 中央寄せ・右寄せも可能です。詳細は[列書式](#列書式)をご覧ください。
 
@@ -156,7 +158,7 @@ var table = Build.TextTable<User>(builder =>
 table.WriteLine(users);
 ```
 
-![](images/multiRows.jpg)
+![](images/multilinecell.png)
 
 書式の詳細は[列書式](#列書式)をご覧ください。
 
@@ -175,7 +177,7 @@ var table = Build.MarkdownTable<User>(builder =>
 table.WriteLine(users);
 ```
 
-![](images/markdownMultiRows.jpg)
+![](images/multilinecellmarkdown.png)
 
 これを表示するとつぎのようになります。
 
@@ -207,6 +209,8 @@ static void Main()
 }
 ```
 
+![](images/columnformat.png)
+
 出力する列を指定することも可能です。
 
 ```cs
@@ -220,7 +224,7 @@ Build
     .WriteLine(users);
 ```
 
-![](images/column1.jpg)
+![](images/columnformatspecifyproperties.png)
 
 列には、つぎの書式を設定できます。
 
@@ -242,7 +246,9 @@ var table = Build.TextTable<User>(builder =>
 table.WriteLine(users);
 ```
 
-![](images/multiRows.jpg)
+複数行セルの場合、セル内の行単位でフォーマットされることに注意してください。
+
+![](images/columnformatdetail.png)
 
 
 ## 罫線
@@ -268,7 +274,23 @@ var table = Build.TextTable<User>(builder =>
 });
 ```
 
-![](images/borders1.jpg)
+![](images/borders.png)
+
+ボーダーは、まとめて設定することが可能です。
+
+```cs
+Build
+    .TextTable<User>(builder =>
+    {
+        builder
+            .Borders.Horizontals.AllStylesAs("-")
+            .Borders.InsideHorizontal.AllStylesAs("=")
+            .Borders.Verticals.LineStyleAs("$");
+    })
+    .WriteLine(users);
+```
+
+![](images/borderapplyall.png)
 
 罫線には、つぎのような領域が定義されています。
 
@@ -294,3 +316,50 @@ var table = Build.TextTable<User>(builder =>
 垂直方向のボーダーは、LineStyleのみ変更可能です。交点は水平方向のボーダーによって決定されます。
 
 ![](images/verticalBorder.JPG)
+
+## マージン
+
+テーブルの左右のマージンを指定できます。
+
+```cs
+Build
+    .TextTable<User>(builder =>
+    {
+        builder
+            .Margins.Left.As(4)
+            .Margins.Right.As(2);
+    })
+    .WriteLine(users);
+```
+
+![](images/margins.png)
+
+右側のマージンはコンソール出力では不要ですが、テキストファイルに出力する場合には有用なこともあるでしょう。
+
+```cs
+var text = Build
+    .TextTable<User>(builder =>
+    {
+        builder
+            .Margins.Left.As(4)
+            .Margins.Right.As(2);
+    })
+    .ToString(users);
+```
+
+## パディング
+
+セルの内側の左右のパディングを任意の幅に設定することが可能です。
+
+```cs
+Build
+    .TextTable<User>(builder =>
+    {
+        builder
+            .Paddings.Left.As(4)
+            .Paddings.Right.As(2);
+    })
+    .WriteLine(users);
+```
+
+![](images/paddings.png)

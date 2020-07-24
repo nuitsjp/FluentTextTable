@@ -6,7 +6,7 @@ namespace FluentTextTable.Sample
     {
         static void Main()
         {
-            _10.BordersApplyAll.Sample.WriteConsole();
+            _12.Paddings.Sample.WriteConsole();
         }
     }
 }
