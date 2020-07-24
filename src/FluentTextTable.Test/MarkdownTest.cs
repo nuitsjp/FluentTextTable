@@ -138,6 +138,15 @@ namespace FluentTextTable.Test
 ", $"{Environment.NewLine}{text}");
         }
 
+        [Fact]
+        public void BordersIsNotSupported()
+        {
+            Assert.Throws<NotSupportedException>(() => Build.MarkdownTable<User>(builder =>
+            {
+                builder.Borders.AsDisable();
+            }));
+        }
+
         private class User
         {
             public int Id { get; set; }
