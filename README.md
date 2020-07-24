@@ -175,7 +175,7 @@ Here's how it would look like
 |---:|------------|------------|------------------------------------------|:----------------------------------------------------------------:|
 |  1 | Bill Gates | 1955/10/28 | - Bill Gates Sr.<br>- Mary Maxwell Gates | Software developer<br>Investor<br>Entrepreneur<br>Philanthropist |
 
-Markdownの場合、垂直方向のアライメントは有効になりません。
+In Markdown, vertical alignment is not enabled.
 
 
 # Format
