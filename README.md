@@ -1,3 +1,5 @@
+[Japanese Document](README-ja.md)
+
 # FluentTextTable
 
 Have you ever just wanted to output .NET object out to console?
